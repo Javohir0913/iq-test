@@ -65,8 +65,22 @@ Belgilar: `[x]` bajarildi · `[ ]` qilinmagan
 - [x] Lighthouse: bosh sahifa mobil 91/100/100, desktop 100/100/100; /start mobil 92/100/100, desktop 100/100/100
 - [x] README.md
 
+## 9.1 Telegram orqali kirish (web)
+- [x] Veb: Telegram Login Widget → imzo serverda tekshiriladi → sessiya tokeni (Bearer, 30 kun)
+- [x] Mini App: initData orqali avtomatik kirish
+- [x] Test boshlash faqat kirgan foydalanuvchiga (`REQUIRE_TELEGRAM_AUTH`), natijalar Telegram akkauntiga bog‘langan
+- [x] "Mening natijalarim" sahifasi, boshqa qurilmadan natija/testni ochish
+- [x] Admin: Telegram foydalanuvchilar ro‘yxati
+- [x] Testlar: backend 74, E2E 12
+- [ ] @BotFather → /setdomain → iq.coffee-nap.uz (siz tomondan, bir marta)
+
+## 9.2 Server (iq.coffee-nap.uz)
+- [x] Deploy fayllari: `deploy/nginx-iq.coffee-nap.uz.conf`, `deploy/update.sh`, deploy kalit
+- [ ] GitHub repo → serverga clone, HTTPS (certbot), ishga tushirish
+
 ## 10. Mobil ilova (keyingi bosqich)
 - [ ] **Android (APK / AAB)** — birinchi navbatda
+  - **Kirish – Telegram orqali** (web bilan bir xil akkaunt va natijalar): ilova Telegram Login sahifasini tizim brauzerida ochadi → `https://iq.coffee-nap.uz/auth/app?…` → deep link (`iqtest://auth?token=…`) bilan ilovaga qaytadi; backend’dagi `/api/v1/auth/telegram/widget` va Bearer token o‘zgarishsiz ishlatiladi
   - Yondashuv: mavjud Next.js frontendni **Capacitor** bilan o‘rash (bitta kod bazasi; API va dizayn o‘zgarmaydi)
   - Native: splash screen, ikonka, status bar ranglari, orqaga tugmasi, sertifikatni yuklab olish va ulashish (Share API)
   - Push-bildirishnomalar (ixtiyoriy, Firebase)
