@@ -256,6 +256,13 @@ class TelegramAccount(models.Model):
     username = models.CharField("username", max_length=64, blank=True)
     photo_url = models.URLField("rasm", max_length=500, blank=True)
     language_code = models.CharField("til kodi", max_length=12, blank=True)
+    # Natija va sertifikatdagi ism: birinchi testda kiritiladi, keyin faqat admin o‘zgartiradi
+    real_name = models.CharField(
+        "ism familiya (sertifikat uchun)",
+        max_length=120,
+        blank=True,
+        help_text="Birinchi testda foydalanuvchi kiritadi; keyin faqat shu yerda o‘zgartiriladi.",
+    )
     created_at = models.DateTimeField("ro‘yxatdan o‘tgan", auto_now_add=True)
     last_login = models.DateTimeField("oxirgi kirish", null=True, blank=True)
 
@@ -265,7 +272,7 @@ class TelegramAccount(models.Model):
         verbose_name_plural = "Telegram foydalanuvchilar"
 
     def __str__(self):
-        return self.full_name or f"@{self.username}" or str(self.telegram_id)
+        return self.real_name or self.full_name or (f"@{self.username}" if self.username else str(self.telegram_id))
 
     @property
     def full_name(self):

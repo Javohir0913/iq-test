@@ -94,11 +94,17 @@ test("asosiy oqim: boshlash → 35 savol → natija", async ({ page, request }, 
   await page.goto("/me");
   await expect(page.locator(`a[href="/result/${attemptId}"]`)).toBeVisible();
 
+  // Ism birinchi testdan keyin qulflangan: keyingi safar o‘zgartirib bo‘lmaydi
+  await page.goto("/start");
+  const nameInput = page.locator("#full_name");
+  await expect(nameInput).toHaveValue("Playwright Sinov");
+  await expect(nameInput).toHaveAttribute("readonly", "");
+
   expect(leaks, `ball/to‘g‘ri javob sizdi: ${leaks.join(", ")}`).toEqual([]);
 });
 
 test("boshqa qurilmadan: natija Telegram akkaunti orqali ochiladi", async ({ browser, request }) => {
-  const token = await loginToken(request, 700000002, "Ikki", "Qurilma");
+  const token = await loginToken(request, undefined, "Ikki", "Qurilma");
   const auth = { Authorization: `Bearer ${token}` };
   const created = await (await request.post("/api/v1/attempts", { data: { full_name: "Ikki Qurilma" }, headers: auth })).json();
   await request.post(`/api/v1/attempts/${created.attempt_id}/finish`, { headers: { "X-Attempt-Token": created.token } });
@@ -112,7 +118,7 @@ test("boshqa qurilmadan: natija Telegram akkaunti orqali ochiladi", async ({ bro
 });
 
 test("sertifikat PDF yuklanadi", async ({ request }) => {
-  const token = await loginToken(request, 700000003);
+  const token = await loginToken(request);
   const created = await (
     await request.post("/api/v1/attempts", { data: { full_name: "PDF Sinov" }, headers: { Authorization: `Bearer ${token}` } })
   ).json();

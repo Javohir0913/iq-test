@@ -97,4 +97,6 @@ def account_payload(account):
         "username": account.username,
         "photo_url": account.photo_url,
         "language_code": account.language_code,
+        "real_name": account.real_name,
+        "name_locked": bool(account.real_name),
     }

@@ -94,3 +94,41 @@ def test_my_attempts_and_owner_access(client, imported, settings):
     assert client.get(f"/api/v1/attempts/{aid}/questions", HTTP_AUTHORIZATION=f"Bearer {other}").status_code == 403
     for body in mine["attempts"]:
         assert "points" not in json.dumps(body)
+
+
+def _create(client, token, name):
+    return client.post("/api/v1/attempts", {"full_name": name}, format="json", HTTP_AUTHORIZATION=f"Bearer {token}")
+
+
+def test_name_locked_after_first_attempt(client, imported, settings):
+    settings.REQUIRE_TELEGRAM_AUTH = True
+    token = login(client, 303)
+    me = client.get("/api/v1/auth/me", HTTP_AUTHORIZATION=f"Bearer {token}").json()["user"]
+    assert me["name_locked"] is False and me["real_name"] == ""
+
+    first = _create(client, token, "Aziza Karimova").json()
+    assert TelegramAccount.objects.get(telegram_id=303).real_name == "Aziza Karimova"
+
+    # Keyingi urinishda boshqa ism yuborilsa ham qulflangan ism ishlatiladi
+    second = _create(client, token, "Boshqa Odam").json()
+    names = {a.participant.full_name for a in Attempt.objects.filter(pk__in=[first["attempt_id"], second["attempt_id"]])}
+    assert names == {"Aziza Karimova"}
+    me = client.get("/api/v1/auth/me", HTTP_AUTHORIZATION=f"Bearer {token}").json()["user"]
+    assert me["name_locked"] is True and me["real_name"] == "Aziza Karimova"
+
+
+def test_admin_rename_updates_past_attempts(client, imported, settings):
+    from django.contrib.auth import get_user_model
+
+    settings.REQUIRE_TELEGRAM_AUTH = True
+    token = login(client, 404)
+    aid = _create(client, token, "Xato Ism").json()["attempt_id"]
+    account = TelegramAccount.objects.get(telegram_id=404)
+
+    admin = get_user_model().objects.create_superuser("root2", "r2@example.com", "pass12345")
+    client.force_login(admin)
+    resp = client.post(f"/admin/quiz/telegramaccount/{account.pk}/change/", {"real_name": "To‘g‘ri Ism"})
+    assert resp.status_code == 302, resp.content.decode()[:500]
+    assert Attempt.objects.get(pk=aid).participant.full_name == "To‘g‘ri Ism"
+    assert client.get("/admin/quiz/attempt/").status_code == 200
+    assert client.get("/admin/quiz/telegramaccount/").status_code == 200

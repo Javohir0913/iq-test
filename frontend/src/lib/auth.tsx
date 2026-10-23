@@ -14,6 +14,8 @@ interface AuthValue {
   user: AuthUser | null;
   loginWithWidget: (data: Record<string, unknown>) => Promise<void>;
   logout: () => void;
+  /** Foydalanuvchi ma’lumotini serverdan qayta o‘qish (masalan, ism qulflangandan keyin) */
+  refresh: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthValue | null>(null);
@@ -87,7 +89,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setStatus("guest");
   }, []);
 
-  return <AuthContext.Provider value={{ status, user, loginWithWidget, logout }}>{children}</AuthContext.Provider>;
+  const refresh = useCallback(async () => {
+    try {
+      const { user } = await authApi.me();
+      setUser(user);
+    } catch {
+      /* e’tiborsiz */
+    }
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ status, user, loginWithWidget, logout, refresh }}>{children}</AuthContext.Provider>
+  );
 }
 
 export function useAuth() {

@@ -110,9 +110,18 @@ class AttemptCreateView(APIView):
         elif settings.REQUIRE_TELEGRAM_AUTH:
             return error("auth_required", status.HTTP_401_UNAUTHORIZED)
 
+        full_name = data["full_name"]
         with transaction.atomic():
+            if account is not None:
+                # Ism akkauntga qulflanadi: birinchi marta saqlanadi, keyin o‘sha ism ishlatiladi
+                account = type(account).objects.select_for_update().get(pk=account.pk)
+                if account.real_name:
+                    full_name = account.real_name
+                else:
+                    account.real_name = full_name
+                    account.save(update_fields=["real_name"])
             participant = Participant.objects.create(
-                full_name=data["full_name"],
+                full_name=full_name,
                 phone=data["phone"],
                 language=data["language"],
                 telegram_id=telegram_id,

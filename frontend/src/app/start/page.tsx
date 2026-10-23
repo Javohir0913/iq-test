@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Header } from "@/components/Header";
-import { ArrowRight, Check, Keyboard, Refresh, Send, Spinner } from "@/components/icons";
+import { ArrowRight, Check, Keyboard, Lock, Refresh, Send, Spinner } from "@/components/icons";
 import { Grid3, Star, Triangle } from "@/components/shapes";
 import { Button, ButtonLink, Card, Skeleton } from "@/components/ui";
 import { useI18n } from "@/i18n";
@@ -21,7 +21,8 @@ export default function StartPage() {
   const meta = useMeta();
   const router = useRouter();
   const { initData } = useTelegram();
-  const { status, user, logout } = useAuth();
+  const { status, user, logout, refresh } = useAuth();
+  const nameLocked = Boolean(user?.name_locked);
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -40,11 +41,17 @@ export default function StartPage() {
       .catch(() => {});
   }, []);
 
-  // Telegram akkauntidan ismni to‘ldirish (veb Login Widget yoki Mini App)
+  // Ism: qulflangan bo‘lsa – akkauntdagi ism, aks holda Telegram profilidan taklif
   useEffect(() => {
-    if (status !== "authed" || !user?.full_name) return;
-    setName((prev) => prev || user.full_name);
-    setFromTelegram(true);
+    if (status !== "authed" || !user) return;
+    if (user.name_locked) {
+      setName(user.real_name);
+      return;
+    }
+    if (user.full_name) {
+      setName((prev) => prev || user.full_name);
+      setFromTelegram(true);
+    }
   }, [status, user]);
 
   // Kirish majburiy: veb'da Telegram Login, Mini App'da avtomatik
@@ -73,6 +80,7 @@ export default function StartPage() {
         telegram_init_data: initData || undefined,
       });
       storage.saveAttempt(res.attempt_id, res.token);
+      if (status === "authed" && !nameLocked) void refresh();
       router.push(`/test/${res.attempt_id}`);
     } catch (err) {
       const apiErr = err instanceof ApiError ? err : null;
@@ -136,23 +144,39 @@ export default function StartPage() {
                     autoComplete="name"
                     value={name}
                     maxLength={120}
+                    readOnly={nameLocked}
+                    aria-readonly={nameLocked}
                     onChange={(e) => {
+                      if (nameLocked) return;
                       setName(e.target.value);
                       if (errors.name) setErrors((p) => ({ ...p, name: undefined }));
                     }}
                     placeholder={t("start.name_placeholder")}
                     aria-invalid={Boolean(errors.name)}
-                    aria-describedby={errors.name ? "name-error" : fromTelegram ? "name-tg" : undefined}
-                    className={`h-12 w-full rounded-btn border bg-surface px-4 text-base outline-none transition-[border,box-shadow] placeholder:text-muted/70 focus:border-accent focus:ring-4 focus:ring-accent/15 ${errors.name ? "border-accent" : "border-line"}`}
+                    aria-describedby={errors.name ? "name-error" : "name-hint"}
+                    className={`h-12 w-full rounded-btn border px-4 text-base outline-none transition-[border,box-shadow] placeholder:text-muted/70 ${
+                      nameLocked
+                        ? "cursor-not-allowed border-line bg-surface-2 text-ink/80"
+                        : `bg-surface focus:border-accent focus:ring-4 focus:ring-accent/15 ${errors.name ? "border-accent" : "border-line"}`
+                    }`}
                   />
                   {errors.name && (
                     <p id="name-error" role="alert" className="mt-1.5 text-sm font-medium text-accent">
                       {errors.name}
                     </p>
                   )}
-                  {!errors.name && fromTelegram && (
-                    <p id="name-tg" className="mt-1.5 inline-flex items-center gap-1.5 text-sm text-teal">
-                      <Send size={14} /> {t("start.telegram_filled")}
+                  {!errors.name && nameLocked && (
+                    <p id="name-hint" className="mt-1.5 flex items-start gap-1.5 text-sm text-muted">
+                      <Lock size={14} className="mt-0.5 shrink-0" /> <span>{t("start.name_locked")}</span>
+                    </p>
+                  )}
+                  {!errors.name && !nameLocked && status === "authed" && (
+                    <p id="name-hint" className="mt-1.5 flex items-start gap-1.5 text-sm text-teal">
+                      <Send size={14} className="mt-0.5 shrink-0" />
+                      <span>
+                        {fromTelegram ? `${t("start.telegram_filled")}. ` : ""}
+                        {t("start.name_first_time")}
+                      </span>
                     </p>
                   )}
                 </div>

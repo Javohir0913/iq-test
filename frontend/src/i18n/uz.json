@@ -102,7 +102,9 @@
       "phone_invalid": "Telefon raqami to‘liq emas: +998 va 9 ta raqam",
       "rate_limited": "Juda ko‘p urinish. Birozdan keyin qayta urinib ko‘ring.",
       "generic": "Testni boshlab bo‘lmadi. Internet aloqasini tekshirib, qayta urinib ko‘ring."
-    }
+    },
+    "name_locked": "Ism Telegram akkauntingizga saqlangan. Xato bo‘lsa, administratorga murojaat qiling.",
+    "name_first_time": "Haqiqiy ism-familiyangizni yozing — u sertifikatda chiqadi va keyin o‘zgartirilmaydi."
   },
   "test": {
     "progress": "{current} / {total}",

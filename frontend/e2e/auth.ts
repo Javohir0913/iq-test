@@ -25,7 +25,10 @@ export function signWidget(user: Record<string, string | number>, token = botTok
   return { ...fields, hash: createHmac("sha256", secret).update(check).digest("hex") };
 }
 
-export async function loginToken(request: APIRequestContext, id = 700000001, firstName = "E2E", lastName = "Sinov") {
+// Har bir ishga tushirishda yangi Telegram ID (ism birinchi testdan keyin qulflanadi)
+const uniqueId = () => 700000000 + Math.floor(Math.random() * 90_000_000);
+
+export async function loginToken(request: APIRequestContext, id = uniqueId(), firstName = "E2E", lastName = "Sinov") {
   const data = signWidget({ id, first_name: firstName, last_name: lastName, auth_date: Math.floor(Date.now() / 1000) });
   const res = await request.post("/api/v1/auth/telegram/widget", { data });
   if (!res.ok()) throw new Error(`login ${res.status()}`);

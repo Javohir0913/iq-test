@@ -20,6 +20,9 @@ export interface AuthUser {
   username: string;
   photo_url: string;
   language_code: string;
+  /** Sertifikatdagi ism (birinchi testda kiritiladi) */
+  real_name: string;
+  name_locked: boolean;
 }
 
 export interface MyAttempt {

@@ -122,6 +122,12 @@ export const Keyboard = (p: IconProps) => (
     <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10" />
   </Icon>
 );
+export const Lock = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="5" y="11" width="14" height="10" rx="2" />
+    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+  </Icon>
+);
 export const Spinner = ({ size = 18, className = "", ...rest }: IconProps) => (
   <svg viewBox="0 0 24 24" width={size} height={size} className={`animate-spin ${className}`} aria-hidden {...rest}>
     <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />

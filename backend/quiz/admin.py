@@ -1,5 +1,6 @@
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
+from django.db.models import OuterRef, Subquery
 from django.forms.models import BaseInlineFormSet
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
@@ -218,6 +219,7 @@ class ParticipantAdmin(ModelAdmin):
 class AttemptAdmin(ModelAdmin):
     list_display = [
         "participant_name",
+        "participant_telegram",
         "participant_phone",
         "language",
         "status_badge",
@@ -234,7 +236,7 @@ class AttemptAdmin(ModelAdmin):
         ("started_at", RangeDateFilter),
     ]
     list_filter_submit = True
-    search_fields = ["participant__full_name", "participant__phone", "id"]
+    search_fields = ["participant__full_name", "participant__phone", "participant__telegram_id", "id"]
     date_hierarchy = "started_at"
     inlines = [AnswerInline]
     actions = ["export_selected_csv", "export_selected_xlsx"]
@@ -258,7 +260,8 @@ class AttemptAdmin(ModelAdmin):
     ]
 
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related("participant", "level")
+        username = TelegramAccount.objects.filter(telegram_id=OuterRef("participant__telegram_id")).values("username")[:1]
+        return super().get_queryset(request).select_related("participant", "level").annotate(tg_username=Subquery(username))
 
     def has_add_permission(self, request):
         return False
@@ -269,6 +272,12 @@ class AttemptAdmin(ModelAdmin):
     @display(description="Ishtirokchi", ordering="participant__full_name")
     def participant_name(self, obj):
         return obj.participant.full_name
+
+    @display(description="Telegram", ordering="tg_username")
+    def participant_telegram(self, obj):
+        if obj.tg_username:
+            return format_html('<a href="https://t.me/{0}" target="_blank" rel="noopener">@{0}</a>', obj.tg_username)
+        return obj.participant.telegram_id or "—"
 
     @display(description="Telefon")
     def participant_phone(self, obj):
@@ -360,11 +369,30 @@ class AttemptAdmin(ModelAdmin):
 
 @admin.register(TelegramAccount)
 class TelegramAccountAdmin(ModelAdmin):
-    list_display = ["telegram_id", "full_name", "username", "language_code", "created_at", "last_login"]
-    search_fields = ["telegram_id", "first_name", "last_name", "username"]
+    list_display = ["telegram_id", "real_name", "telegram_name", "username_link", "language_code", "created_at", "last_login"]
+    list_display_links = ["telegram_id", "real_name"]
+    search_fields = ["telegram_id", "real_name", "first_name", "last_name", "username"]
+    fields = ["real_name", "telegram_id", "first_name", "last_name", "username", "photo_url", "language_code", "created_at", "last_login"]
     list_filter = [("last_login", RangeDateFilter)]
     list_filter_submit = True
     readonly_fields = ["telegram_id", "first_name", "last_name", "username", "photo_url", "language_code", "created_at", "last_login"]
 
     def has_add_permission(self, request):
         return False
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        if change and "real_name" in form.changed_data and obj.real_name:
+            # Avvalgi natijalar va sertifikatlardagi ism ham tuzatiladi
+            updated = Participant.objects.filter(telegram_id=obj.telegram_id).update(full_name=obj.real_name)
+            self.message_user(request, f"Ism yangilandi: {updated} ta urinishdagi ism ham o‘zgartirildi.", messages.SUCCESS)
+
+    @display(description="Telegram'dagi ism")
+    def telegram_name(self, obj):
+        return obj.full_name or "—"
+
+    @display(description="Username")
+    def username_link(self, obj):
+        if not obj.username:
+            return "—"
+        return format_html('<a href="https://t.me/{0}" target="_blank" rel="noopener">@{0}</a>', obj.username)
