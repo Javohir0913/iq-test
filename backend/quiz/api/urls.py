@@ -24,4 +24,5 @@ urlpatterns = [
     path("auth/telegram/webapp", views.AuthWebAppView.as_view(), name="auth-webapp"),
     path("auth/me", views.AuthMeView.as_view(), name="auth-me"),
     path("me/attempts", views.MyAttemptsView.as_view(), name="my-attempts"),
+    path("verify/<str:code>", views.VerifyView.as_view(), name="verify"),
 ]

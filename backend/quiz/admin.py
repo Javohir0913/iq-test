@@ -236,13 +236,14 @@ class AttemptAdmin(ModelAdmin):
         ("started_at", RangeDateFilter),
     ]
     list_filter_submit = True
-    search_fields = ["participant__full_name", "participant__phone", "participant__telegram_id", "id"]
+    search_fields = ["participant__full_name", "participant__phone", "participant__telegram_id", "id", "verify_code"]
     date_hierarchy = "started_at"
     inlines = [AnswerInline]
     actions = ["export_selected_csv", "export_selected_xlsx"]
     actions_list = ["export_all_csv", "export_all_xlsx", "open_stats"]
     readonly_fields = [
         "id",
+        "verify_code",
         "participant",
         "status",
         "started_at",
@@ -254,7 +255,7 @@ class AttemptAdmin(ModelAdmin):
         "category_summary",
     ]
     fieldsets = [
-        (None, {"fields": ["id", "participant", "status"]}),
+        (None, {"fields": ["id", "participant", "status", "verify_code"]}),
         ("Vaqt", {"fields": ["started_at", "expires_at", "finished_at"]}),
         ("Natija", {"fields": ["total_score", "percent", "level", "category_summary"]}),
     ]

@@ -9,7 +9,7 @@
   "date": "Sana",
   "categories": "Yo‘nalishlar bo‘yicha",
   "answered": "Javob berilgan savollar",
-  "certificate_id": "Sertifikat raqami",
+  "certificate_id": "Tekshiruv kodi",
   "footer": "{count} ta mantiqiy savol · 6 ta variant · server tomonida hisoblangan natija",
   "months": [
     "yanvar",
@@ -30,5 +30,7 @@
     "result": "🎉 <b>{name}</b>, test yakunlandi!\n\n📊 Ball: <b>{score} / {max}</b>\n📈 Foiz: <b>{percent}%</b>\n🏅 Daraja: <b>{level}</b>",
     "open_result": "📄 Natijani ochish",
     "retake": "🔁 Qayta topshirish"
-  }
+  },
+  "scan_to_verify": "Haqiqiyligini tekshirish uchun skanerlang",
+  "verify_title": "Tekshirish"
 }

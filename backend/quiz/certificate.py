@@ -6,8 +6,13 @@ import math
 from functools import lru_cache
 from pathlib import Path
 
+from django.conf import settings
 from django.utils import timezone
+from reportlab.graphics import renderPDF
+from reportlab.graphics.barcode.qr import QrCodeWidget
+from reportlab.graphics.shapes import Drawing
 from reportlab.lib.colors import HexColor
+from reportlab.lib.utils import simpleSplit
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -83,23 +88,6 @@ def fit_font_size(text, font, max_size, max_width, min_size=18):
 
 
 def draw_decorations(c, w, h):
-    # Pastki-o‘ng burchakdagi 3×3 panjara (test uslubida, bitta katak urg‘u rangida)
-    cell, gap = 20, 5
-    gx, gy = w - 150, 70
-    for row in range(3):
-        for col in range(3):
-            x = gx + col * (cell + gap)
-            y = gy + row * (cell + gap)
-            filled = (row, col) in {(0, 0), (1, 1)}
-            if (row, col) == (2, 2):
-                c.setFillColor(ACCENT)
-                c.roundRect(x, y, cell, cell, 4, stroke=0, fill=1)
-            else:
-                c.setFillColor(INK if filled else WHITE)
-                c.setStrokeColor(LINE)
-                c.setLineWidth(1)
-                c.roundRect(x, y, cell, cell, 4, stroke=1, fill=1)
-
     # Yuqori-o‘ngdagi yulduzlar
     c.setFillColor(INK)
     c.drawPath(star(c, w - 120, h - 92, 20, 8, 4), stroke=0, fill=1)
@@ -114,6 +102,32 @@ def draw_decorations(c, w, h):
     c.circle(w - 112, h / 2 - 10, 26, stroke=1, fill=0)
     c.setFillColor(ACCENT)
     c.circle(w - 112, h / 2 - 10, 6, stroke=0, fill=1)
+
+
+def verify_url(result):
+    code = (result.get("verify_code") or "").replace("-", "")
+    return f"{settings.PUBLIC_URL}/verify/{code}"
+
+
+def draw_qr(c, result, t, w):
+    """O‘ng pastda QR kod: skaner qilinganda serverdagi haqiqiy ma’lumot ochiladi."""
+    size = 92
+    x, y = w - 64 - size, 66
+    widget = QrCodeWidget(verify_url(result), barLevel="M")
+    x0, y0, x1, y1 = widget.getBounds()
+    drawing = Drawing(size, size, transform=[size / (x1 - x0), 0, 0, size / (y1 - y0), 0, 0])
+    widget.barFillColor = INK
+    drawing.add(widget)
+    c.setFillColor(WHITE)
+    c.setStrokeColor(LINE)
+    c.roundRect(x - 6, y - 6, size + 12, size + 12, 10, stroke=1, fill=1)
+    renderPDF.draw(drawing, c, x, y)
+    # Izoh QR ustida, o‘ng chetga tekislangan
+    c.setFillColor(MUTED)
+    c.setFont("Inter-Medium", 7.5)
+    lines = simpleSplit(t["scan_to_verify"], "Inter-Medium", 7.5, size + 12)
+    for i, line in enumerate(reversed(lines)):
+        c.drawRightString(x + size + 6, y + size + 14 + i * 10, line)
 
 
 def render_certificate(result, lang="uz"):
@@ -222,7 +236,8 @@ def render_certificate(result, lang="uz"):
     c.setFont("Inter-SemiBold", 13)
     c.drawString(left, 84, format_date(finished, lang))
     c.drawString(left + 200, 84, f"{result['answered_count']} / {result['total_questions']}")
-    c.drawString(left + 400, 84, result["attempt_id"][:8].upper())
+    c.drawString(left + 400, 84, result.get("verify_code") or result["attempt_id"][:8].upper())
+    draw_qr(c, result, t, w)
 
     c.setFillColor(MUTED)
     c.setFont("Inter", 8.5)

@@ -102,6 +102,7 @@ export interface AttemptResult {
   categories: CategoryResult[];
   answered_count: number;
   total_questions: number;
+  verify_code?: string;
 }
 
 export class ApiError extends Error {

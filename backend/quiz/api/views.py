@@ -16,7 +16,17 @@ from rest_framework.views import APIView
 from .. import services
 from ..auth import account_from_init_data, account_from_request, account_payload, issue_token, upsert_account, validate_widget_data
 from ..certificate import render_certificate
-from ..models import Answer, Attempt, Language, Option, Participant, Question, TestSettings
+from ..models import (
+    Answer,
+    Attempt,
+    Language,
+    Option,
+    Participant,
+    Question,
+    TestSettings,
+    format_verify_code,
+    normalize_verify_code,
+)
 from ..telegram import TelegramAuthError, bot_username, validate_init_data
 from .serializers import (
     AnswerSerializer,
@@ -382,3 +392,38 @@ class MyAttemptsView(APIView):
                 }
             )
         return Response({"max_score": services.score_bounds(count)[1], "attempts": items})
+
+
+class VerifyView(APIView):
+    """Ochiq: sertifikat haqiqiyligini tekshirish (QR kod). Ma’lumot bazadan olinadi, PDF’dan emas."""
+
+    throttle_scope = "verify"
+
+    @extend_schema(summary="Sertifikatni tekshirish (tekshiruv kodi bo‘yicha)")
+    def get(self, request, code):
+        normalized = normalize_verify_code(code)
+        attempt = (
+            Attempt.objects.select_related("participant", "level")
+            .filter(verify_code=normalized)
+            .exclude(status=Attempt.Status.IN_PROGRESS)
+            .first()
+            if normalized
+            else None
+        )
+        if attempt is None:
+            return error("certificate_not_found", status.HTTP_404_NOT_FOUND, valid=False)
+        count = services.active_questions().count()
+        level = attempt.level
+        return Response(
+            {
+                "valid": True,
+                "code": format_verify_code(attempt.verify_code),
+                "full_name": attempt.participant.full_name,
+                "finished_at": attempt.finished_at,
+                "total_score": attempt.total_score,
+                "max_score": services.score_bounds(count)[1],
+                "percent": float(attempt.percent or 0),
+                "level": {"name_uz": level.name_uz, "name_ru": level.name_ru} if level else None,
+                "telegram_verified": bool(attempt.participant.telegram_id),
+            }
+        )

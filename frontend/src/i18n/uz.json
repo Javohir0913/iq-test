@@ -171,7 +171,8 @@
       "headline": "Mening natijam",
       "score": "ball",
       "cta": "Siz ham sinab ko‘ring"
-    }
+    },
+    "verify_code": "Sertifikat tekshiruv kodi"
   },
   "errors": {
     "not_found_title": "Sahifa topilmadi",
@@ -203,5 +204,24 @@
     "continue": "Davom ettirish",
     "open": "Ochish",
     "score": "{score} / {max}"
+  },
+  "verify": {
+    "title": "Sertifikatni tekshirish",
+    "valid": "Sertifikat haqiqiy",
+    "valid_text": "Quyidagi ma’lumotlar to‘g‘ridan-to‘g‘ri serverdan olingan. Qo‘lingizdagi sertifikatdagi ism, ball yoki daraja bulardan farq qilsa — sertifikat o‘zgartirilgan (soxta).",
+    "invalid": "Sertifikat topilmadi",
+    "invalid_text": "Bunday tekshiruv kodi yo‘q yoki test hali yakunlanmagan. Kodni sertifikatdan to‘g‘ri ko‘chirganingizni tekshiring.",
+    "name": "Ism familiya",
+    "score": "Ball",
+    "percent": "Foiz",
+    "level": "Daraja",
+    "date": "Sana",
+    "code": "Tekshiruv kodi",
+    "telegram": "Telegram orqali tasdiqlangan ishtirokchi",
+    "enter_title": "Tekshiruv kodini kiriting",
+    "enter_text": "Kod sertifikatning pastki qismida, QR kod yonida yozilgan.",
+    "placeholder": "K7M2-QX9P-4T",
+    "submit": "Tekshirish",
+    "another": "Boshqa sertifikatni tekshirish"
   }
 }

@@ -146,6 +146,7 @@ REST_FRAMEWORK = {
         "answer": env("THROTTLE_ANSWER", "240/min"),
         "telegram": env("THROTTLE_TELEGRAM", "60/min"),
         "auth": env("THROTTLE_AUTH", "30/min"),
+        "verify": env("THROTTLE_VERIFY", "60/min"),
     },
     "NUM_PROXIES": int(env("NUM_PROXIES", "1")),
     "UNAUTHENTICATED_USER": None,

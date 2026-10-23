@@ -189,6 +189,23 @@ def generate_token():
     return secrets.token_urlsafe(32)
 
 
+# O‘qishda adashtiradigan belgilar (0/O, 1/I/L) yo‘q
+VERIFY_ALPHABET = "23456789ABCDEFGHJKMNPQRSTUVWXYZ"
+
+
+def generate_verify_code():
+    """Sertifikat tekshiruv kodi: 10 belgi, masalan K7M2QX9P4T (ko‘rsatishda K7M2-QX9P-4T)."""
+    return "".join(secrets.choice(VERIFY_ALPHABET) for _ in range(10))
+
+
+def format_verify_code(code):
+    return f"{code[:4]}-{code[4:8]}-{code[8:]}" if code else ""
+
+
+def normalize_verify_code(raw):
+    return "".join(ch for ch in (raw or "").upper() if ch.isalnum())
+
+
 class Attempt(models.Model):
     class Status(models.TextChoices):
         IN_PROGRESS = "in_progress", "Jarayonda"
@@ -200,6 +217,10 @@ class Attempt(models.Model):
         Participant, on_delete=models.CASCADE, related_name="attempts", verbose_name="ishtirokchi"
     )
     token = models.CharField(max_length=64, default=generate_token, editable=False)
+    # Sertifikatdagi QR kod orqali ochiq tekshirish uchun (token emas – natijaga kirish huquqini bermaydi)
+    verify_code = models.CharField(
+        "tekshiruv kodi", max_length=16, unique=True, default=generate_verify_code, editable=False
+    )
     status = models.CharField("holat", max_length=12, choices=Status.choices, default=Status.IN_PROGRESS)
     started_at = models.DateTimeField("boshlangan", auto_now_add=True)
     expires_at = models.DateTimeField("muddati")

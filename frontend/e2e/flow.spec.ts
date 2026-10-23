@@ -152,3 +152,25 @@ test("bosh sahifada til almashtirish (server render)", async ({ page }) => {
   await page.getByRole("button", { name: "uz", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Mantiqiy");
 });
+
+test("sertifikat QR tekshiruvi: haqiqiy va soxta kod", async ({ page, request }) => {
+  const token = await loginToken(request, undefined, "Tekshiruv", "Sinov");
+  const auth = { Authorization: `Bearer ${token}` };
+  const created = await (await request.post("/api/v1/attempts", { data: { full_name: "Tekshiruv Sinov" }, headers: auth })).json();
+  const result = await (
+    await request.post(`/api/v1/attempts/${created.attempt_id}/finish`, { headers: { "X-Attempt-Token": created.token } })
+  ).json();
+  expect(result.verify_code).toMatch(/^[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{2}$/);
+
+  await page.goto(`/verify/${result.verify_code.replace(/-/g, "")}`);
+  await expect(page.getByRole("heading", { name: "Sertifikat haqiqiy" })).toBeVisible();
+  await expect(page.getByText("Tekshiruv Sinov")).toBeVisible();
+  await expect(page.getByText(result.verify_code)).toBeVisible();
+
+  await page.goto("/verify/ZZZZZZZZZZ");
+  await expect(page.getByRole("heading", { name: "Sertifikat topilmadi" })).toBeVisible();
+  // Qo‘lda kiritish formasi
+  await page.locator("#verify-code").fill(result.verify_code);
+  await page.getByRole("button", { name: "Tekshirish" }).click();
+  await expect(page.getByRole("heading", { name: "Sertifikat haqiqiy" })).toBeVisible();
+});

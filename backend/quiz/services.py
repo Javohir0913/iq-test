@@ -6,7 +6,18 @@ from decimal import ROUND_HALF_UP, Decimal
 from django.db import transaction
 from django.utils import timezone
 
-from .models import CATEGORY_NAMES, MAX_POINTS, MIN_POINTS, Answer, Attempt, Category, Question, ScoreLevel, TestSettings
+from .models import (
+    CATEGORY_NAMES,
+    MAX_POINTS,
+    MIN_POINTS,
+    Answer,
+    Attempt,
+    Category,
+    Question,
+    ScoreLevel,
+    TestSettings,
+    format_verify_code,
+)
 
 
 def active_questions():
@@ -146,4 +157,5 @@ def result_payload(attempt):
         "categories": categories,
         "answered_count": answered,
         "total_questions": questions_count,
+        "verify_code": format_verify_code(attempt.verify_code),
     }

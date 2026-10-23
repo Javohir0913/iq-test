@@ -74,6 +74,11 @@ Belgilar: `[x]` bajarildi · `[ ]` qilinmagan
 - [x] Testlar: backend 74, E2E 12
 - [x] @BotFather → /setdomain → iq.coffee-nap.uz
 
+## 9.1.1 Ism va sertifikat ishonchliligi
+- [x] Ism birinchi testda kiritiladi va Telegram akkauntga qulflanadi; faqat admin o‘zgartiradi (eski natijalar ham yangilanadi)
+- [x] Sertifikatda QR kod va tekshiruv kodi (K7M2-QX9P-4T): skaner → `/verify/KOD` – ma’lumot serverdan, PDF tahrirlansa soxtaligi bilinadi
+- [x] `/verify` – kodni qo‘lda kiritish; tekshiruv kodi natijaga kirish huquqini bermaydi
+
 ## 9.2 Server (iq.coffee-nap.uz)
 - [x] Deploy fayllari: `deploy/nginx-iq.coffee-nap.uz.conf`, `deploy/update.sh`, deploy kalit
 - [x] GitHub (Javohir0913/iq-test) → serverda `~/iq-test` (deploy key `github.com-iq`)

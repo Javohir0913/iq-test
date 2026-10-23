@@ -141,7 +141,8 @@ namunalar/          savollar, rasmlar, PDF namunalar (o‘zgartirilmaydi)
 | PUT | `/attempts/{id}/answers/{n}` | javobni saqlash (`{"letter": "A"}`, `null` – bekor qilish) |
 | POST | `/attempts/{id}/finish` | yakunlash va hisoblash |
 | GET | `/attempts/{id}/result` | natija |
-| GET | `/attempts/{id}/certificate.pdf?token=…&lang=uz` | sertifikat |
+| GET | `/attempts/{id}/certificate.pdf?token=…&lang=uz` | sertifikat (QR kod bilan) |
+| GET | `/verify/{kod}` | ochiq: sertifikat haqiqiyligini tekshirish (QR kod) |
 | POST | `/telegram/auth` | Telegram `initData` tekshiruvi |
 
 Urinish so‘rovlari `X-Attempt-Token` sarlavhasi bilan himoyalangan. Rate limiting — DRF throttling (`THROTTLE_*` o‘zgaruvchilari).

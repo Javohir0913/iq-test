@@ -193,6 +193,17 @@ export default function ResultPage() {
             </ButtonLink>
           </div>
 
+          {result.verify_code && (
+            <p className="mt-6 text-center text-sm text-muted">
+              {t("result.verify_code")}:{" "}
+              <a
+                href={`/verify/${result.verify_code.replace(/-/g, "")}`}
+                className="tabular font-semibold tracking-wider text-ink underline-offset-4 hover:underline"
+              >
+                {result.verify_code}
+              </a>
+            </p>
+          )}
           <p className="mx-auto mt-10 max-w-2xl text-center text-sm leading-relaxed text-muted">{t("result.disclaimer")}</p>
         </div>
       </main>
