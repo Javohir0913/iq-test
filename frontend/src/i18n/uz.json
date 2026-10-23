@@ -1,0 +1,205 @@
+{
+  "meta": {
+    "title": "Mantiqiy test — fikrlashingizni sinab ko‘ring",
+    "description": "35 ta mantiqiy savol: sonlar, naqshlar va fazoviy tasavvur. Natijangizni ball, foiz va daraja ko‘rinishida oling."
+  },
+  "common": {
+    "brand": "Mantiqiy test",
+    "start": "Testni boshlash",
+    "back": "Orqaga",
+    "home": "Bosh sahifa",
+    "next": "Keyingi",
+    "prev": "Oldingi",
+    "retry": "Qayta urinish",
+    "loading": "Yuklanmoqda…",
+    "close": "Yopish",
+    "skip": "Asosiy qismga o‘tish",
+    "minutes": "daqiqa",
+    "language": "Til",
+    "theme": {
+      "label": "Mavzu",
+      "light": "Yorug‘ rejim",
+      "dark": "Qorong‘i rejim",
+      "system": "Tizim sozlamasi"
+    }
+  },
+  "home": {
+    "badge": "{count} ta savol · {minutes} daqiqa",
+    "title_1": "Mantiqiy",
+    "title_accent": "fikrlashingizni",
+    "title_2": "sinab ko‘ring",
+    "subtitle": "Sonlar, naqshlar va shakllardagi qonuniyatlarni toping. Har bir savol — kichik jumboq, natija esa fikrlash uslubingiz haqida aniq tasavvur.",
+    "cta": "Testni boshlash",
+    "secondary": "Qanday ishlaydi?",
+    "stats": {
+      "questions": "savol",
+      "minutes": "daqiqa",
+      "options": "variant har savolda",
+      "categories": "yo‘nalish"
+    },
+    "how_title": "Qanday ishlaydi",
+    "how_subtitle": "Uch oddiy qadam — ro‘yxatdan o‘tish va kutish shart emas.",
+    "steps": [
+      {
+        "title": "{count} ta savol",
+        "text": "Har bir savolda rasm yoki sonli qator va 6 ta variant. Bittasini tanlaysiz."
+      },
+      {
+        "title": "{minutes} daqiqa",
+        "text": "Taymer server tomonida ishlaydi. Sahifa yangilansa ham test o‘sha joydan davom etadi."
+      },
+      {
+        "title": "Batafsil natija",
+        "text": "Ball, foiz, daraja va uch yo‘nalish bo‘yicha tahlil. Sertifikat va ulashish kartochkasi."
+      }
+    ],
+    "categories_title": "Nimani o‘lchaydi",
+    "categories": {
+      "numeric": {
+        "title": "Sonli mantiq",
+        "text": "Sonlar orasidagi bog‘liqlikni va ketma-ketlik qoidasini topish."
+      },
+      "pattern": {
+        "title": "Naqsh va ketma-ketlik",
+        "text": "Shakllar qatoridagi o‘zgarish qonuniyatini ko‘ra bilish."
+      },
+      "spatial": {
+        "title": "Fazoviy tasavvur",
+        "text": "Shakllarni xayolan burish, aylantirish va yig‘ish."
+      }
+    },
+    "final_title": "Tayyormisiz?",
+    "final_text": "Tinch joy toping, {minutes} daqiqa vaqt ajrating va boshlang.",
+    "disclaimer": "Natija ball, foiz va daraja sifatida beriladi. Test normalashtirilmagan, shuning uchun u IQ raqamini bermaydi.",
+    "footer": "© {year} Mantiqiy test"
+  },
+  "start": {
+    "title": "Boshlashdan oldin",
+    "subtitle": "Ismingizni kiriting — u natija va sertifikatda ko‘rsatiladi.",
+    "name_label": "Ism familiya",
+    "name_placeholder": "Masalan, Aziza Karimova",
+    "phone_label": "Telefon",
+    "optional": "ixtiyoriy",
+    "phone_placeholder": "+998 (90) 123-45-67",
+    "rules_title": "Qoidalar",
+    "rules": [
+      "{count} ta savol, har birida 6 ta variant (A–F)",
+      "Har savolda faqat bitta javob tanlanadi",
+      "Vaqt chegarasi — {minutes} daqiqa, vaqt tugasa test avtomatik yakunlanadi",
+      "Javobni istalgan vaqtda o‘zgartirish va savollar orasida yurish mumkin",
+      "Ballar va to‘g‘ri javoblar test davomida ko‘rsatilmaydi"
+    ],
+    "keyboard": "Klaviatura: 1–6 yoki A–F — variant, ← → — savollar",
+    "submit": "Testni boshlash",
+    "submitting": "Tayyorlanmoqda…",
+    "telegram_filled": "Ism Telegram profilingizdan olindi",
+    "resume_title": "Tugallanmagan test bor",
+    "resume_text": "Avvalgi urinishingizni o‘sha joydan davom ettirishingiz mumkin.",
+    "resume_button": "Davom ettirish",
+    "errors": {
+      "name_required": "Ism familiyani kiriting",
+      "name_short": "Ism juda qisqa",
+      "phone_invalid": "Telefon raqami to‘liq emas: +998 va 9 ta raqam",
+      "rate_limited": "Juda ko‘p urinish. Birozdan keyin qayta urinib ko‘ring.",
+      "generic": "Testni boshlab bo‘lmadi. Internet aloqasini tekshirib, qayta urinib ko‘ring."
+    }
+  },
+  "test": {
+    "progress": "{current} / {total}",
+    "question": "{n}-savol",
+    "map": "Savollar xaritasi",
+    "map_open": "Xaritani ochish",
+    "answered": "Javob berilgan",
+    "unanswered": "Javobsiz",
+    "current": "Joriy",
+    "answered_count": "{n} / {total} javob",
+    "saving": "Saqlanmoqda…",
+    "saved": "Saqlandi",
+    "offline": "Aloqa yo‘q — javoblar qayta yuboriladi",
+    "finish": "Testni yakunlash",
+    "finish_title": "Testni yakunlaysizmi?",
+    "finish_all": "Barcha savollarga javob berdingiz. Yakunlagandan keyin javoblarni o‘zgartirib bo‘lmaydi.",
+    "finish_unanswered": "{n} ta savolga javob berilmagan. Javobsiz savol 0 ball oladi.",
+    "finish_unanswered_list": "Javobsiz savollar:",
+    "finish_confirm": "Ha, yakunlash",
+    "finish_cancel": "Davom etish",
+    "finishing": "Natija hisoblanmoqda…",
+    "timeup_title": "Vaqt tugadi",
+    "timeup_text": "Test avtomatik yakunlandi. Natijangiz hisoblanmoqda.",
+    "time_left": "Qolgan vaqt",
+    "option": "{letter} variant",
+    "selected": "tanlangan",
+    "keyboard_hint": "1–6 / A–F — tanlash · ← → — o‘tish",
+    "not_found_title": "Urinish topilmadi",
+    "not_found_text": "Bu test boshqa qurilmada boshlangan yoki havola noto‘g‘ri. Yangi testni boshlang.",
+    "load_error_title": "Savollarni yuklab bo‘lmadi",
+    "load_error_text": "Internet aloqasini tekshiring va qayta urinib ko‘ring.",
+    "figure_alt": "{n}-savol rasmi",
+    "option_alt": "{letter} variant rasmi"
+  },
+  "result": {
+    "title": "Natijangiz",
+    "greeting": "{name}, test yakunlandi!",
+    "expired_note": "Vaqt tugagani sababli test avtomatik yakunlangan.",
+    "score": "Ball",
+    "of": "dan",
+    "percent": "Foiz",
+    "level": "Daraja",
+    "categories_title": "Yo‘nalishlar bo‘yicha tahlil",
+    "categories_hint": "Har bir yo‘nalishdagi maksimal ballga nisbatan",
+    "time_spent": "Sarflangan vaqt",
+    "answered": "Javob berilgan",
+    "duration": "{m} daq {s} son",
+    "certificate": "Sertifikat (PDF)",
+    "share": "Natijani ulashish",
+    "share_title": "Natija kartochkasi",
+    "share_text": "Men «Mantiqiy test»dan {score} / {max} ball oldim — {level}! Siz ham sinab ko‘ring:",
+    "share_download": "PNG yuklab olish",
+    "share_telegram": "Telegramda ulashish",
+    "share_native": "Ulashish…",
+    "share_copy": "Havolani nusxalash",
+    "share_copied": "Nusxalandi!",
+    "share_generating": "Kartochka tayyorlanmoqda…",
+    "retake": "Qayta topshirish",
+    "disclaimer": "Bu natija IQ raqami emas: test normalashtirilmagan. Natija faqat ball, foiz va daraja ko‘rinishida beriladi.",
+    "not_found_title": "Natija topilmadi",
+    "not_found_text": "Natija faqat test topshirilgan qurilmada ko‘rinadi.",
+    "card": {
+      "brand": "MANTIQIY TEST",
+      "headline": "Mening natijam",
+      "score": "ball",
+      "cta": "Siz ham sinab ko‘ring"
+    }
+  },
+  "errors": {
+    "not_found_title": "Sahifa topilmadi",
+    "not_found_text": "Siz qidirgan sahifa mavjud emas yoki ko‘chirilgan.",
+    "generic_title": "Nimadir noto‘g‘ri ketdi",
+    "generic_text": "Sahifani yangilab ko‘ring."
+  },
+  "auth": {
+    "login": "Kirish",
+    "logout": "Chiqish",
+    "title": "Telegram orqali kiring",
+    "text": "Test natijalaringiz Telegram akkauntingizga saqlanadi va istalgan qurilmadan ko‘rinadi. Parol kerak emas.",
+    "widget_hint": "Tugmani bosing va Telegram'da tasdiqlang",
+    "loading": "Tekshirilmoqda…",
+    "error": "Kirib bo‘lmadi. Qayta urinib ko‘ring.",
+    "unavailable": "Telegram orqali kirish hozircha sozlanmagan.",
+    "open_bot": "Botda ochish",
+    "or_bot": "yoki testni to‘g‘ridan-to‘g‘ri Telegram botda oching",
+    "my_results": "Mening natijalarim",
+    "signed_in_as": "{name} sifatida kirdingiz"
+  },
+  "me": {
+    "title": "Mening natijalarim",
+    "subtitle": "Telegram akkauntingizga bog‘langan barcha urinishlar",
+    "empty_title": "Hozircha natijalar yo‘q",
+    "empty_text": "Birinchi testni topshiring — natija shu yerda paydo bo‘ladi.",
+    "in_progress": "Jarayonda",
+    "expired": "Vaqti tugagan",
+    "continue": "Davom ettirish",
+    "open": "Ochish",
+    "score": "{score} / {max}"
+  }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="120" height="120" viewBox="0 0 120 120">
+<defs>
+<clipPath id="clip-0">
+<path clip-rule="nonzero" d="M 23 23 L 97 23 L 97 97 L 23 97 Z M 23 23 "/>
+</clipPath>
+</defs>
+<path fill-rule="evenodd" fill="rgb(100%, 100%, 100%)" fill-opacity="1" d="M 23 97 L 97 97 L 97 23 L 23 23 Z M 23 97 "/>
+<g clip-path="url(#clip-0)">
+<rect x="-12" y="-12" width="144" height="144" fill="rgb(95.684814%, 94.508362%, 91.763306%)" fill-opacity="1"/>
+</g>
+<path fill-rule="evenodd" fill="rgb(95.684814%, 94.508362%, 91.763306%)" fill-opacity="1" d="M 23 97 L 97 97 L 97 23 L 23 23 Z M 23 97 "/>
+<path fill-rule="evenodd" fill="rgb(10.588074%, 16.470337%, 25.489807%)" fill-opacity="1" d="M 60 60 L 60 23 L 97 23 Z M 60 60 "/>
+<path fill-rule="evenodd" fill="rgb(10.588074%, 16.470337%, 25.489807%)" fill-opacity="1" d="M 60 60 L 23 60 L 23 23 Z M 60 60 "/>
+<path fill-rule="evenodd" fill="rgb(10.588074%, 16.470337%, 25.489807%)" fill-opacity="1" d="M 60 60 L 60 97 L 23 97 Z M 60 60 "/>
+<path fill-rule="evenodd" fill="rgb(10.588074%, 16.470337%, 25.489807%)" fill-opacity="1" d="M 60 60 L 97 60 L 97 97 Z M 60 60 "/>
+<path fill="none" stroke-width="1.3" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(10.588074%, 16.470337%, 25.489807%)" stroke-opacity="1" stroke-miterlimit="10" d="M 23 23 L 97 23 L 97 97 L 23 97 Z M 23 23 " transform="matrix(1, 0, 0, -1, 0, 120)"/>
+</svg>

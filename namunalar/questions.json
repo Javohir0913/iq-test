@@ -1,0 +1,1772 @@
+{
+  "version": 1,
+  "total": 35,
+  "max_score": 245,
+  "min_score": 105,
+  "questions": [
+    {
+      "number": 1,
+      "type": "number",
+      "prompt": {
+        "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
+        "ru": "Какое число должно стоять вместо знака вопроса?"
+      },
+      "figure": "assets/q01/figure.svg",
+      "correct": "C",
+      "logic_uz": "Yulduz uchlari soni × 7: 4×7=28, 5×7=35, 6×7=42.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "×7 tushunilgan, uchlar 7 ta deb sanalgan",
+          "value": 49
+        },
+        {
+          "letter": "B",
+          "points": 3,
+          "reason_uz": "uchlar o‘rniga tomonlar sanalgan (12×7)",
+          "value": 84
+        },
+        {
+          "letter": "C",
+          "points": 7,
+          "reason_uz": "to‘g‘ri: 6×7",
+          "value": 42
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "oldingi ikki son qo‘shilgan (28+35)",
+          "value": 63
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "o‘zak e’tiborsiz qoldirilgan (6×6)",
+          "value": 36
+        },
+        {
+          "letter": "F",
+          "points": 5,
+          "reason_uz": "+7 qadam tushunilgan, hisobda xato (35+6)",
+          "value": 41
+        }
+      ],
+      "category": "numeric"
+    },
+    {
+      "number": 2,
+      "type": "number",
+      "prompt": {
+        "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
+        "ru": "Какое число должно стоять вместо знака вопроса?"
+      },
+      "figure": "assets/q02/figure.svg",
+      "correct": "D",
+      "logic_uz": "Yuqori uchdan soat mili bo‘yicha: +3, +5, +7, +9 → 20+9=29.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "oxirgi qadam (+7) takrorlangan",
+          "value": 27
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "qadam bir pog‘ona ortiq olingan (+11)",
+          "value": 31
+        },
+        {
+          "letter": "C",
+          "points": 3,
+          "reason_uz": "oxirgi son 2 ga ko‘paytirilgan",
+          "value": 40
+        },
+        {
+          "letter": "D",
+          "points": 7,
+          "reason_uz": "to‘g‘ri: farqlar 3, 5, 7, 9",
+          "value": 29
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "mantiqsiz yaqin son",
+          "value": 26
+        },
+        {
+          "letter": "F",
+          "points": 4,
+          "reason_uz": "farq 2 baravar oshadi deb olingan (+13)",
+          "value": 33
+        }
+      ],
+      "category": "numeric"
+    },
+    {
+      "number": 3,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q03/figure.svg",
+      "correct": "E",
+      "logic_uz": "Markaz doim bo‘yalgan, ikkinchi katak markaz atrofida 45° ga buriladi. Yo‘nalishni qatorning birinchi 2 rasmi belgilaydi: 1-qator soat mili bo‘yicha, 2-qator teskari, 3-qator SE→S→SW (soat mili bo‘yicha).",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "burilish teskari yo‘nalishda qilingan",
+          "image": "assets/q03/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "90° ga burilgan (2 qadam)",
+          "image": "assets/q03/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 4,
+          "reason_uz": "oldingi rasm takrorlangan",
+          "image": "assets/q03/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 3,
+          "reason_uz": "qarama-qarshi tomon",
+          "image": "assets/q03/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 7,
+          "reason_uz": "to‘g‘ri: S dan keyin SW",
+          "image": "assets/q03/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 4,
+          "reason_uz": "joy to‘g‘ri, markaz tushib qolgan",
+          "image": "assets/q03/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 4,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q04/figure.svg",
+      "correct": "D",
+      "logic_uz": "Vertikal chiziq ustunga (chap/o‘rta/o‘ng), gorizontal chiziq qatorga (yuqori/o‘rta/past) bog‘liq. Chetda – qo‘sh, o‘rtada – bitta chiziq. Javob: o‘ngda qo‘sh vertikal + pastda qo‘sh gorizontal.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "vertikal to‘g‘ri, gorizontal noto‘g‘ri qatorda",
+          "image": "assets/q04/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "gorizontal to‘g‘ri, vertikal noto‘g‘ri ustunda",
+          "image": "assets/q04/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 6,
+          "reason_uz": "joylar to‘g‘ri, vertikal chiziqlar soni xato",
+          "image": "assets/q04/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q04/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "markaziy rasm takrorlangan",
+          "image": "assets/q04/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 6,
+          "reason_uz": "joylar to‘g‘ri, gorizontal chiziqlar soni xato",
+          "image": "assets/q04/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 5,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q05/figure.svg",
+      "correct": "B",
+      "logic_uz": "Kataklar: 1 chap-yuqori, 2 o‘ng-yuqori, 3 o‘ng-past, 4 chap-past. Doira va yulduz soat mili bo‘yicha bittadan suriladi (yulduz doiradan bir katak oldinda). 2 va 4-katakdagi shakl bo‘yalgan. Javob: oq doira 1-katakda, qora yulduz 2-katakda.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "joylar to‘g‘ri, bo‘yash qoidasi buzilgan",
+          "image": "assets/q05/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q05/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "bir qadam ortiq surilgan",
+          "image": "assets/q05/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 5,
+          "reason_uz": "shakllar o‘rni almashgan",
+          "image": "assets/q05/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "oldingi rasm takrorlangan",
+          "image": "assets/q05/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "harakat qoidasi tushunilmagan",
+          "image": "assets/q05/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 6,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q06/figure.svg",
+      "correct": "F",
+      "logic_uz": "Har qatorda shakl bir xil (doira, oltiburchak, romb). Ustunlar bo‘yicha: 2 ta qora nuqta, 4 ta qora nuqta, 4 ta oq nuqta. Javob: romb ichida 4 ta oq nuqta.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "shakl va son to‘g‘ri, nuqtalar rangi xato",
+          "image": "assets/q06/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "nuqtalar to‘g‘ri, shakl xato",
+          "image": "assets/q06/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "shakl va rang to‘g‘ri, nuqtalar soni xato",
+          "image": "assets/q06/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "1-ustundagi nuqtalar",
+          "image": "assets/q06/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "boshqa qatorning rasmi",
+          "image": "assets/q06/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q06/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 7,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q07/figure.svg",
+      "correct": "C",
+      "logic_uz": "Uchburchak har qadamda almashadi: qora pastga → oq yuqoriga. Yon chiziqlar har qatorda: qo‘sh, bitta, qo‘sh. Javob: qo‘sh chiziq + oq yuqoriga qaragan uchburchak.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "uchburchak to‘g‘ri, chiziqlar soni xato",
+          "image": "assets/q07/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 6,
+          "reason_uz": "chiziqlar to‘g‘ri, uchburchak xato",
+          "image": "assets/q07/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q07/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 5,
+          "reason_uz": "yo‘nalish to‘g‘ri, rang xato",
+          "image": "assets/q07/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "oldingi rasm takrorlangan",
+          "image": "assets/q07/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 4,
+          "reason_uz": "uchburchak to‘g‘ri, chiziqlar 3 ta",
+          "image": "assets/q07/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 8,
+      "type": "image",
+      "prompt": {
+        "uz": "Yetishmayotgan bo‘lak qaysi?",
+        "ru": "Какой фрагмент пропущен?"
+      },
+      "figure": "assets/q08/figure.svg",
+      "correct": "D",
+      "logic_uz": "Bo‘lak atrofdagi chiziq va shakllarni uzluksiz davom ettirishi kerak: chapda doira yoyi, o‘ng-yuqorida qora doira qismi, pastda chapi oq, o‘ngi qora to‘rtburchak.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 4,
+          "reason_uz": "ko‘zgu aksi: elementlar teskari tomonda",
+          "image": "assets/q08/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "to‘rtburchak ranglari almashgan",
+          "image": "assets/q08/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 3,
+          "reason_uz": "180° ga burilgan",
+          "image": "assets/q08/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q08/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 6,
+          "reason_uz": "qora doira qismi tushib qolgan",
+          "image": "assets/q08/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 4,
+          "reason_uz": "boshqa joydan kesilgan",
+          "image": "assets/q08/option_F.svg"
+        }
+      ],
+      "category": "spatial"
+    },
+    {
+      "number": 9,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q09/figure.svg",
+      "correct": "B",
+      "logic_uz": "Har qatorda 1 va 2-rasm ustma-ust qo‘yiladi: bo‘yalgan + oq = bo‘yalgan, bo‘yalgan + bo‘yalgan = oq. 3-qator: “/” diagonal va 4 ta burchak → “\\” diagonal.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "shunchaki qo‘shilgan, ustma-ust tushganlar oq qilinmagan",
+          "image": "assets/q09/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q09/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 4,
+          "reason_uz": "faqat ustma-ust tushganlar qoldirilgan",
+          "image": "assets/q09/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 6,
+          "reason_uz": "bitta katak ortiqcha",
+          "image": "assets/q09/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "1-rasm takrorlangan",
+          "image": "assets/q09/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 5,
+          "reason_uz": "markaziy katak xato",
+          "image": "assets/q09/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 10,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q10/figure.svg",
+      "correct": "E",
+      "logic_uz": "Ikki qarama-qarshi katak markaz atrofida har qadamda 45° buriladi. 1 va 2-qator soat mili bo‘yicha, 3-qator teskari: “/” → vertikal → “\\”. Javob: chap-yuqori va o‘ng-past.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 4,
+          "reason_uz": "1-rasm takrorlangan",
+          "image": "assets/q10/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 4,
+          "reason_uz": "2-rasm takrorlangan",
+          "image": "assets/q10/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "90° burilgan (2 qadam)",
+          "image": "assets/q10/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 3,
+          "reason_uz": "juftlik qarama-qarshi emas",
+          "image": "assets/q10/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q10/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 5,
+          "reason_uz": "joy to‘g‘ri, ortiqcha markaz",
+          "image": "assets/q10/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 11,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q11/figure.svg",
+      "correct": "F",
+      "logic_uz": "O‘rtadagi rasm = chap rasm + o‘ng rasm. Demak o‘ng rasm = o‘rta − chap. 3-qator: ikki tomonlama strelkadan chapga strelka ayrilsa, o‘ngga strelka qoladi.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 4,
+          "reason_uz": "chap rasm takrorlangan",
+          "image": "assets/q11/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 4,
+          "reason_uz": "o‘rta rasm takrorlangan",
+          "image": "assets/q11/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "chiziq to‘g‘ri, strelka uchi tushib qolgan",
+          "image": "assets/q11/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 3,
+          "reason_uz": "boshqa qatordan olingan",
+          "image": "assets/q11/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "mantiqqa bog‘liq emas",
+          "image": "assets/q11/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q11/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 12,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q12/figure.svg",
+      "correct": "B",
+      "logic_uz": "Strelka har qadamda soat mili bo‘yicha 45° buriladi: NE, E, SE, S, SW → W (chapga).",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "ikki qadam burilgan",
+          "image": "assets/q12/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q12/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 4,
+          "reason_uz": "oldingi rasm takrorlangan",
+          "image": "assets/q12/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "chiziq to‘g‘ri, yo‘nalish teskari",
+          "image": "assets/q12/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "teskari yo‘nalishda yurilgan",
+          "image": "assets/q12/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "mantiqqa bog‘liq emas",
+          "image": "assets/q12/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 13,
+      "type": "image",
+      "prompt": {
+        "uz": "Yetishmayotgan bo‘lak qaysi?",
+        "ru": "Какой фрагмент пропущен?"
+      },
+      "figure": "assets/q13/figure.svg",
+      "correct": "D",
+      "logic_uz": "Bo‘lak o‘z joyidagi barcha chiziqlarni davom ettiradi: o‘rtadan vertikal chiziq, gorizontal chiziq va doiralarning yuqori qismidagi yuqoriga qavariq yoylar.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 4,
+          "reason_uz": "yoylar teskari (doiraning pastki qismi)",
+          "image": "assets/q13/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 6,
+          "reason_uz": "bitta yoy tushib qolgan",
+          "image": "assets/q13/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "bo‘lak bir oz pastdan kesilgan",
+          "image": "assets/q13/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q13/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "vertikal chiziq yo‘q, yoylar qiya",
+          "image": "assets/q13/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "90° ga burilgan",
+          "image": "assets/q13/option_F.svg"
+        }
+      ],
+      "category": "spatial"
+    },
+    {
+      "number": 14,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q14/figure.svg",
+      "correct": "C",
+      "logic_uz": "Har qatorda 3-rasm 1-rasmning 180° ga burilgani. 1-qator: o‘ng → chap. 2-qator: past → yuqori. Qatorlar ichida yoy soat miliga teskari 90° dan buriladi.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "yo‘nalish to‘g‘ri, nuqta tushib qolgan",
+          "image": "assets/q14/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 4,
+          "reason_uz": "1-rasm takrorlangan",
+          "image": "assets/q14/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q14/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "2-rasm takrorlangan",
+          "image": "assets/q14/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 5,
+          "reason_uz": "yo‘nalish to‘g‘ri, nuqta noto‘g‘ri joyda",
+          "image": "assets/q14/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "teskari tomonga burilgan",
+          "image": "assets/q14/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 15,
+      "type": "image",
+      "prompt": {
+        "uz": "Yetishmayotgan bo‘lak qaysi?",
+        "ru": "Какой фрагмент пропущен?"
+      },
+      "figure": "assets/q15/figure.svg",
+      "correct": "E",
+      "logic_uz": "Bo‘lak ichida: gorizontal chiziq, uchburchakning o‘ng tomoni (“\\” qiya) va doiraning o‘ng yoyi bo‘lishi kerak. Vertikal chiziq bo‘lakdan chapda qoladi.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 4,
+          "reason_uz": "ko‘zgu aksi: qiya va yoy teskari",
+          "image": "assets/q15/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 6,
+          "reason_uz": "doira yoyi tushib qolgan",
+          "image": "assets/q15/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "ortiqcha vertikal chiziq bor",
+          "image": "assets/q15/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "vertikal bo‘yicha teskari",
+          "image": "assets/q15/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q15/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "180° ga burilgan",
+          "image": "assets/q15/option_F.svg"
+        }
+      ],
+      "category": "spatial"
+    },
+    {
+      "number": 16,
+      "type": "image",
+      "prompt": {
+        "uz": "Yetishmayotgan bo‘lak qaysi?",
+        "ru": "Какой фрагмент пропущен?"
+      },
+      "figure": "assets/q16/figure.svg",
+      "correct": "A",
+      "logic_uz": "Romblar diagonal qatorlar bo‘ylab bir xil tartibda takrorlanadi. To‘g‘ri bo‘lak atrofidagi romblarning rangi va joylashuvini uzluksiz davom ettiradi.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q16/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "joylashuv to‘g‘ri, ranglar tartibi siljigan",
+          "image": "assets/q16/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "ko‘zgu aksi",
+          "image": "assets/q16/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "boshqa joydan kesilgan",
+          "image": "assets/q16/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "ranglar tartibi buzilgan",
+          "image": "assets/q16/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "boshqa joydan kesilgan",
+          "image": "assets/q16/option_F.svg"
+        }
+      ],
+      "category": "spatial"
+    },
+    {
+      "number": 17,
+      "type": "number",
+      "prompt": {
+        "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
+        "ru": "Какое число должно стоять вместо знака вопроса?"
+      },
+      "figure": "assets/q17/figure.svg",
+      "correct": "B",
+      "logic_uz": "Uchburchak = 12 (3×12=36), doira = 11 (12+11+11=34), kvadrat = 7 (11−7=4). Javob: 12+11+7=30.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "yechim to‘g‘ri, oxirgi qo‘shishda xato",
+          "value": 29
+        },
+        {
+          "letter": "B",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "value": 30
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "kvadrat qo‘shilmay qolgan",
+          "value": 23
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "kvadrat 11+4=15 deb topilgan",
+          "value": 38
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "doira noto‘g‘ri topilgan",
+          "value": 26
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "doira 22 deb olingan (ikki doira bitta deb)",
+          "value": 52
+        }
+      ],
+      "category": "numeric"
+    },
+    {
+      "number": 18,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q18/figure.svg",
+      "correct": "E",
+      "logic_uz": "3 xil kombinatsiya bor: doira ichida kvadrat, kvadrat ichida uchburchak, uchburchak ichida doira. Har bir qator va har bir ustunda ular bittadan uchraydi. Javob: doira ichida kvadrat.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "tashqi shakl to‘g‘ri, ichkisi xato",
+          "image": "assets/q18/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "ichki shakl to‘g‘ri, tashqisi xato",
+          "image": "assets/q18/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 4,
+          "reason_uz": "qatorda bor kombinatsiya takrorlangan",
+          "image": "assets/q18/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 3,
+          "reason_uz": "oldingi rasm takrorlangan",
+          "image": "assets/q18/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q18/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 6,
+          "reason_uz": "shakllar to‘g‘ri, ranglar teskari",
+          "image": "assets/q18/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 19,
+      "type": "image",
+      "prompt": {
+        "uz": "Yetishmayotgan bo‘lak qaysi?",
+        "ru": "Какой фрагмент пропущен?"
+      },
+      "figure": "assets/q19/figure.svg",
+      "correct": "D",
+      "logic_uz": "Parraklar shaxmat tartibida: ko‘k va qora navbatma-navbat, hammasi bir xil tomonga buralgan. Bo‘sh joyga ko‘k, xuddi shu tomonga buralgan parrak tushadi.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "yo‘nalish to‘g‘ri, rang xato",
+          "image": "assets/q19/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 6,
+          "reason_uz": "rang to‘g‘ri, teskari buralgan",
+          "image": "assets/q19/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 4,
+          "reason_uz": "rang ham, yo‘nalish ham xato",
+          "image": "assets/q19/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q19/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "bitta qanot tushib qolgan",
+          "image": "assets/q19/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "ikki parrak orasidan kesilgan",
+          "image": "assets/q19/option_F.svg"
+        }
+      ],
+      "category": "spatial"
+    },
+    {
+      "number": 20,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q20/figure.svg",
+      "correct": "D",
+      "logic_uz": "Har qadamda: diagonal almashadi (“\\” ↔ “/”), kvadrat almashadi (oq ↔ qora), nuqta diagonal ustida soat mili bo‘yicha burchakdan burchakka o‘tadi (NW → NE → SE → SW → NW → NE). Javob: “/”, qora kvadrat, nuqta o‘ng-yuqorida.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "kvadrat rangi xato",
+          "image": "assets/q20/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 6,
+          "reason_uz": "nuqta joyi xato",
+          "image": "assets/q20/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "diagonal va nuqta xato",
+          "image": "assets/q20/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q20/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "oldingi rasm takrorlangan",
+          "image": "assets/q20/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "nuqta chiziqdan tashqarida, qoida buzilgan",
+          "image": "assets/q20/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 21,
+      "type": "number",
+      "prompt": {
+        "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
+        "ru": "Какое число должно стоять вместо знака вопроса?"
+      },
+      "figure": "assets/q21/figure.svg",
+      "correct": "D",
+      "logic_uz": "Oltiburchaklar soni × 13: 1×13=13, 2×13=26, 3×13=39.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "rasmga qaralmagan: har safar 2 ga ko‘paytirilgan (13, 26, 52)",
+          "value": 52
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "to‘g‘ri yo‘l, hisobda xato",
+          "value": 38
+        },
+        {
+          "letter": "C",
+          "points": 4,
+          "reason_uz": "mantiqsiz yaqin son",
+          "value": 45
+        },
+        {
+          "letter": "D",
+          "points": 7,
+          "reason_uz": "to‘g‘ri: 3×13",
+          "value": 39
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "mantiqqa bog‘liq emas",
+          "value": 33
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "5×13, shakllar soni noto‘g‘ri",
+          "value": 65
+        }
+      ],
+      "category": "numeric"
+    },
+    {
+      "number": 22,
+      "type": "image",
+      "prompt": {
+        "uz": "Yetishmayotgan bo‘lak qaysi?",
+        "ru": "Какой фрагмент пропущен?"
+      },
+      "figure": "assets/q22/figure.svg",
+      "correct": "F",
+      "logic_uz": "Rasm vertikal o‘q bo‘yicha ko‘zgudek simmetrik. Bo‘lakda: chap chetda qora tasma (o‘rta ustun davomi), pastda kichik ko‘k bo‘lak, markazda chapga qaragan qora uchburchak.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "hamma narsa to‘g‘ri, chetdagi tasma ko‘k",
+          "image": "assets/q22/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 4,
+          "reason_uz": "uchburchak aks ettirilmagan (o‘ngga qaragan)",
+          "image": "assets/q22/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 4,
+          "reason_uz": "ranglar almashgan",
+          "image": "assets/q22/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 3,
+          "reason_uz": "180° ga burilgan",
+          "image": "assets/q22/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 5,
+          "reason_uz": "bo‘lak yuqoriroqdan kesilgan",
+          "image": "assets/q22/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q22/option_F.svg"
+        }
+      ],
+      "category": "spatial"
+    },
+    {
+      "number": 23,
+      "type": "number",
+      "prompt": {
+        "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
+        "ru": "Какое число должно стоять вместо знака вопроса?"
+      },
+      "figure": "assets/q23/figure.svg",
+      "correct": "C",
+      "logic_uz": "Har qatorda: 1-son − 12 = 2-son, 2-son + 5 = 3-son (ya’ni 3-son = 1-son − 7). 73 − 12 = 61, 61 + 5 = 66.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "yo‘l to‘g‘ri, hisobda 1 xato",
+          "value": 65
+        },
+        {
+          "letter": "B",
+          "points": 3,
+          "reason_uz": "1-son takrorlangan",
+          "value": 73
+        },
+        {
+          "letter": "C",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "value": 66
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "+5 o‘rniga −5 qilingan",
+          "value": 56
+        },
+        {
+          "letter": "E",
+          "points": 6,
+          "reason_uz": "yo‘l to‘g‘ri, hisobda 1 xato",
+          "value": 67
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "mantiqqa bog‘liq emas",
+          "value": 80
+        }
+      ],
+      "category": "numeric"
+    },
+    {
+      "number": 24,
+      "type": "image",
+      "prompt": {
+        "uz": "Yetishmayotgan bo‘lak qaysi?",
+        "ru": "Какой фрагмент пропущен?"
+      },
+      "figure": "assets/q24/figure.svg",
+      "correct": "B",
+      "logic_uz": "Ustunlar navbatma-navbat: katta va kichik oltiburchaklar. Har ustunda ranglar qora/ko‘k almashadi. Bo‘lak kichik ustun (chapda) va katta ustun (o‘ngda) ustida turibdi.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "katta va kichik ustunlar o‘rni almashgan",
+          "image": "assets/q24/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q24/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 6,
+          "reason_uz": "joylashuv to‘g‘ri, ranglar teskari",
+          "image": "assets/q24/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "bo‘lak pastroqdan kesilgan, chetlar mos emas",
+          "image": "assets/q24/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "90° ga burilgan",
+          "image": "assets/q24/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 4,
+          "reason_uz": "ko‘zgu aksi",
+          "image": "assets/q24/option_F.svg"
+        }
+      ],
+      "category": "spatial"
+    },
+    {
+      "number": 25,
+      "type": "image",
+      "prompt": {
+        "uz": "Yetishmayotgan bo‘lak qaysi?",
+        "ru": "Какой фрагмент пропущен?"
+      },
+      "figure": "assets/q25/figure.svg",
+      "correct": "C",
+      "logic_uz": "Bo‘lakda: chapda ko‘k, o‘ngda qora soha, o‘rtadan oq tasma (ichida ingichka chiziq), pastki chet o‘rtasida nuqta (bo‘lak ostida ko‘rinib turgan nuqtaning qolgan qismi).",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "nuqta tushib qolgan",
+          "image": "assets/q25/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "nuqta yuqorida, teskari aylantirilgan",
+          "image": "assets/q25/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q25/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 5,
+          "reason_uz": "ranglar o‘rni almashgan",
+          "image": "assets/q25/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "chiziqlar kesishgan joydan olingan",
+          "image": "assets/q25/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "90° ga burilgan",
+          "image": "assets/q25/option_F.svg"
+        }
+      ],
+      "category": "spatial"
+    },
+    {
+      "number": 26,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q26/figure.svg",
+      "correct": "F",
+      "logic_uz": "Har qatorda bo‘yalgan katak bitta ustun bo‘ylab yuqoridan pastga tushadi: 1-qator chap ustun, 2-qator o‘ng ustun, 3-qator o‘rta ustun. Javob: o‘rta ustunning pastki katagi.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "pastki qator to‘g‘ri, ustun xato",
+          "image": "assets/q26/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "pastki qator to‘g‘ri, ustun xato",
+          "image": "assets/q26/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 4,
+          "reason_uz": "oldingi rasm takrorlangan",
+          "image": "assets/q26/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "boshiga qaytgan",
+          "image": "assets/q26/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "mantiqqa bog‘liq emas",
+          "image": "assets/q26/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q26/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 27,
+      "type": "number",
+      "prompt": {
+        "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
+        "ru": "Какое число должно стоять вместо знака вопроса?"
+      },
+      "figure": "assets/q27/figure.svg",
+      "correct": "B",
+      "logic_uz": "Har qatorda 1-son ÷ 2-son = 3-son: 56÷8=7, 36÷4=9, 48÷3=16.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "yo‘l to‘g‘ri, bo‘lishda xato",
+          "value": 15
+        },
+        {
+          "letter": "B",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "value": 16
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "boshqa qatordagi bo‘luvchi olingan (48÷4)",
+          "value": 12
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "bo‘lish o‘rniga ayirilgan",
+          "value": 45
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "bo‘lish o‘rniga qo‘shilgan",
+          "value": 51
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "bo‘lish o‘rniga ko‘paytirilgan",
+          "value": 144
+        }
+      ],
+      "category": "numeric"
+    },
+    {
+      "number": 28,
+      "type": "image",
+      "prompt": {
+        "uz": "Yetishmayotgan bo‘lak qaysi?",
+        "ru": "Какой фрагмент пропущен?"
+      },
+      "figure": "assets/q28/figure.svg",
+      "correct": "C",
+      "logic_uz": "Shakl – muntazam beshburchak. Bo‘lakda: o‘rtadan vertikal chiziq, pastki chetga yaqin gorizontal chiziq va bo‘lakning yuqori qismida beshburchak cho‘qqisi.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "cho‘qqi juda past",
+          "image": "assets/q28/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 4,
+          "reason_uz": "cho‘qqi pastga qaragan",
+          "image": "assets/q28/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q28/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 5,
+          "reason_uz": "gorizontal chiziq tushib qolgan",
+          "image": "assets/q28/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "faqat chiziqlar kesishmasi, beshburchak qismi yo‘q",
+          "image": "assets/q28/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "90° ga burilgan",
+          "image": "assets/q28/option_F.svg"
+        }
+      ],
+      "category": "spatial"
+    },
+    {
+      "number": 29,
+      "type": "number",
+      "prompt": {
+        "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
+        "ru": "Какое число должно стоять вместо знака вопроса?"
+      },
+      "figure": "assets/q29/figure.svg",
+      "correct": "E",
+      "logic_uz": "Ikkala doiradagi bo‘laklar soni × 5: 4×5=20, 8×5=40, 16×5=80.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "rasmga qaralmagan: 20, 40, 60 deb +20 qilingan",
+          "value": 60
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "bo‘laklar 16 ta to‘g‘ri, ko‘paytuvchi 4 olingan",
+          "value": 64
+        },
+        {
+          "letter": "C",
+          "points": 3,
+          "reason_uz": "mantiqqa bog‘liq emas",
+          "value": 100
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "mantiqsiz yaqin son",
+          "value": 70
+        },
+        {
+          "letter": "E",
+          "points": 7,
+          "reason_uz": "to‘g‘ri: 16×5",
+          "value": 80
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "oldingi son takrorlangan",
+          "value": 40
+        }
+      ],
+      "category": "numeric"
+    },
+    {
+      "number": 30,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q30/figure.svg",
+      "correct": "D",
+      "logic_uz": "Har qatorda o‘rta rasmda nuqta markazda, 3-rasm esa 1-rasmning 180° ga burilgani. 3-qator: W va NE → E va SW.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 4,
+          "reason_uz": "1-rasm takrorlangan",
+          "image": "assets/q30/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "chap-o‘ng bo‘yicha aks ettirilgan, 180° emas",
+          "image": "assets/q30/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "yuqori-past bo‘yicha aks ettirilgan, 180° emas",
+          "image": "assets/q30/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q30/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "90° ga burilgan",
+          "image": "assets/q30/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "o‘rta rasm takrorlangan",
+          "image": "assets/q30/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 31,
+      "type": "image",
+      "prompt": {
+        "uz": "Yetishmayotgan bo‘lak qaysi?",
+        "ru": "Какой фрагмент пропущен?"
+      },
+      "figure": "assets/q31/figure.svg",
+      "correct": "A",
+      "logic_uz": "Bo‘lakdan faqat “/” diagonal va doiraning yuqori-o‘ng yoyi o‘tadi; ular bo‘lak ichida kesishadi. “\\” diagonal bo‘lakdan tashqarida qoladi.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q31/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "diagonal yo‘nalishi teskari",
+          "image": "assets/q31/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 6,
+          "reason_uz": "doira yoyi tushib qolgan",
+          "image": "assets/q31/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "vertikal bo‘yicha teskari",
+          "image": "assets/q31/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "90° ga burilgan",
+          "image": "assets/q31/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 4,
+          "reason_uz": "boshqa joydan kesilgan",
+          "image": "assets/q31/option_F.svg"
+        }
+      ],
+      "category": "spatial"
+    },
+    {
+      "number": 32,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q32/figure.svg",
+      "correct": "C",
+      "logic_uz": "Qora katak har qadamda qo‘shni burchakka o‘tadi. Yo‘nalishni qatorning birinchi 2 rasmi belgilaydi: 1 va 2-qator soat mili bo‘yicha, 3-qator teskari: TR → TL → BL. Javob: chap-past.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 4,
+          "reason_uz": "soat mili bo‘yicha yurilgan",
+          "image": "assets/q32/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "joy to‘g‘ri, katak bo‘yalmagan",
+          "image": "assets/q32/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q32/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 5,
+          "reason_uz": "joy to‘g‘ri, ortiqcha katak",
+          "image": "assets/q32/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "qator boshiga qaytgan",
+          "image": "assets/q32/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "oldingi rasm takrorlangan",
+          "image": "assets/q32/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 33,
+      "type": "image",
+      "prompt": {
+        "uz": "Yetishmayotgan bo‘lak qaysi?",
+        "ru": "Какой фрагмент пропущен?"
+      },
+      "figure": "assets/q33/figure.svg",
+      "correct": "E",
+      "logic_uz": "Qiyshiq kvadratlar shaxmat tartibida (qora/ko‘k), oraliqdagi doiralar ham navbatma-navbat. Bo‘lak o‘ng chetida doiraning yarmi bor, uning rangi qo‘shni doiralar tartibiga mos.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "doira rangi xato",
+          "image": "assets/q33/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "barcha ranglar teskari",
+          "image": "assets/q33/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 4,
+          "reason_uz": "ko‘zgu aksi: doira chap tomonda",
+          "image": "assets/q33/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "doira markazda, boshqa joydan kesilgan",
+          "image": "assets/q33/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q33/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "90° ga burilgan",
+          "image": "assets/q33/option_F.svg"
+        }
+      ],
+      "category": "spatial"
+    },
+    {
+      "number": 34,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q34/figure.svg",
+      "correct": "A",
+      "logic_uz": "Kvadrat 8 ta uchburchakka bo‘lingan. O‘ng-yuqori uchburchakdan boshlab soat mili bo‘yicha har qadamda bittadan ko‘p bo‘yaladi: 1, 2, 3, 4, 5, 6. Javob: faqat yuqoridagi 2 ta uchburchak oq.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q34/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "bir qadam ortiq (7 ta)",
+          "image": "assets/q34/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 4,
+          "reason_uz": "oldingi rasm takrorlangan (5 ta)",
+          "image": "assets/q34/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 5,
+          "reason_uz": "6 ta, lekin teskari yo‘nalishda",
+          "image": "assets/q34/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "6 ta, boshlanish joyi xato",
+          "image": "assets/q34/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "6 ta, tartibsiz",
+          "image": "assets/q34/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    },
+    {
+      "number": 35,
+      "type": "image",
+      "prompt": {
+        "uz": "Keyingi rasm qaysi?",
+        "ru": "Какая фигура следующая?"
+      },
+      "figure": "assets/q35/figure.svg",
+      "correct": "D",
+      "logic_uz": "Uchburchak har qadamda soat mili bo‘yicha 90° buriladi (▲ ► ▼ ◄), har qator oldingisidan bir qadam surilib boshlanadi. 3-qator: ▼ ◄ ▲.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "yo‘nalish to‘g‘ri, nuqta noto‘g‘ri joyda",
+          "image": "assets/q35/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 4,
+          "reason_uz": "bir qadam ortiq burilgan",
+          "image": "assets/q35/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "yo‘nalish to‘g‘ri, rang xato",
+          "image": "assets/q35/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 7,
+          "reason_uz": "to‘g‘ri",
+          "image": "assets/q35/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 4,
+          "reason_uz": "oldingi rasm takrorlangan",
+          "image": "assets/q35/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "qator boshi takrorlangan",
+          "image": "assets/q35/option_F.svg"
+        }
+      ],
+      "category": "pattern"
+    }
+  ],
+  "categories": {
+    "numeric": {
+      "uz": "Sonli mantiq",
+      "ru": "Числовая логика"
+    },
+    "pattern": {
+      "uz": "Naqsh va ketma-ketlik",
+      "ru": "Закономерности"
+    },
+    "spatial": {
+      "uz": "Fazoviy tasavvur",
+      "ru": "Пространственное мышление"
+    }
+  }
+}

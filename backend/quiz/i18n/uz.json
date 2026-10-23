@@ -1,0 +1,34 @@
+{
+  "brand": "MANTIQIY TEST",
+  "title": "Sertifikat",
+  "subtitle": "Mantiqiy fikrlash testi natijasi",
+  "awarded_to": "Ushbu sertifikat quyidagi ishtirokchiga beriladi",
+  "score": "Ball",
+  "percent": "Foiz",
+  "level": "Daraja",
+  "date": "Sana",
+  "categories": "Yo‘nalishlar bo‘yicha",
+  "answered": "Javob berilgan savollar",
+  "certificate_id": "Sertifikat raqami",
+  "footer": "{count} ta mantiqiy savol · 6 ta variant · server tomonida hisoblangan natija",
+  "months": [
+    "yanvar",
+    "fevral",
+    "mart",
+    "aprel",
+    "may",
+    "iyun",
+    "iyul",
+    "avgust",
+    "sentabr",
+    "oktabr",
+    "noyabr",
+    "dekabr"
+  ],
+  "date_format": "{day}-{month}, {year}",
+  "telegram": {
+    "result": "🎉 <b>{name}</b>, test yakunlandi!\n\n📊 Ball: <b>{score} / {max}</b>\n📈 Foiz: <b>{percent}%</b>\n🏅 Daraja: <b>{level}</b>",
+    "open_result": "📄 Natijani ochish",
+    "retake": "🔁 Qayta topshirish"
+  }
+}

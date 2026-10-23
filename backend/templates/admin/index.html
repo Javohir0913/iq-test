@@ -1,0 +1,22 @@
+{% extends 'admin/base.html' %}
+
+{% load i18n %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+  <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
+{% endblock %}
+
+{% block content %}
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px">
+    <h1 style="font-size:22px;font-weight:700;margin:0">Boshqaruv paneli</h1>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="{% url 'admin:quiz_stats' %}" style="padding:8px 14px;border-radius:12px;border:1px solid #D6D0C4;font-weight:600;font-size:13px">Batafsil statistika</a>
+      <a href="{% url 'admin:quiz_attempt_export_all_xlsx' %}" style="padding:8px 14px;border-radius:12px;background:#E4572E;color:#fff;font-weight:600;font-size:13px">Excel eksport</a>
+    </div>
+  </div>
+  {% if stats %}{% include "admin/quiz/_stats.html" %}{% endif %}
+{% endblock %}

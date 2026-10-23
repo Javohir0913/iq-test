@@ -1,0 +1,130 @@
+<style>
+  .iq { --ink:#1B2A41; --accent:#E4572E; --teal:#2A7F8F; --soft:#9AB3C2; --panel:#F4F1EA; --line:#D6D0C4; --muted:#7A8291; --card:#fff;
+        color:var(--ink); font-variant-numeric:tabular-nums; display:flex; flex-direction:column; gap:20px; }
+  .dark .iq { --ink:#E8ECF2; --panel:#1F2937; --line:#374151; --muted:#9CA3AF; --card:#111827; }
+  .iq-grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); }
+  .iq-card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; }
+  .iq-kpi-label { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:600; }
+  .iq-kpi-value { font-size:30px; font-weight:700; margin-top:6px; line-height:1.1; }
+  .iq-kpi-sub { font-size:12px; color:var(--muted); margin-top:4px; }
+  .iq-h { font-size:15px; font-weight:700; margin:0 0 14px; }
+  .iq-row { display:grid; grid-template-columns:150px 1fr 70px; gap:12px; align-items:center; margin:10px 0; font-size:13px; }
+  .iq-bar { height:10px; background:var(--panel); border-radius:6px; overflow:hidden; }
+  .iq-bar > span { display:block; height:100%; background:var(--teal); border-radius:6px; }
+  .iq-two { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); }
+  .iq-days { display:flex; align-items:flex-end; gap:6px; height:120px; }
+  .iq-days div { flex:1; background:var(--accent); border-radius:6px 6px 2px 2px; min-height:3px; position:relative; }
+  .iq-days small { position:absolute; top:-18px; left:0; right:0; text-align:center; font-size:11px; color:var(--muted); }
+  .iq-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .iq-table th, .iq-table td { padding:8px 6px; border-bottom:1px solid var(--line); text-align:center; }
+  .iq-table th { font-size:11px; text-transform:uppercase; color:var(--muted); letter-spacing:.05em; }
+  .iq-table td:first-child, .iq-table th:first-child { text-align:left; }
+  .iq-cell { display:flex; flex-direction:column; align-items:center; gap:3px; }
+  .iq-cell .mini { width:44px; height:5px; background:var(--panel); border-radius:3px; overflow:hidden; }
+  .iq-cell .mini span { display:block; height:100%; background:var(--soft); }
+  .iq-cell.ok b { color:var(--teal); }
+  .iq-cell.ok .mini span { background:var(--teal); }
+  .iq-pts { font-size:10px; color:var(--muted); }
+  .iq-pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; background:var(--panel); }
+  .iq-scroll { overflow-x:auto; }
+</style>
+
+<div class="iq">
+  <div class="iq-grid">
+    <div class="iq-card">
+      <div class="iq-kpi-label">Jami urinishlar</div>
+      <div class="iq-kpi-value">{{ stats.total_attempts }}</div>
+      <div class="iq-kpi-sub">yakunlangan {{ stats.finished }} · vaqti tugagan {{ stats.expired }} · jarayonda {{ stats.in_progress }}</div>
+    </div>
+    <div class="iq-card">
+      <div class="iq-kpi-label">O‘rtacha ball</div>
+      <div class="iq-kpi-value">{{ stats.avg_score }} <span style="font-size:16px;color:var(--muted)">/ {{ stats.max_score }}</span></div>
+      <div class="iq-kpi-sub">o‘rtacha foiz {{ stats.avg_percent }}%</div>
+    </div>
+    <div class="iq-card">
+      <div class="iq-kpi-label">Eng yuqori ball</div>
+      <div class="iq-kpi-value">{{ stats.top_score|default:"—" }}</div>
+      <div class="iq-kpi-sub">yakunlangan urinishlar orasida</div>
+    </div>
+    <div class="iq-card">
+      <div class="iq-kpi-label">O‘rtacha vaqt</div>
+      <div class="iq-kpi-value">{{ stats.avg_minutes }} <span style="font-size:16px;color:var(--muted)">daq</span></div>
+      <div class="iq-kpi-sub">Telegram orqali: {{ stats.telegram_share }}%</div>
+    </div>
+  </div>
+
+  <div class="iq-two">
+    <div class="iq-card">
+      <h3 class="iq-h">Darajalar taqsimoti</h3>
+      {% for l in stats.levels %}
+        <div class="iq-row">
+          <div><b>{{ l.name }}</b> <span class="iq-pts">{{ l.range }}</span></div>
+          <div class="iq-bar"><span style="width:{{ l.share|floatformat:'0' }}%"></span></div>
+          <div style="text-align:right">{{ l.count }} · {{ l.share }}%</div>
+        </div>
+      {% empty %}
+        <p class="iq-kpi-sub">Darajalar sozlanmagan.</p>
+      {% endfor %}
+    </div>
+    <div class="iq-card">
+      <h3 class="iq-h">So‘nggi 14 kun (urinishlar)</h3>
+      {% if stats.daily %}
+        <div class="iq-days" style="margin-top:24px">
+          {% for d in stats.daily %}
+            <div style="height:{{ d.height }}%" title="{{ d.day|date:'d.m' }}: {{ d.n }}"><small>{{ d.n }}</small></div>
+          {% endfor %}
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px">
+          <span>{{ stats.daily.0.day|date:"d.m" }}</span><span>{% with last=stats.daily|last %}{{ last.day|date:"d.m" }}{% endwith %}</span>
+        </div>
+      {% else %}
+        <p class="iq-kpi-sub">Hozircha ma’lumot yo‘q.</p>
+      {% endif %}
+      {% if stats.hardest %}
+        <h3 class="iq-h" style="margin-top:20px">Eng qiyin savollar</h3>
+        {% for q in stats.hardest %}
+          <div class="iq-row">
+            <div><b>{{ q.number }}-savol</b> <span class="iq-pts">{{ q.category }}</span></div>
+            <div class="iq-bar"><span style="width:{{ q.correct_rate|floatformat:'0' }}%;background:var(--accent)"></span></div>
+            <div style="text-align:right">{{ q.correct_rate }}%</div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="iq-card">
+    <h3 class="iq-h">Savollar bo‘yicha variantlar tanlanishi</h3>
+    <p class="iq-kpi-sub" style="margin:-8px 0 12px">Yakunlangan urinishlar bo‘yicha. To‘g‘ri (7 ballik) variant yashil rangda.</p>
+    <div class="iq-scroll">
+      <table class="iq-table">
+        <thead>
+          <tr>
+            <th>Savol</th>
+            {% for letter in stats.letters %}<th>{{ letter }}</th>{% endfor %}
+            <th>Javobsiz</th>
+            <th>To‘g‘ri</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for q in stats.questions %}
+            <tr{% if not q.is_active %} style="opacity:.5"{% endif %}>
+              <td><b>{{ q.number }}</b> <span class="iq-pill">{{ q.category }}</span></td>
+              {% for o in q.options %}
+                <td>
+                  <div class="iq-cell{% if o.is_correct %} ok{% endif %}">
+                    <b>{{ o.count }}</b>
+                    <div class="mini"><span style="width:{{ o.share|floatformat:'0' }}%"></span></div>
+                    <span class="iq-pts">{{ o.points }} ball</span>
+                  </div>
+                </td>
+              {% endfor %}
+              <td>{{ q.skipped }}</td>
+              <td><b>{% if q.correct_rate is not None %}{{ q.correct_rate }}%{% else %}—{% endif %}</b></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+{
+  "commands": {
+    "start": "Bosh menyu",
+    "test": "Testni boshlash",
+    "natija": "Mening natijalarim",
+    "yordam": "Yordam"
+  },
+  "short_description": "{count} ta mantiqiy savol · {minutes} daqiqa. Fikrlashingizni sinab ko‘ring!",
+  "description": "Mantiqiy test: sonlar, naqshlar va fazoviy tasavvur bo‘yicha {count} ta savol. Natija ball, foiz va daraja ko‘rinishida, sertifikat bilan.",
+  "menu_button": "Test",
+  "welcome": "Assalomu alaykum, <b>{name}</b>! 👋\n\n🧠 <b>Mantiqiy test</b> — sonlar, naqshlar va fazoviy tasavvur bo‘yicha {count} ta savol.\n⏱ Vaqt: {minutes} daqiqa\n🏅 Natija: ball, foiz va daraja + PDF sertifikat\n\nBoshlash uchun pastdagi tugmani bosing 👇",
+  "start_button": "🚀 Testni boshlash",
+  "results_button": "📊 Mening natijalarim",
+  "help_button": "ℹ️ Yordam",
+  "open_test": "Testni ochish uchun tugmani bosing 👇",
+  "help": "ℹ️ <b>Qanday ishlaydi</b>\n\n1. «Testni boshlash» tugmasini bosing — test Telegram ichida ochiladi.\n2. Har savolda 6 ta variantdan bittasini tanlang. Javoblar avtomatik saqlanadi.\n3. Vaqt {minutes} daqiqa. Test yopilib qolsa, qayta ochganingizda o‘sha joydan davom etadi.\n4. Yakunlagach natija shu chatga yuboriladi.\n\nBuyruqlar:\n/test — testni boshlash\n/natija — natijalaringiz\n/yordam — yordam\n\n<i>Natija IQ raqami emas: test normalashtirilmagan.</i>",
+  "no_results": "Hozircha natijalar yo‘q. Testni topshirib ko‘ring! 👇",
+  "results_title": "📊 <b>Sizning natijalaringiz</b>",
+  "result_line": "{date} — <b>{score}/{max}</b> · {percent}% · {level}",
+  "in_progress_line": "{date} — ⏳ jarayonda",
+  "open_result": "📄 {date} natijasi",
+  "continue_test": "▶️ Testni davom ettirish",
+  "backend_error": "⚠️ Hozir ma’lumotni olib bo‘lmadi. Birozdan keyin qayta urinib ko‘ring.",
+  "no_webapp": "⚠️ Mini App manzili hali sozlanmagan (HTTPS manzil kerak). Administrator: .env dagi PUBLIC_URL ni https:// manzilga o‘zgartiring.",
+  "unknown": "Men faqat testni ochishda yordam beraman 🙂",
+  "date_format": "%d.%m.%Y"
+}

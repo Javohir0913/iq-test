@@ -1,0 +1,210 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Inter (variable, 100–900): lotin va kirill qismlari alohida yuklanadi */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC,
+    U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-cyrillic.woff2") format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* Dizayn tokenlari (TZ 6-band). RGB kanallar Tailwind alpha uchun. */
+:root {
+  --ink: 27 42 65; /* #1B2A41 */
+  --accent: 228 87 46; /* #E4572E */
+  --accent-strong: 201 69 31; /* tugma foni: oq matn bilan kontrast ≥ 4.5 */
+  --teal: 42 127 143; /* #2A7F8F */
+  --soft: 154 179 194; /* #9AB3C2 */
+  --panel: 244 241 234; /* #F4F1EA */
+  --page: 251 250 247; /* #FBFAF7 */
+  --line: 214 208 196; /* #D6D0C4 */
+  --muted: 122 130 145; /* #7A8291 */
+  --surface: 255 255 255;
+  --surface-2: 247 245 240;
+  --shadow: 27 42 65;
+  --font-inter: "Inter";
+
+  --paper: 255 255 255;
+  --paper-panel: 244 241 234;
+  --paper-ink: 27 42 65;
+  --paper-line: 214 208 196;
+
+  color-scheme: light;
+}
+
+.dark {
+  --ink: 233 237 243;
+  --accent: 240 104 66;
+  --accent-strong: 201 69 31;
+  --teal: 76 170 186;
+  --soft: 120 146 163;
+  --panel: 27 37 53;
+  --page: 12 18 29;
+  --line: 44 56 76;
+  --muted: 143 152 168;
+  --surface: 20 29 44;
+  --surface-2: 25 35 52;
+  --shadow: 0 0 0;
+
+  --paper: 255 255 255;
+  --paper-panel: 238 234 225;
+  --paper-ink: 27 42 65;
+  --paper-line: 214 208 196;
+
+  color-scheme: dark;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: rgb(var(--page));
+  color: rgb(var(--ink));
+  font-feature-settings: "cv11", "ss01";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgb(var(--accent) / 0.22);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Fon uchun nozik nuqtali panjara */
+.dot-grid {
+  background-image: radial-gradient(rgb(var(--ink) / 0.09) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.focus-ring {
+  @apply outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-page;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --- CSS animatsiyalari (bosh sahifa JS'siz ishlashi uchun) --- */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r0, 0deg));
+  }
+  50% {
+    transform: translateY(var(--drift, -12px)) rotate(var(--r1, 0deg));
+  }
+}
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pulse-soft {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.anim-float {
+  animation: float-y var(--dur, 14s) ease-in-out var(--delay, 0s) infinite;
+}
+.anim-spin {
+  animation: spin-slow var(--dur, 40s) linear infinite;
+}
+.anim-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s) both;
+}
+.anim-pop {
+  animation: pop-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) var(--delay, 0s) both;
+}
+.anim-pulse {
+  animation: pulse-soft 1.8s ease-in-out 1.2s infinite;
+}
+.anim-glow {
+  animation: glow 6s ease-in-out infinite;
+}
+.anim-draw {
+  stroke-dasharray: 1;
+  animation: draw 0.9s ease-in-out 0.4s both;
+}
+
+/* Scroll bilan paydo bo‘lish (RevealScope qo‘shadi) */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--delay, 0s);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}

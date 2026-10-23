@@ -1,0 +1,14 @@
+{% extends "admin/base_site.html" %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px">
+    <h1 style="font-size:22px;font-weight:700;margin:0">Statistika</h1>
+    <div style="display:flex;gap:8px">
+      <a href="{% url 'admin:quiz_attempt_export_all_csv' %}" style="padding:8px 14px;border-radius:12px;border:1px solid #D6D0C4;font-weight:600;font-size:13px">CSV</a>
+      <a href="{% url 'admin:quiz_attempt_export_all_xlsx' %}" style="padding:8px 14px;border-radius:12px;background:#E4572E;color:#fff;font-weight:600;font-size:13px">Excel (.xlsx)</a>
+    </div>
+  </div>
+  {% include "admin/quiz/_stats.html" %}
+{% endblock %}
