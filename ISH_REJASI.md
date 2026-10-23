@@ -72,11 +72,15 @@ Belgilar: `[x]` bajarildi · `[ ]` qilinmagan
 - [x] "Mening natijalarim" sahifasi, boshqa qurilmadan natija/testni ochish
 - [x] Admin: Telegram foydalanuvchilar ro‘yxati
 - [x] Testlar: backend 74, E2E 12
-- [ ] @BotFather → /setdomain → iq.coffee-nap.uz (siz tomondan, bir marta)
+- [x] @BotFather → /setdomain → iq.coffee-nap.uz
 
 ## 9.2 Server (iq.coffee-nap.uz)
 - [x] Deploy fayllari: `deploy/nginx-iq.coffee-nap.uz.conf`, `deploy/update.sh`, deploy kalit
-- [ ] GitHub repo → serverga clone, HTTPS (certbot), ishga tushirish
+- [x] GitHub (Javohir0913/iq-test) → serverda `~/iq-test` (deploy key `github.com-iq`)
+- [x] Server `.env` (alohida maxfiy kalitlar), stack `127.0.0.1:5183` da, tunnel o‘chiq
+- [x] Host nginx: `/etc/nginx/sites-available/iq.coffee-nap.uz`, Let's Encrypt SSL (certbot, avtomatik yangilanadi), http → https
+- [x] https://iq.coffee-nap.uz ishlayapti; bot serverda, menyu tugmasi domenga ulangan; lokal bot to‘xtatilgan
+- [x] Boshqa saytlar (hostel, profit, test) tekshirildi – ta’sir yo‘q
 
 ## 10. Mobil ilova (keyingi bosqich)
 - [ ] **Android (APK / AAB)** — birinchi navbatda

@@ -35,6 +35,19 @@ docker compose up -d --build        # dev (override bilan)
 docker compose -f docker-compose.yml up -d --build   # prod (faqat asosiy fayl)
 ```
 
+## Server (iq.coffee-nap.uz)
+
+Kod serverda `~/iq-test` papkasida (GitHub: `Javohir0913/iq-test`). Stack faqat `127.0.0.1:5183` da tinglaydi, tashqariga host nginx (`/etc/nginx/sites-available/iq.coffee-nap.uz`) HTTPS bilan chiqaradi. Serverdagi `.env` da `COMPOSE_FILE=docker-compose.yml`, shuning uchun u yerda oddiy `docker compose …` prod rejimida ishlaydi.
+
+```bash
+ssh azureuser@20.84.45.45
+cd ~/iq-test && ./deploy/update.sh          # git pull + qayta qurish
+docker compose logs -f backend bot           # loglar
+grep DJANGO_SUPERUSER_PASSWORD .env          # admin paroli
+```
+
+Eslatma: bitta bot tokeni bilan bot faqat bitta joyda ishlashi kerak – lokal sinovda `bot` servisini ishga tushirmang (yoki boshqa test bot tokenidan foydalaning).
+
 ## Admin panel
 
 `http://localhost/admin/` ga `.env` dagi `DJANGO_SUPERUSER_USERNAME` / `DJANGO_SUPERUSER_PASSWORD` bilan kiring.
