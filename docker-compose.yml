@@ -24,7 +24,7 @@ services:
     env_file: .env
     environment:
       POSTGRES_HOST: db
-      TUNNEL_METRICS_URL: ${TUNNEL_METRICS_URL:-http://tunnel:2000}
+      TUNNEL_METRICS_URL: ${TUNNEL_METRICS_URL-http://tunnel:2000}
       STATIC_ROOT: /vol/static
       MEDIA_ROOT: /vol/media
     volumes:
@@ -82,7 +82,7 @@ services:
     env_file: .env
     environment:
       BACKEND_INTERNAL_URL: http://backend:8000
-      TUNNEL_METRICS_URL: ${TUNNEL_METRICS_URL:-http://tunnel:2000}
+      TUNNEL_METRICS_URL: ${TUNNEL_METRICS_URL-http://tunnel:2000}
     depends_on:
       backend:
         condition: service_healthy
