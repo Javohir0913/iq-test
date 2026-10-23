@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mantiqiy test — tez orada</title>
+<meta name="description" content="Mantiqiy test: 35 ta savol, sonlar, naqshlar va fazoviy tasavvur. Tez orada ishga tushadi.">
+<meta name="theme-color" content="#FBFAF7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C121D" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="preload" href="/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face { font-family: "Inter"; font-weight: 100 900; font-display: swap; src: url("/inter-latin.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: "Inter"; font-weight: 100 900; font-display: swap; src: url("/inter-cyrillic.woff2") format("woff2");
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+
+  :root {
+    --ink: #1B2A41; --accent: #E4572E; --accent-strong: #C9451F; --teal: #2A7F8F; --soft: #9AB3C2;
+    --panel: #F4F1EA; --page: #FBFAF7; --line: #D6D0C4; --muted: #6B7380; --surface: #FFFFFF;
+    --paper: #FFFFFF; --paper-panel: #F4F1EA; --paper-ink: #1B2A41; --paper-line: #D6D0C4;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink: #E9EDF3; --accent: #F06842; --teal: #4CAABA; --soft: #7892A3; --panel: #1B2535;
+      --page: #0C121D; --line: #2C384C; --muted: #8F98A8; --surface: #141D2C; --paper-panel: #EEEAE1; color-scheme: dark; }
+  }
+
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--ink);
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    display: flex; flex-direction: column; min-height: 100dvh; overflow-x: hidden;
+  }
+  .dots { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image: radial-gradient(color-mix(in srgb, var(--ink) 10%, transparent) 1px, transparent 1px);
+    background-size: 22px 22px; mask-image: radial-gradient(ellipse at 50% 30%, #000 25%, transparent 75%); }
+
+  header { max-width: 1100px; width: 100%; margin: 0 auto; padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -0.01em; font-size: 15px; color: inherit; text-decoration: none; }
+  .brand img { width: 36px; height: 36px; border-radius: 10px; }
+  .lang { display: flex; padding: 2px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+  .lang button { all: unset; cursor: pointer; width: 40px; height: 32px; display: grid; place-items: center; border-radius: 999px;
+    font-size: 12px; font-weight: 700; color: var(--muted); transition: background .25s, color .25s; }
+  .lang button[aria-pressed="true"] { background: var(--ink); color: var(--page); }
+  .lang button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  main { flex: 1; width: 100%; max-width: 1100px; margin: 0 auto; padding: 24px 20px 48px;
+    display: grid; gap: 48px; align-items: center; grid-template-columns: 1fr; }
+  @media (min-width: 900px) { main { grid-template-columns: 1.1fr 1fr; gap: 64px; } }
+
+  .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 80%, transparent); font-size: 12px; font-weight: 600; color: var(--muted); }
+  .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); animation: ping 2s infinite; }
+  h1 { margin-top: 20px; font-size: clamp(40px, 8vw, 72px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800; }
+  h1 span { color: var(--accent); position: relative; white-space: nowrap; }
+  h1 span::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 6px; border-radius: 6px;
+    background: color-mix(in srgb, var(--accent) 30%, transparent); transform-origin: left; animation: grow .9s .4s cubic-bezier(.22,1,.36,1) both; }
+  h1 .plain { color: inherit; } h1 .plain::after { display: none; }
+  .lead { margin-top: 22px; max-width: 560px; font-size: 18px; line-height: 1.6; color: var(--muted); }
+  .chips { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { display: flex; flex-direction: column; flex: 1 1 0; min-width: 0; max-width: 140px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 14px;
+    background: color-mix(in srgb, var(--surface) 75%, transparent); }
+  .chip b { font-size: 24px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .chip small { font-size: 12px; color: var(--muted); }
+
+  .puzzle-wrap { position: relative; width: 100%; max-width: 420px; margin: 0 auto; }
+  .glow { position: absolute; inset: -24px; border-radius: 32px; filter: blur(32px); z-index: -1;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 25%, transparent), transparent 50%, color-mix(in srgb, var(--teal) 25%, transparent));
+    animation: glow 6s ease-in-out infinite; }
+  .puzzle { background: var(--paper-panel); border: 1px solid var(--paper-line); border-radius: 24px; padding: 24px; color: var(--paper-ink);
+    box-shadow: 0 2px 4px rgba(27,42,65,.06), 0 24px 48px -20px rgba(27,42,65,.35); animation: up .8s cubic-bezier(.22,1,.36,1) both; }
+  .puzzle-head { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .8; margin-bottom: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .cell { aspect-ratio: 1; display: grid; place-items: center; background: var(--paper); border: 1px solid var(--paper-line); border-radius: 14px;
+    animation: pop .55s cubic-bezier(.34,1.56,.64,1) both; }
+  .cell svg { width: 52%; height: 52%; animation: float 4s ease-in-out infinite; }
+  .cell.q { background: var(--accent); border-color: transparent; color: #fff; font-size: 44px; font-weight: 800;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent), 0 16px 32px -12px color-mix(in srgb, var(--accent) 55%, transparent);
+    animation: pop .55s .5s cubic-bezier(.34,1.56,.64,1) both, beat 1.8s 1.2s ease-in-out infinite; }
+
+  .shape { position: fixed; z-index: -1; pointer-events: none; animation: float 14s ease-in-out infinite; }
+  @media (max-width: 700px) { .shape.wide-only { display: none; } .chips { gap: 8px; } .chip { padding: 10px 12px; } }
+
+  footer { max-width: 1100px; width: 100%; margin: 0 auto; padding: 20px; border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 13px; color: var(--muted); }
+
+  @keyframes up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  @keyframes pop { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes glow { 0%, 100% { opacity: .6; } 50% { opacity: 1; } }
+  @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes ping { 70% { box-shadow: 0 0 0 8px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+  .fade { animation: up .7s cubic-bezier(.22,1,.36,1) both; }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; } }
+</style>
+</head>
+<body>
+<div class="dots" aria-hidden="true"></div>
+<svg class="shape wide-only" style="left:5%;top:22%;color:var(--ink);opacity:.8" width="34" height="34" viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M50 4 60 40 96 50 60 60 50 96 40 60 4 50 40 40Z"/></svg>
+<svg class="shape" style="right:7%;top:12%;color:var(--teal);opacity:.7;animation-duration:18s" width="26" height="26" viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M50 8 94 88H6Z"/></svg>
+<svg class="shape wide-only" style="left:46%;bottom:10%;color:var(--soft);animation-duration:16s" width="28" height="28" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width="9"/></svg>
+
+<header>
+  <a class="brand" href="/"><img src="/icon.svg" alt=""><span data-i="brand">Mantiqiy test</span></a>
+  <div class="lang" role="group" aria-label="Til / Язык">
+    <button type="button" data-lang="uz" aria-pressed="true">UZ</button>
+    <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="badge fade"><span class="pulse"></span><span data-i="badge">Tez orada ishga tushadi</span></div>
+    <h1 class="fade" style="animation-delay:.05s"><span data-i="t1">Tez</span> <span data-i="t2" class="plain">orada</span></h1>
+    <p class="lead fade" style="animation-delay:.12s" data-i="lead">Mantiqiy fikrlashingizni sinab ko‘ring: sonlar, naqshlar va shakllardagi qonuniyatlar. Natija — ball, foiz, daraja va sertifikat. Kirish Telegram orqali.</p>
+    <div class="chips fade" style="animation-delay:.2s">
+      <div class="chip"><b>35</b><small data-i="c1">savol</small></div>
+      <div class="chip"><b>40</b><small data-i="c2">daqiqa</small></div>
+      <div class="chip"><b>A–F</b><small data-i="c3">6 ta variant</small></div>
+    </div>
+  </section>
+
+  <div class="puzzle-wrap" aria-hidden="true">
+    <div class="glow"></div>
+    <div class="puzzle">
+      <div class="puzzle-head"><span data-i="brandUpper">Mantiqiy test</span><span>? / 35</span></div>
+      <div class="grid">
+        <div class="cell" style="animation-delay:.1s"><svg viewBox="0 0 100 100"><path fill="currentColor" d="M50 8 94 88H6Z"/></svg></div>
+        <div class="cell" style="animation-delay:.14s"><svg viewBox="0 0 100 100" style="rotate:90deg"><path fill="currentColor" d="M50 8 94 88H6Z"/></svg></div>
+        <div class="cell" style="animation-delay:.18s"><svg viewBox="0 0 100 100" style="rotate:180deg"><path fill="currentColor" d="M50 8 94 88H6Z"/></svg></div>
+        <div class="cell" style="animation-delay:.22s"><svg viewBox="0 0 100 100"><path fill="currentColor" d="M50 4 60 40 96 50 60 60 50 96 40 60 4 50 40 40Z"/></svg></div>
+        <div class="cell" style="animation-delay:.26s"><svg viewBox="0 0 100 100"><path fill="currentColor" d="M50 4 61 36 95 36 67 56 78 90 50 69 22 90 33 56 5 36 39 36Z"/></svg></div>
+        <div class="cell" style="animation-delay:.30s"><svg viewBox="0 0 100 100"><path fill="currentColor" d="M50 4 63 27 90 27 77 50 90 73 63 73 50 96 37 73 10 73 23 50 10 27 37 27Z"/></svg></div>
+        <div class="cell" style="animation-delay:.34s"><svg viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="4"><rect x="6" y="6" width="28" height="28" rx="5" fill="currentColor"/><rect x="36" y="6" width="28" height="28" rx="5"/><rect x="66" y="6" width="28" height="28" rx="5"/><rect x="6" y="36" width="28" height="28" rx="5"/><rect x="36" y="36" width="28" height="28" rx="5"/><rect x="66" y="36" width="28" height="28" rx="5"/><rect x="6" y="66" width="28" height="28" rx="5"/><rect x="36" y="66" width="28" height="28" rx="5"/><rect x="66" y="66" width="28" height="28" rx="5"/></g></svg></div>
+        <div class="cell" style="animation-delay:.38s"><svg viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="4"><rect x="6" y="6" width="28" height="28" rx="5" fill="currentColor"/><rect x="36" y="6" width="28" height="28" rx="5"/><rect x="66" y="6" width="28" height="28" rx="5"/><rect x="6" y="36" width="28" height="28" rx="5"/><rect x="36" y="36" width="28" height="28" rx="5" fill="currentColor"/><rect x="66" y="36" width="28" height="28" rx="5"/><rect x="6" y="66" width="28" height="28" rx="5"/><rect x="36" y="66" width="28" height="28" rx="5"/><rect x="66" y="66" width="28" height="28" rx="5"/></g></svg></div>
+        <div class="cell q">?</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>© <span id="y">2026</span> <span data-i="brand">Mantiqiy test</span></span>
+  <span>iq.coffee-nap.uz</span>
+</footer>
+
+<script>
+  (function () {
+    var T = {
+      uz: { title: "Mantiqiy test — tez orada", brand: "Mantiqiy test", brandUpper: "Mantiqiy test", badge: "Tez orada ishga tushadi",
+        t1: "Tez", t2: "orada", c1: "savol", c2: "daqiqa", c3: "6 ta variant",
+        lead: "Mantiqiy fikrlashingizni sinab ko‘ring: sonlar, naqshlar va shakllardagi qonuniyatlar. Natija — ball, foiz, daraja va sertifikat. Kirish Telegram orqali." },
+      ru: { title: "Логический тест — скоро", brand: "Логический тест", brandUpper: "Логический тест", badge: "Скоро запуск",
+        t1: "Скоро", t2: "запуск", c1: "вопросов", c2: "минут", c3: "6 вариантов",
+        lead: "Проверьте своё логическое мышление: закономерности в числах, узорах и фигурах. Результат — баллы, процент, уровень и сертификат. Вход через Telegram." }
+    };
+    function apply(lang) {
+      var t = T[lang] || T.uz;
+      document.documentElement.lang = lang;
+      document.title = t.title;
+      document.querySelectorAll("[data-i]").forEach(function (el) { var k = el.getAttribute("data-i"); if (t[k]) el.textContent = t[k]; });
+      document.querySelectorAll("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang)); });
+      try { localStorage.setItem("lang", lang); } catch (e) {}
+    }
+    document.querySelectorAll("[data-lang]").forEach(function (b) { b.addEventListener("click", function () { apply(b.getAttribute("data-lang")); }); });
+    var saved = null; try { saved = localStorage.getItem("lang"); } catch (e) {}
+    var nav = (navigator.language || "").slice(0, 2);
+    apply(saved || (["ru", "be", "uk", "kk"].indexOf(nav) >= 0 ? "ru" : "uz"));
+    document.getElementById("y").textContent = new Date().getFullYear();
+  })();
+</script>
+</body>
+</html>
