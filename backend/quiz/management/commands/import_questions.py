@@ -45,6 +45,8 @@ def validate_question(q):
     sevens = [o["letter"] for o in options if o["points"] == MAX_POINTS]
     if len(sevens) != 1:
         raise CommandError(f"{where}: aniq bitta 7 ballik variant bo‘lishi kerak, topildi: {sevens}")
+    if q.get("difficulty") is not None and q["difficulty"] not in (1, 2, 3):
+        raise CommandError(f"{where}: qiyinlik 1, 2 yoki 3 bo‘lishi kerak ({q['difficulty']!r})")
     if q.get("correct") and q["correct"] != sevens[0]:
         raise CommandError(f"{where}: to‘g‘ri javob ({q['correct']}) 7 ballik variant ({sevens[0]}) bilan mos emas")
 
@@ -120,6 +122,10 @@ class Command(BaseCommand):
             "logic_uz": q.get("logic_uz", ""),
             "order": number,
         }
+        if q["prompt"].get("en"):
+            defaults["prompt_en"] = q["prompt"]["en"]
+        if q.get("difficulty") in (1, 2, 3):
+            defaults["difficulty"] = q["difficulty"]
         if "logic_ru" in q:
             defaults["logic_ru"] = q["logic_ru"]
         question, is_new = Question.objects.update_or_create(number=number, defaults=defaults)

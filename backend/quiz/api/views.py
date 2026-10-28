@@ -13,17 +13,17 @@ from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .. import services
+from .. import progress, services
 from ..auth import account_from_init_data, account_from_request, account_payload, issue_token, upsert_account, validate_widget_data
 from ..certificate import render_certificate
 from ..models import (
+    LANG_CODES,
     Answer,
     Attempt,
-    Language,
     Option,
     Participant,
     Question,
-    TestSettings,
+    TelegramAccount,
     format_verify_code,
     normalize_verify_code,
 )
@@ -31,6 +31,8 @@ from ..telegram import TelegramAuthError, bot_username, validate_init_data
 from .serializers import (
     AnswerSerializer,
     AttemptCreateSerializer,
+    BotLanguageSerializer,
+    BotRegisterSerializer,
     QuestionPublicSerializer,
     TelegramAuthSerializer,
 )
@@ -82,14 +84,28 @@ class TestMetaView(APIView):
         ),
     )
     def get(self, request):
-        count = services.active_questions().count()
+        stages = list(services.active_stages())
+        bank = services.active_questions().count()
+        top = stages[-1] if stages else None
+        count = min(top.question_count, bank) if top else bank
         return Response(
             {
                 "question_count": count,
-                "duration_minutes": TestSettings.load().duration_minutes,
+                "duration_minutes": top.duration_minutes if top else 0,
                 "options_per_question": 6,
                 "max_score": services.score_bounds(count)[1],
-                "languages": [code for code, _ in Language.choices],
+                "bank_size": bank,
+                "stages": [
+                    {
+                        "number": s.number,
+                        "question_count": min(s.question_count, bank),
+                        "duration_minutes": s.duration_minutes,
+                        "friends_required": s.friends_required,
+                        "certificate": s.certificate,
+                    }
+                    for s in stages
+                ],
+                "languages": LANG_CODES,
                 "telegram_bot": bot_username(),
                 "auth_required": settings.REQUIRE_TELEGRAM_AUTH,
             }
@@ -107,6 +123,9 @@ class AttemptCreateView(APIView):
 
         if not services.active_questions().exists():
             return error("no_questions", status.HTTP_503_SERVICE_UNAVAILABLE)
+        stage = services.active_stages().filter(number=data["stage"]).first()
+        if stage is None:
+            return error("stage_not_found", status.HTTP_400_BAD_REQUEST)
 
         telegram_id = None
         account = account_from_request(request)
@@ -119,6 +138,10 @@ class AttemptCreateView(APIView):
             telegram_id = account.telegram_id
         elif settings.REQUIRE_TELEGRAM_AUTH:
             return error("auth_required", status.HTTP_401_UNAUTHORIZED)
+
+        denied = progress.stage_access_error(account, stage)
+        if denied:
+            return error(denied, status.HTTP_403_FORBIDDEN, stage=stage.number)
 
         full_name = data["full_name"]
         with transaction.atomic():
@@ -136,7 +159,7 @@ class AttemptCreateView(APIView):
                 language=data["language"],
                 telegram_id=telegram_id,
             )
-            attempt = services.create_attempt(participant)
+            attempt = services.create_attempt(participant, stage)
 
         return Response(
             {
@@ -153,17 +176,20 @@ class AttemptQuestionsView(AttemptAccessMixin, APIView):
     @extend_schema(summary="Savollar (ballarsiz) va tanlangan javoblar", parameters=[TOKEN_PARAM])
     def get(self, request, attempt_id):
         attempt = services.expire_if_needed(self.get_attempt(request, attempt_id))
-        questions = services.active_questions().prefetch_related(
+        ids = attempt.question_ids or []
+        by_id = Question.objects.prefetch_related(
             Prefetch("options", queryset=Option.objects.order_by("letter"))
-        )
+        ).in_bulk(ids)
+        questions = [by_id[qid] for qid in ids if qid in by_id]
         answers = {
             a.question.number: a.option.letter
-            for a in attempt.answers.select_related("question", "option").filter(question__is_active=True)
+            for a in attempt.answers.select_related("question", "option").filter(question_id__in=ids)
         }
         return Response(
             {
                 "attempt_id": str(attempt.id),
                 "status": attempt.status,
+                "stage": services.stage_payload(attempt),
                 "full_name": attempt.participant.full_name,
                 "language": attempt.participant.language,
                 "started_at": attempt.started_at,
@@ -192,13 +218,14 @@ class AttemptAnswerView(AttemptAccessMixin, APIView):
                 transaction.on_commit(lambda: services.expire_if_needed(attempt))
                 return error("attempt_expired", status.HTTP_409_CONFLICT, status=Attempt.Status.EXPIRED)
 
-            question = get_object_or_404(Question, number=number, is_active=True)
+            ids = attempt.question_ids or []
+            question = get_object_or_404(Question, number=number, id__in=ids)
             if letter is None:
                 Answer.objects.filter(attempt=attempt, question=question).delete()
             else:
                 option = get_object_or_404(Option, question=question, letter=letter)
                 Answer.objects.update_or_create(attempt=attempt, question=question, defaults={"option": option})
-            answered = attempt.answers.filter(question__is_active=True).count()
+            answered = attempt.answers.filter(question_id__in=ids).count()
 
         return Response({"number": number, "letter": letter, "answered_count": answered})
 
@@ -229,7 +256,7 @@ class AttemptCertificateView(AttemptAccessMixin, APIView):
         summary="Sertifikat (PDF)",
         parameters=[
             OpenApiParameter("token", str, OpenApiParameter.QUERY, required=True),
-            OpenApiParameter("lang", str, OpenApiParameter.QUERY, enum=["uz", "ru"]),
+            OpenApiParameter("lang", str, OpenApiParameter.QUERY, enum=LANG_CODES),
         ],
         responses={(200, "application/pdf"): bytes},
     )
@@ -237,8 +264,10 @@ class AttemptCertificateView(AttemptAccessMixin, APIView):
         attempt = services.expire_if_needed(self.get_attempt(request, attempt_id))
         if attempt.is_open:
             return error("attempt_in_progress", status.HTTP_409_CONFLICT)
+        if not attempt.has_certificate:
+            return error("certificate_not_available", status.HTTP_403_FORBIDDEN)
         lang = request.query_params.get("lang") or attempt.participant.language
-        if lang not in ("uz", "ru"):
+        if lang not in LANG_CODES:
             lang = "uz"
         pdf = render_certificate(services.result_payload(attempt), lang)
         response = HttpResponse(pdf, content_type="application/pdf")
@@ -276,18 +305,42 @@ class TelegramAuthView(APIView):
         )
 
 
-class BotResultsView(APIView):
-    """Faqat bot servisi uchun: Telegram foydalanuvchisining so‘nggi natijalari.
+def attempt_summary(attempt, with_name=False):
+    item = {
+        "attempt_id": str(attempt.id),
+        "token": attempt.token,
+        "status": attempt.status,
+        "stage": services.stage_payload(attempt),
+        "started_at": attempt.started_at,
+        "finished_at": attempt.finished_at,
+        "total_score": attempt.total_score,
+        "max_score": services.attempt_max_score(attempt),
+        "percent": float(attempt.percent) if attempt.percent is not None else None,
+        "level": services.level_payload(attempt.level),
+    }
+    if with_name:
+        item["full_name"] = attempt.participant.full_name
+    return item
 
-    `X-Bot-Token` sarlavhasi TELEGRAM_BOT_TOKEN ga teng bo‘lishi shart (nginx bu yo‘lni tashqariga yopadi).
-    """
 
-    @extend_schema(exclude=True)
-    def get(self, request):
+class BotAccessMixin:
+    """Faqat bot servisi uchun: `X-Bot-Token` = TELEGRAM_BOT_TOKEN (nginx /api/v1/bot/ ni tashqariga yopadi)."""
+
+    def bot_forbidden(self, request):
         token = settings.TELEGRAM_BOT_TOKEN
         given = request.headers.get("X-Bot-Token", "")
         if not token or not hmac.compare_digest(given.encode(), token.encode()):
             return error("forbidden", status.HTTP_403_FORBIDDEN)
+        return None
+
+
+class BotResultsView(BotAccessMixin, APIView):
+    """Telegram foydalanuvchisining so‘nggi natijalari (bot uchun)."""
+
+    @extend_schema(exclude=True)
+    def get(self, request):
+        if denied := self.bot_forbidden(request):
+            return denied
         try:
             telegram_id = int(request.query_params.get("telegram_id", ""))
         except ValueError:
@@ -295,26 +348,76 @@ class BotResultsView(APIView):
 
         attempts = (
             Attempt.objects.filter(participant__telegram_id=telegram_id)
-            .select_related("participant", "level")
-            .order_by("-started_at")[:10]
+            .select_related("participant", "level", "stage")
+            .order_by("-started_at")[:5]
         )
-        items = []
-        for attempt in attempts:
-            attempt = services.expire_if_needed(attempt)
-            items.append(
-                {
-                    "attempt_id": str(attempt.id),
-                    "token": attempt.token,
-                    "status": attempt.status,
-                    "started_at": attempt.started_at,
-                    "finished_at": attempt.finished_at,
-                    "total_score": attempt.total_score,
-                    "percent": float(attempt.percent) if attempt.percent is not None else None,
-                    "level": {"name_uz": attempt.level.name_uz, "name_ru": attempt.level.name_ru} if attempt.level else None,
-                }
-            )
-        count = services.active_questions().count()
-        return Response({"max_score": services.score_bounds(count)[1], "attempts": items[:5]})
+        items = [attempt_summary(services.expire_if_needed(a)) for a in attempts]
+        return Response({"attempts": items})
+
+
+class BotRegisterView(BotAccessMixin, APIView):
+    """Bot /start: foydalanuvchini yozadi (referal bilan) va bosqichlar holatini qaytaradi."""
+
+    @extend_schema(exclude=True)
+    def post(self, request):
+        if denied := self.bot_forbidden(request):
+            return denied
+        serializer = BotRegisterSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        is_new = not TelegramAccount.objects.filter(telegram_id=data["id"]).exists()
+        account = upsert_account(data)
+        if is_new:
+            progress.attach_referrer(account, progress.parse_referral(data.get("start_param")))
+        return Response(self._payload(account))
+
+    @staticmethod
+    def _payload(account):
+        return {"language": progress.account_language(account), **progress.progress(account)}
+
+
+class BotProgressView(BotAccessMixin, APIView):
+    """Bot: obunani qayta tekshirish va bosqichlar holati."""
+
+    @extend_schema(exclude=True)
+    def get(self, request):
+        if denied := self.bot_forbidden(request):
+            return denied
+        try:
+            telegram_id = int(request.query_params.get("telegram_id", ""))
+        except ValueError:
+            return error("telegram_id_required", status.HTTP_400_BAD_REQUEST)
+        account = TelegramAccount.objects.filter(telegram_id=telegram_id).first()
+        if account is None:
+            return error("not_found", status.HTTP_404_NOT_FOUND)
+        return Response(BotRegisterView._payload(account))
+
+
+class BotLanguageView(BotAccessMixin, APIView):
+    """Bot: foydalanuvchi tanlagan tilni saqlash."""
+
+    @extend_schema(exclude=True)
+    def post(self, request):
+        if denied := self.bot_forbidden(request):
+            return denied
+        serializer = BotLanguageSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        updated = TelegramAccount.objects.filter(telegram_id=data["telegram_id"]).update(bot_language=data["language"])
+        if not updated:
+            return error("not_found", status.HTTP_404_NOT_FOUND)
+        return Response({"language": data["language"]})
+
+
+class ProgressView(APIView):
+    """Sayt/Mini App: bosqichlar, kanallar va takliflar holati (Bearer token)."""
+
+    @extend_schema(summary="Bosqichlar holati (Bearer token)")
+    def get(self, request):
+        account = account_from_request(request)
+        if account is None:
+            return error("unauthorized", status.HTTP_401_UNAUTHORIZED)
+        return Response(progress.progress(account))
 
 
 def auth_response(account):
@@ -369,29 +472,11 @@ class MyAttemptsView(APIView):
             return error("unauthorized", status.HTTP_401_UNAUTHORIZED)
         attempts = (
             Attempt.objects.filter(participant__telegram_id=account.telegram_id)
-            .select_related("participant", "level")
+            .select_related("participant", "level", "stage")
             .order_by("-started_at")[:30]
         )
-        count = services.active_questions().count()
-        items = []
-        for attempt in attempts:
-            attempt = services.expire_if_needed(attempt)
-            items.append(
-                {
-                    "attempt_id": str(attempt.id),
-                    "token": attempt.token,
-                    "status": attempt.status,
-                    "full_name": attempt.participant.full_name,
-                    "started_at": attempt.started_at,
-                    "finished_at": attempt.finished_at,
-                    "total_score": attempt.total_score,
-                    "percent": float(attempt.percent) if attempt.percent is not None else None,
-                    "level": (
-                        {"name_uz": attempt.level.name_uz, "name_ru": attempt.level.name_ru} if attempt.level else None
-                    ),
-                }
-            )
-        return Response({"max_score": services.score_bounds(count)[1], "attempts": items})
+        items = [attempt_summary(services.expire_if_needed(a), with_name=True) for a in attempts]
+        return Response({"attempts": items})
 
 
 class VerifyView(APIView):
@@ -403,17 +488,16 @@ class VerifyView(APIView):
     def get(self, request, code):
         normalized = normalize_verify_code(code)
         attempt = (
-            Attempt.objects.select_related("participant", "level")
+            Attempt.objects.select_related("participant", "level", "stage")
             .filter(verify_code=normalized)
             .exclude(status=Attempt.Status.IN_PROGRESS)
             .first()
             if normalized
             else None
         )
-        if attempt is None:
+        # Sertifikatsiz bosqich urinishlari sertifikat sifatida tasdiqlanmaydi
+        if attempt is None or not attempt.has_certificate:
             return error("certificate_not_found", status.HTTP_404_NOT_FOUND, valid=False)
-        count = services.active_questions().count()
-        level = attempt.level
         return Response(
             {
                 "valid": True,
@@ -421,9 +505,10 @@ class VerifyView(APIView):
                 "full_name": attempt.participant.full_name,
                 "finished_at": attempt.finished_at,
                 "total_score": attempt.total_score,
-                "max_score": services.score_bounds(count)[1],
+                "max_score": services.attempt_max_score(attempt),
                 "percent": float(attempt.percent or 0),
-                "level": {"name_uz": level.name_uz, "name_ru": level.name_ru} if level else None,
+                "stage": services.stage_payload(attempt),
+                "level": services.level_payload(attempt.level),
                 "telegram_verified": bool(attempt.participant.telegram_id),
             }
         )

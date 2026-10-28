@@ -1,5 +1,6 @@
 """Ballash va urinish holatini boshqarish. Barcha hisob-kitob faqat shu yerda (serverda)."""
 
+import random
 from datetime import timedelta
 from decimal import ROUND_HALF_UP, Decimal
 
@@ -15,7 +16,7 @@ from .models import (
     Category,
     Question,
     ScoreLevel,
-    TestSettings,
+    Stage,
     format_verify_code,
 )
 
@@ -24,8 +25,32 @@ def active_questions():
     return Question.objects.filter(is_active=True).order_by("order", "number")
 
 
+def active_stages():
+    return Stage.objects.filter(is_active=True).order_by("number")
+
+
+def pick_questions(stage, rng=random):
+    """Bosqich uchun tasodifiy savollar: avval qiyinligi mos (≤ max_difficulty), yetmasa – qolganlaridan."""
+    pool = list(active_questions().values_list("id", "difficulty"))
+    preferred = [qid for qid, diff in pool if diff <= stage.max_difficulty]
+    rest = [qid for qid, diff in pool if diff > stage.max_difficulty]
+    count = min(stage.question_count, len(pool))
+    chosen = rng.sample(preferred, min(count, len(preferred)))
+    if len(chosen) < count:
+        chosen += rng.sample(rest, count - len(chosen))
+    rng.shuffle(chosen)
+    return chosen
+
+
+def attempt_questions(attempt):
+    """Urinishga tushgan savollar – ko‘rsatish tartibida (bazadan o‘chirilganlari tushib qoladi)."""
+    ids = attempt.question_ids or []
+    by_id = Question.objects.in_bulk(ids)
+    return [by_id[qid] for qid in ids if qid in by_id]
+
+
 def score_bounds(question_count):
-    """(eng past to‘liq ball, maksimum): 35 savol uchun (105, 245)."""
+    """(eng past to‘liq ball, maksimum): masalan 20 savol uchun (60, 140)."""
     return question_count * MIN_POINTS, question_count * MAX_POINTS
 
 
@@ -40,9 +65,9 @@ def compute_percent(score, question_count):
 def compute_scores(attempt):
     """Urinish uchun umumiy ball va kategoriyalar bo‘yicha ballarni hisoblaydi.
 
-    Javobsiz savol 0 ball. Faqat faol savollar hisobga olinadi.
+    Javobsiz savol 0 ball. Faqat urinishga tushgan savollar hisobga olinadi.
     """
-    questions = list(active_questions())
+    questions = attempt_questions(attempt)
     question_ids = {q.id for q in questions}
     points_by_question = {
         a.question_id: a.option.points
@@ -69,10 +94,14 @@ def compute_scores(attempt):
     return total, categories, len(questions), len(points_by_question)
 
 
-def create_attempt(participant):
-    duration = TestSettings.load().duration_minutes
+def create_attempt(participant, stage):
     now = timezone.now()
-    return Attempt.objects.create(participant=participant, expires_at=now + timedelta(minutes=duration))
+    return Attempt.objects.create(
+        participant=participant,
+        stage=stage,
+        question_ids=pick_questions(stage),
+        expires_at=now + timedelta(minutes=stage.duration_minutes),
+    )
 
 
 def is_expired(attempt, now=None, grace_seconds=0):
@@ -92,7 +121,7 @@ def finalize(attempt, status=Attempt.Status.FINISHED):
     attempt.finished_at = min(now, attempt.expires_at) if status == Attempt.Status.EXPIRED else now
     attempt.total_score = total
     attempt.percent = compute_percent(total, count)
-    attempt.level = ScoreLevel.for_score(total)
+    attempt.level = ScoreLevel.for_percent(attempt.percent)
     attempt.category_scores = categories
     attempt.save()
     transaction.on_commit(lambda: _notify(attempt))
@@ -111,21 +140,39 @@ def expire_if_needed(attempt):
     return attempt
 
 
+def attempt_max_score(attempt):
+    return score_bounds(len(attempt.question_ids or []))[1]
+
+
+def level_payload(level, full=False):
+    if level is None:
+        return None
+    names = level.names()
+    data = {f"name_{code}": name for code, name in names.items()}
+    if full:
+        data.update({f"description_{code}": text for code, text in level.descriptions().items()})
+        data.update({"min_percent": level.min_percent, "max_percent": level.max_percent})
+    return data
+
+
+def stage_payload(attempt):
+    stage = attempt.stage
+    return {"number": stage.number, "certificate": stage.certificate} if stage else None
+
+
 def result_payload(attempt):
-    questions_count = active_questions().count()
-    answered = attempt.answers.filter(question__is_active=True).count()
-    level = attempt.level
+    questions_count = len(attempt.question_ids or [])
+    answered = attempt.answers.filter(question_id__in=attempt.question_ids or []).count()
     end = attempt.finished_at or timezone.now()
     categories = []
     for key, names in CATEGORY_NAMES.items():
         data = (attempt.category_scores or {}).get(key)
-        if not data:
+        if not data or not data.get("count", 1):
             continue
         categories.append(
             {
                 "key": key,
-                "name_uz": names["uz"],
-                "name_ru": names["ru"],
+                **{f"name_{code}": name for code, name in names.items()},
                 "score": data["score"],
                 "max": data["max"],
                 "percent": data["percent"],
@@ -142,20 +189,11 @@ def result_payload(attempt):
         "total_score": attempt.total_score,
         "max_score": score_bounds(questions_count)[1],
         "percent": float(attempt.percent or 0),
-        "level": (
-            {
-                "name_uz": level.name_uz,
-                "name_ru": level.name_ru,
-                "description_uz": level.description_uz,
-                "description_ru": level.description_ru,
-                "min_score": level.min_score,
-                "max_score": level.max_score,
-            }
-            if level
-            else None
-        ),
+        "level": level_payload(attempt.level, full=True),
         "categories": categories,
         "answered_count": answered,
         "total_questions": questions_count,
-        "verify_code": format_verify_code(attempt.verify_code),
+        "stage": stage_payload(attempt),
+        "certificate_available": attempt.has_certificate,
+        "verify_code": format_verify_code(attempt.verify_code) if attempt.has_certificate else "",
     }

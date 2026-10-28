@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "total": 35,
-  "max_score": 245,
-  "min_score": 105,
+  "total": 46,
+  "max_score": 322,
+  "min_score": 138,
   "questions": [
     {
       "number": 1,
       "type": "number",
       "prompt": {
         "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
-        "ru": "Какое число должно стоять вместо знака вопроса?"
+        "ru": "Какое число должно стоять вместо знака вопроса?",
+        "en": "Which number should replace the question mark?"
       },
       "figure": "assets/q01/figure.svg",
       "correct": "C",
@@ -52,14 +53,16 @@
           "value": 41
         }
       ],
-      "category": "numeric"
+      "category": "numeric",
+      "difficulty": 1
     },
     {
       "number": 2,
       "type": "number",
       "prompt": {
         "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
-        "ru": "Какое число должно стоять вместо знака вопроса?"
+        "ru": "Какое число должно стоять вместо знака вопроса?",
+        "en": "Which number should replace the question mark?"
       },
       "figure": "assets/q02/figure.svg",
       "correct": "D",
@@ -102,14 +105,16 @@
           "value": 33
         }
       ],
-      "category": "numeric"
+      "category": "numeric",
+      "difficulty": 1
     },
     {
       "number": 3,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q03/figure.svg",
       "correct": "E",
@@ -152,14 +157,16 @@
           "image": "assets/q03/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 1
     },
     {
       "number": 4,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q04/figure.svg",
       "correct": "D",
@@ -202,14 +209,16 @@
           "image": "assets/q04/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 1
     },
     {
       "number": 5,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q05/figure.svg",
       "correct": "B",
@@ -252,14 +261,16 @@
           "image": "assets/q05/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 1
     },
     {
       "number": 6,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q06/figure.svg",
       "correct": "F",
@@ -302,14 +313,16 @@
           "image": "assets/q06/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 1
     },
     {
       "number": 7,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q07/figure.svg",
       "correct": "C",
@@ -352,14 +365,16 @@
           "image": "assets/q07/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 1
     },
     {
       "number": 8,
       "type": "image",
       "prompt": {
         "uz": "Yetishmayotgan bo‘lak qaysi?",
-        "ru": "Какой фрагмент пропущен?"
+        "ru": "Какой фрагмент пропущен?",
+        "en": "Which piece is missing?"
       },
       "figure": "assets/q08/figure.svg",
       "correct": "D",
@@ -402,14 +417,16 @@
           "image": "assets/q08/option_F.svg"
         }
       ],
-      "category": "spatial"
+      "category": "spatial",
+      "difficulty": 1
     },
     {
       "number": 9,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q09/figure.svg",
       "correct": "B",
@@ -452,14 +469,16 @@
           "image": "assets/q09/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 1
     },
     {
       "number": 10,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q10/figure.svg",
       "correct": "E",
@@ -502,14 +521,16 @@
           "image": "assets/q10/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 1
     },
     {
       "number": 11,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q11/figure.svg",
       "correct": "F",
@@ -552,14 +573,16 @@
           "image": "assets/q11/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 1
     },
     {
       "number": 12,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q12/figure.svg",
       "correct": "B",
@@ -602,14 +625,16 @@
           "image": "assets/q12/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 1
     },
     {
       "number": 13,
       "type": "image",
       "prompt": {
         "uz": "Yetishmayotgan bo‘lak qaysi?",
-        "ru": "Какой фрагмент пропущен?"
+        "ru": "Какой фрагмент пропущен?",
+        "en": "Which piece is missing?"
       },
       "figure": "assets/q13/figure.svg",
       "correct": "D",
@@ -652,14 +677,16 @@
           "image": "assets/q13/option_F.svg"
         }
       ],
-      "category": "spatial"
+      "category": "spatial",
+      "difficulty": 1
     },
     {
       "number": 14,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q14/figure.svg",
       "correct": "C",
@@ -702,14 +729,16 @@
           "image": "assets/q14/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 1
     },
     {
       "number": 15,
       "type": "image",
       "prompt": {
         "uz": "Yetishmayotgan bo‘lak qaysi?",
-        "ru": "Какой фрагмент пропущен?"
+        "ru": "Какой фрагмент пропущен?",
+        "en": "Which piece is missing?"
       },
       "figure": "assets/q15/figure.svg",
       "correct": "E",
@@ -752,14 +781,16 @@
           "image": "assets/q15/option_F.svg"
         }
       ],
-      "category": "spatial"
+      "category": "spatial",
+      "difficulty": 1
     },
     {
       "number": 16,
       "type": "image",
       "prompt": {
         "uz": "Yetishmayotgan bo‘lak qaysi?",
-        "ru": "Какой фрагмент пропущен?"
+        "ru": "Какой фрагмент пропущен?",
+        "en": "Which piece is missing?"
       },
       "figure": "assets/q16/figure.svg",
       "correct": "A",
@@ -802,14 +833,16 @@
           "image": "assets/q16/option_F.svg"
         }
       ],
-      "category": "spatial"
+      "category": "spatial",
+      "difficulty": 2
     },
     {
       "number": 17,
       "type": "number",
       "prompt": {
         "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
-        "ru": "Какое число должно стоять вместо знака вопроса?"
+        "ru": "Какое число должно стоять вместо знака вопроса?",
+        "en": "Which number should replace the question mark?"
       },
       "figure": "assets/q17/figure.svg",
       "correct": "B",
@@ -852,14 +885,16 @@
           "value": 52
         }
       ],
-      "category": "numeric"
+      "category": "numeric",
+      "difficulty": 2
     },
     {
       "number": 18,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q18/figure.svg",
       "correct": "E",
@@ -902,14 +937,16 @@
           "image": "assets/q18/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 2
     },
     {
       "number": 19,
       "type": "image",
       "prompt": {
         "uz": "Yetishmayotgan bo‘lak qaysi?",
-        "ru": "Какой фрагмент пропущен?"
+        "ru": "Какой фрагмент пропущен?",
+        "en": "Which piece is missing?"
       },
       "figure": "assets/q19/figure.svg",
       "correct": "D",
@@ -952,14 +989,16 @@
           "image": "assets/q19/option_F.svg"
         }
       ],
-      "category": "spatial"
+      "category": "spatial",
+      "difficulty": 2
     },
     {
       "number": 20,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q20/figure.svg",
       "correct": "D",
@@ -1002,14 +1041,16 @@
           "image": "assets/q20/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 2
     },
     {
       "number": 21,
       "type": "number",
       "prompt": {
         "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
-        "ru": "Какое число должно стоять вместо знака вопроса?"
+        "ru": "Какое число должно стоять вместо знака вопроса?",
+        "en": "Which number should replace the question mark?"
       },
       "figure": "assets/q21/figure.svg",
       "correct": "D",
@@ -1052,14 +1093,16 @@
           "value": 65
         }
       ],
-      "category": "numeric"
+      "category": "numeric",
+      "difficulty": 2
     },
     {
       "number": 22,
       "type": "image",
       "prompt": {
         "uz": "Yetishmayotgan bo‘lak qaysi?",
-        "ru": "Какой фрагмент пропущен?"
+        "ru": "Какой фрагмент пропущен?",
+        "en": "Which piece is missing?"
       },
       "figure": "assets/q22/figure.svg",
       "correct": "F",
@@ -1102,14 +1145,16 @@
           "image": "assets/q22/option_F.svg"
         }
       ],
-      "category": "spatial"
+      "category": "spatial",
+      "difficulty": 2
     },
     {
       "number": 23,
       "type": "number",
       "prompt": {
         "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
-        "ru": "Какое число должно стоять вместо знака вопроса?"
+        "ru": "Какое число должно стоять вместо знака вопроса?",
+        "en": "Which number should replace the question mark?"
       },
       "figure": "assets/q23/figure.svg",
       "correct": "C",
@@ -1152,14 +1197,16 @@
           "value": 80
         }
       ],
-      "category": "numeric"
+      "category": "numeric",
+      "difficulty": 2
     },
     {
       "number": 24,
       "type": "image",
       "prompt": {
         "uz": "Yetishmayotgan bo‘lak qaysi?",
-        "ru": "Какой фрагмент пропущен?"
+        "ru": "Какой фрагмент пропущен?",
+        "en": "Which piece is missing?"
       },
       "figure": "assets/q24/figure.svg",
       "correct": "B",
@@ -1202,14 +1249,16 @@
           "image": "assets/q24/option_F.svg"
         }
       ],
-      "category": "spatial"
+      "category": "spatial",
+      "difficulty": 2
     },
     {
       "number": 25,
       "type": "image",
       "prompt": {
         "uz": "Yetishmayotgan bo‘lak qaysi?",
-        "ru": "Какой фрагмент пропущен?"
+        "ru": "Какой фрагмент пропущен?",
+        "en": "Which piece is missing?"
       },
       "figure": "assets/q25/figure.svg",
       "correct": "C",
@@ -1252,14 +1301,16 @@
           "image": "assets/q25/option_F.svg"
         }
       ],
-      "category": "spatial"
+      "category": "spatial",
+      "difficulty": 2
     },
     {
       "number": 26,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q26/figure.svg",
       "correct": "F",
@@ -1302,14 +1353,16 @@
           "image": "assets/q26/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 2
     },
     {
       "number": 27,
       "type": "number",
       "prompt": {
         "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
-        "ru": "Какое число должно стоять вместо знака вопроса?"
+        "ru": "Какое число должно стоять вместо знака вопроса?",
+        "en": "Which number should replace the question mark?"
       },
       "figure": "assets/q27/figure.svg",
       "correct": "B",
@@ -1352,14 +1405,16 @@
           "value": 144
         }
       ],
-      "category": "numeric"
+      "category": "numeric",
+      "difficulty": 2
     },
     {
       "number": 28,
       "type": "image",
       "prompt": {
         "uz": "Yetishmayotgan bo‘lak qaysi?",
-        "ru": "Какой фрагмент пропущен?"
+        "ru": "Какой фрагмент пропущен?",
+        "en": "Which piece is missing?"
       },
       "figure": "assets/q28/figure.svg",
       "correct": "C",
@@ -1402,14 +1457,16 @@
           "image": "assets/q28/option_F.svg"
         }
       ],
-      "category": "spatial"
+      "category": "spatial",
+      "difficulty": 2
     },
     {
       "number": 29,
       "type": "number",
       "prompt": {
         "uz": "Savol belgisi o‘rniga qaysi son turishi kerak?",
-        "ru": "Какое число должно стоять вместо знака вопроса?"
+        "ru": "Какое число должно стоять вместо знака вопроса?",
+        "en": "Which number should replace the question mark?"
       },
       "figure": "assets/q29/figure.svg",
       "correct": "E",
@@ -1452,14 +1509,16 @@
           "value": 40
         }
       ],
-      "category": "numeric"
+      "category": "numeric",
+      "difficulty": 2
     },
     {
       "number": 30,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q30/figure.svg",
       "correct": "D",
@@ -1502,14 +1561,16 @@
           "image": "assets/q30/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 2
     },
     {
       "number": 31,
       "type": "image",
       "prompt": {
         "uz": "Yetishmayotgan bo‘lak qaysi?",
-        "ru": "Какой фрагмент пропущен?"
+        "ru": "Какой фрагмент пропущен?",
+        "en": "Which piece is missing?"
       },
       "figure": "assets/q31/figure.svg",
       "correct": "A",
@@ -1552,14 +1613,16 @@
           "image": "assets/q31/option_F.svg"
         }
       ],
-      "category": "spatial"
+      "category": "spatial",
+      "difficulty": 3
     },
     {
       "number": 32,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q32/figure.svg",
       "correct": "C",
@@ -1602,14 +1665,16 @@
           "image": "assets/q32/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 3
     },
     {
       "number": 33,
       "type": "image",
       "prompt": {
         "uz": "Yetishmayotgan bo‘lak qaysi?",
-        "ru": "Какой фрагмент пропущен?"
+        "ru": "Какой фрагмент пропущен?",
+        "en": "Which piece is missing?"
       },
       "figure": "assets/q33/figure.svg",
       "correct": "E",
@@ -1652,14 +1717,16 @@
           "image": "assets/q33/option_F.svg"
         }
       ],
-      "category": "spatial"
+      "category": "spatial",
+      "difficulty": 3
     },
     {
       "number": 34,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q34/figure.svg",
       "correct": "A",
@@ -1702,14 +1769,16 @@
           "image": "assets/q34/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 3
     },
     {
       "number": 35,
       "type": "image",
       "prompt": {
         "uz": "Keyingi rasm qaysi?",
-        "ru": "Какая фигура следующая?"
+        "ru": "Какая фигура следующая?",
+        "en": "Which figure comes next?"
       },
       "figure": "assets/q35/figure.svg",
       "correct": "D",
@@ -1752,7 +1821,580 @@
           "image": "assets/q35/option_F.svg"
         }
       ],
-      "category": "pattern"
+      "category": "pattern",
+      "difficulty": 3
+    },
+    {
+      "number": 37,
+      "type": "image",
+      "category": "pattern",
+      "prompt": {
+        "uz": "To‘g‘ri javobni tanlang.",
+        "ru": "Выберите правильный ответ.",
+        "en": "Choose the correct answer."
+      },
+      "figure": "assets/q37/figure.svg",
+      "correct": "C",
+      "logic_uz": "1-ustunda kichik kvadrat, 2-ustunda chiziq. 3-ustundagi figura kvadratning chiziq yo'nalishida cho'zilgan holati. 1-qator: tik chiziq kvadratni bo'yiga cho'zadi. 2-qator: yotiq chiziq eniga cho'zadi. 3-qator: plyus ikkala yo'nalishda cho'zadi, natija katta kvadrat. Diagonal yo'nalishi (/) o'zgarmaydi, lekin bo'yalgan uchburchak teskari tomonga o'tadi. 1-qatorda yuqori chap bo'yalgan edi, natijada pastki o'ng bo'yalgan; 2-qatorda aksincha. 3-qatordagi kichik kvadratda yuqori chap bo'yalgan, demak javobda pastki o'ng bo'yalgan bo'ladi. Javob: C variant — katta kvadrat, diagonal /, pastki o'ng qismi bo'yalgan.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "O'lcham to'g'ri (katta kvadrat), lekin diagonal teskari yo'nalishda (\\). 1-ustundagi barcha kvadratlarda diagonal pastki chapdan yuqori o'ngga (/) boradi.",
+          "image": "assets/q37/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 3,
+          "reason_uz": "Bu 2-qatordagi 3-katakning nusxasi. Plyus belgisi ikki tomonga cho'zishni talab qiladi, bu yerda faqat eniga cho'zilgan.",
+          "image": "assets/q37/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 7,
+          "reason_uz": "Plyus ikkala yo'nalishda cho'zadi, shuning uchun katta kvadrat. Diagonal o'zgarmaydi (/), bo'yalgan qism esa teskarisiga o'tadi: yuqori chapdan pastki o'ngga.",
+          "image": "assets/q37/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 6,
+          "reason_uz": "O'lcham va diagonal to'g'ri, lekin bo'yalgan qism almashtirilmagan. 1- va 2-qatorlarda 3-ustunda bo'yoq doim teskari tomonga o'tadi.",
+          "image": "assets/q37/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "Bu 1-qatordagi 3-katakning nusxasi: faqat bo'yiga cho'zilgan. Plyusning gorizontal chizig'i hisobga olinmagan.",
+          "image": "assets/q37/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 4,
+          "reason_uz": "Bo'yoq to'g'ri almashtirilgan, lekin shakl faqat eniga cho'zilgan. Plyus esa ikkala yo'nalishda cho'zishni bildiradi.",
+          "image": "assets/q37/option_F.svg"
+        }
+      ],
+      "difficulty": 3
+    },
+    {
+      "number": 38,
+      "type": "image",
+      "category": "spatial",
+      "prompt": {
+        "uz": "To‘g‘ri javobni tanlang.",
+        "ru": "Выберите правильный ответ.",
+        "en": "Choose the correct answer."
+      },
+      "figure": "assets/q38/figure.svg",
+      "correct": "D",
+      "logic_uz": "Bu bitta varaqni ketma-ket buklash jarayoni. Har qadamda bitta yangi burchak buklanadi va figura kichrayib boradi (o'qish tartibi: chapdan o'ngga, yuqoridan pastga). 1-qator: konvert qopqog'i ochiq (uy shakli), keyin pastga buklangan, keyin burchak buklangan. 2-qator: kvadratning burchaklari birin-ketin markazga buklanadi, natijada romb (+ chiziqlari bilan) hosil bo'ladi. 3-qator: endi rombning burchaklari buklanadi. 7-katakda o'ng burchak, 8-katakda chap burchak buklangan (tik olti burchakli shakl, X va tik chiziq bilan). Navbatdagi qadamda tepa burchak buklanadi: tepasi tekis, pastda uchli shakl. X chiziqlar va tik chiziqning pastki qismi saqlanadi. Javob: D variant.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 4,
+          "reason_uz": "Shakl kichik, lekin bu 3-qator 1-katagini aylantirilgan holati. Buklash ketma-ketligi davom ettirilmagan.",
+          "image": "assets/q38/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 5,
+          "reason_uz": "Buklash yo'nalishi to'g'ri tushunilgan, lekin bir qadam o'tkazib yuborilgan: bu tepa va past burchaklar IKKALASI buklangandagi holat. Navbatdagi qadamda faqat bitta burchak buklanadi.",
+          "image": "assets/q38/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 6,
+          "reason_uz": "Bitta burchak buklangan, lekin pastki burchak buklangan va 8-katakdagi tik chiziq yo'qolgan. Tepa burchak buklanganda tik chiziqning pastki qismi saqlanib qolishi kerak edi.",
+          "image": "assets/q38/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 7,
+          "reason_uz": "8-katakdagi olti burchakli figuraning tepa burchagi pastga buklangan: tepasi tekis, pastda uchli. X chiziqlar va tik chiziqning pastki qismi saqlangan, o'lcham ham kichraygan.",
+          "image": "assets/q38/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "Bu 2-qator 1-katakning katta nusxasi. Ketma-ketlik oxirida figura eng kichik bo'lishi kerak.",
+          "image": "assets/q38/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "Bu 2-qator 2-katakning kichraytirilgan nusxasi. Ketma-ketlik oldinga emas, orqaga qaytarilgan.",
+          "image": "assets/q38/option_F.svg"
+        }
+      ],
+      "difficulty": 3
+    },
+    {
+      "number": 39,
+      "type": "image",
+      "category": "pattern",
+      "prompt": {
+        "uz": "To‘g‘ri javobni tanlang.",
+        "ru": "Выберите правильный ответ.",
+        "en": "Choose the correct answer."
+      },
+      "figure": "assets/q39/figure.svg",
+      "correct": "F",
+      "logic_uz": "3-ustun = 1-ustun + 2-ustun ustma-ust qo'yilgan holati, lekin chiziqlar uchun maxsus qoida bor. Shakllar (kvadrat, romb, doira) har doim saqlanadi: tashqi shakl 1-katakdan, ichki shakl 2-katakdan olinadi. Chiziqlar: ikkala katakda bir xil yo'nalishda bo'lsa, bir-birini yo'qotadi; faqat bitta katakda bo'lsa, qoladi. 1-qatorda tik chiziq ikkalasida bor, shuning uchun 3-katakda yo'q. 2-qatorda yotiq chiziq ikkalasida bor, u yo'qolgan; qiya chiziq faqat 1-katakda, u qolgan. 3-qatorda + chiziqlar ikkala katakda ham bor, demak ikkalasi ham yo'qoladi. Javob: F variant — katta doira ichida kichik doira, chiziqsiz.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "Tashqi va ichki shakllar to'g'ri birlashtirilgan, lekin chiziqlar o'chirilmagan. Ikkala katakda ham bir xil bo'lgan chiziqlar natijada yo'qoladi.",
+          "image": "assets/q39/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 3,
+          "reason_uz": "Bu 2-qatordagi 3-katakning nusxasi. 3-qatorning shakllari (doiralar) e'tiborga olinmagan.",
+          "image": "assets/q39/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 3,
+          "reason_uz": "Tashqi shakl kvadrat va diagonal chiziqlar — bular 3-qatorda umuman yo'q.",
+          "image": "assets/q39/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "Bu chapdagi (7-katak) nusxasi. 2-katakdagi kichik doira qo'shilmagan, chiziqlar ham o'chirilmagan.",
+          "image": "assets/q39/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 5,
+          "reason_uz": "Chiziqlar to'g'ri o'chirilgan, lekin 1-katakdagi katta doira tushib qolgan.",
+          "image": "assets/q39/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 7,
+          "reason_uz": "Katta doira (1-katakdan) va kichik doira (2-katakdan) birlashtirilgan. Ikkala katakda ham bor bo'lgan + chiziqlar bir-birini yo'qotgan.",
+          "image": "assets/q39/option_F.svg"
+        }
+      ],
+      "difficulty": 3
+    },
+    {
+      "number": 40,
+      "type": "image",
+      "category": "pattern",
+      "prompt": {
+        "uz": "To‘g‘ri javobni tanlang.",
+        "ru": "Выберите правильный ответ.",
+        "en": "Choose the correct answer."
+      },
+      "figure": "assets/q40/figure.svg",
+      "correct": "F",
+      "logic_uz": "Har bir katakdagi halqalar — son. O'q chizig'i (tik chiziq) bor halqalar musbat (+), o'qsizlari manfiy (−) ma'noni beradi. 1-qator: 4 ta halqa (o'q bilan) va 2 ta halqa (o'qsiz): 4 − 2 = 2. Natija: 2 ta halqa. 2-qator: 1 (o'q bilan) va 1 (o'q bilan): 1 + 1 = 2. Natija: 2 ta halqa. 3-qator: 5 (o'q bilan) va 1 (o'qsiz): 5 − 1 = 4. 3-ustundagi natijalar doim o'qsiz chiziladi. Javob: F variant — 4 ta o'qsiz halqa.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 4,
+          "reason_uz": "Bu 1- va 2-qatordagi 3-katakning nusxasi (2 ta halqa). 3-qatordagi sonlar hisoblanmagan.",
+          "image": "assets/q40/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 3,
+          "reason_uz": "Bu chapdagi katakning nusxasi. Hech qanday hisob bajarilmagan.",
+          "image": "assets/q40/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "Halqalar soni (4) to'g'ri, lekin o'q chizig'i bor va halqalar zich joylashgan. 3-ustundagi natijalarda o'q chizig'i bo'lmaydi.",
+          "image": "assets/q40/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 3,
+          "reason_uz": "Son ham (2), uslub ham (o'q bilan) noto'g'ri.",
+          "image": "assets/q40/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 6,
+          "reason_uz": "Son to'g'ri (5 − 1 = 4), lekin o'q chizig'i qo'shilgan. 3-ustundagi natijalar doim o'qsiz chiziladi.",
+          "image": "assets/q40/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 7,
+          "reason_uz": "5 − 1 = 4 ta halqa, 3-ustundagi natijalar kabi o'qsiz.",
+          "image": "assets/q40/option_F.svg"
+        }
+      ],
+      "difficulty": 3
+    },
+    {
+      "number": 41,
+      "type": "image",
+      "category": "pattern",
+      "prompt": {
+        "uz": "To‘g‘ri javobni tanlang.",
+        "ru": "Выберите правильный ответ.",
+        "en": "Choose the correct answer."
+      },
+      "figure": "assets/q41/figure.svg",
+      "correct": "E",
+      "logic_uz": "Har bir qatorda uch xil shakl bittadan: doira, yotiq ellips, tik ellips. 3-qatorda tik ellips va doira bor, demak yotiq ellips yetishmayapti. Har bir qatorda o'rta ustundagi figura bo'sh, chetdagilar yarmi bo'yalgan. Demak javob bo'sh bo'lmaydi. Bo'yoqlar: chap yarmi chiziqli 3 marta, o'ng yarmi to'liq 2 marta uchraydi. Har bir tur 3 martadan bo'lishi uchun javob o'ng yarmi to'liq bo'lishi kerak. Javob: E variant — o'ng yarmi to'liq bo'yalgan yotiq ellips.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "Bo'yoq turi to'g'ri (o'ng yarmi to'liq), lekin bu 7-katakning nusxasi. Tik ellips 3-qatorda allaqachon bor.",
+          "image": "assets/q41/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 3,
+          "reason_uz": "Doira 3-qatorda allaqachon bor, chiziqli bo'yoq esa matritsada yetarli (3 marta) uchragan.",
+          "image": "assets/q41/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 3,
+          "reason_uz": "Kvadrat matritsada umuman yo'q.",
+          "image": "assets/q41/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 6,
+          "reason_uz": "Shakl to'g'ri (yotiq ellips), lekin bo'sh. Har bir qatorda bo'sh figura faqat bitta (o'rtadagi ustunda) bo'ladi.",
+          "image": "assets/q41/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 7,
+          "reason_uz": "Yotiq ellips (3-qatorda yetishmayotgan shakl), o'ng yarmi to'liq bo'yalgan (yetishmayotgan bo'yoq).",
+          "image": "assets/q41/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 4,
+          "reason_uz": "Bu 1-qator 3-katakning nusxasi. Na shakl, na bo'yoq 3-qatorga mos.",
+          "image": "assets/q41/option_F.svg"
+        }
+      ],
+      "difficulty": 3
+    },
+    {
+      "number": 42,
+      "type": "image",
+      "category": "spatial",
+      "prompt": {
+        "uz": "To‘g‘ri javobni tanlang.",
+        "ru": "Выберите правильный ответ.",
+        "en": "Choose the correct answer."
+      },
+      "figure": "assets/q42/figure.svg",
+      "correct": "A",
+      "logic_uz": "Butun matritsa markaz atrofida 180° aylantirilsa, o'ziga o'xshab qoladi. Bunda har bir katak qarama-qarshi katakka o'tadi va ichidagi belgilar ham 180° buriladi. Tekshiruv: 2-katak ↔ 8-katak (ikkalasida bir xil uchburchaklar), 4 ↔ 6 (bir xil), 3 ↔ 7 (ikkita doira). 5-katak 180° burilganda o'ziga teng: uchburchaklar o'rin almashadi va burilib, avvalgi ko'rinishga qaytadi. Demak, 9-katak = 1-katak 180° burilgan holati. 1-katakda chiziqning yuqori-chap tomonida ikki doira, pastki-o'ng tomonida uchburchak bor. 180° burilganda doiralar pastki-o'ngga, uchburchak yuqori-chapga o'tadi va ag'dariladi. Javob: A variant.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 7,
+          "reason_uz": "1-katakni 180° aylantirilgan holati: ikki doira chiziqning pastki-o'ng tomoniga, uchburchak yuqori-chap tomonga o'tgan va 180° burilgan.",
+          "image": "assets/q42/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 3,
+          "reason_uz": "Faqat chiziq, belgilar butunlay yo'q — hech bir qoidaga asoslanmagan.",
+          "image": "assets/q42/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "Bu 3- va 7-katakdagi ikki doira nusxasi. Burchakdagi kataklar bir-biriga mos bo'lishi to'g'ri sezilgan, lekin 9-katakning jufti 1-katak.",
+          "image": "assets/q42/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "Uchburchak to'g'ri joylashgan, lekin bitta doira yetishmaydi. 1-katakda ikkita doira bor edi.",
+          "image": "assets/q42/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 6,
+          "reason_uz": "Belgilar 1-katakdan olinib, chiziqning qarama-qarshi tomoniga o'tkazilgan, lekin uchburchak aylantirilmagan: u 1-katakdagi holatda qolgan.",
+          "image": "assets/q42/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "Bu markazdagi (5-katak) nusxasi.",
+          "image": "assets/q42/option_F.svg"
+        }
+      ],
+      "difficulty": 3
+    },
+    {
+      "number": 43,
+      "type": "image",
+      "category": "pattern",
+      "prompt": {
+        "uz": "To‘g‘ri javobni tanlang.",
+        "ru": "Выберите правильный ответ.",
+        "en": "Choose the correct answer."
+      },
+      "figure": "assets/q43/figure.svg",
+      "correct": "F",
+      "logic_uz": "2-qator va 3-qatorni ustunma-ustun solishtiring. 1-ustun: )( ikki xil yoydan iborat, chapdagi ) va o'ngdagi (. 3-qatorda (( — o'ng yoy ikki marta takrorlangan. 2-ustun: uchburchak / va \\ chiziqlardan iborat. 3-qatorda \\\\ — o'ng tomondagi \\ chizig'i ikki marta takrorlangan (asosi bilan). Demak 3-qator = 2-qatordagi figuraning o'ng yarmi ikki marta yonma-yon. 3-ustun: ⊔ = |_ (chap yarmi) + _| (o'ng yarmi). O'ng yarmi ikki marta: _|_|. Javob: F variant.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 3,
+          "reason_uz": "T harfi — 1-katakning ag'darilgani. 3-qatordagi qoidaga aloqasi yo'q.",
+          "image": "assets/q43/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 4,
+          "reason_uz": "6-katak teskari ag'darilgan. Shakl o'zgarmagan, faqat burilgan.",
+          "image": "assets/q43/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 6,
+          "reason_uz": "Bir xil yarmi ikki marta takrorlangan — bu g'oya to'g'ri. Lekin chap yarmi (|_) takrorlangan, qatordagi namunada esa doim o'ng yarmi takrorlanadi.",
+          "image": "assets/q43/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 3,
+          "reason_uz": "Chiziqlar soni ko'p, lekin hech qaysi yarmi takrorlanmagan.",
+          "image": "assets/q43/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 5,
+          "reason_uz": "⊔ shakli saqlangan, unga qo'shimcha ilmoq qo'shilgan. Lekin to'g'ri javobda bir xil yarim ikki marta ketma-ket keladi.",
+          "image": "assets/q43/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 7,
+          "reason_uz": "⊔ ning o'ng yarmi (_|) ikki marta yonma-yon takrorlangan: _|_|.",
+          "image": "assets/q43/option_F.svg"
+        }
+      ],
+      "difficulty": 3
+    },
+    {
+      "number": 44,
+      "type": "image",
+      "category": "pattern",
+      "prompt": {
+        "uz": "To‘g‘ri javobni tanlang.",
+        "ru": "Выберите правильный ответ.",
+        "en": "Choose the correct answer."
+      },
+      "figure": "assets/q44/figure.svg",
+      "correct": "D",
+      "logic_uz": "Har bir doirada ikki strelka bor: biri to'ldirilgan belgili, biri bo'sh belgili. Har bir qatorda to'ldirilgan strelka 45° soat strelkasi bo'ylab buriladi. 1-qator: 6 → 7:30 → 9. 2-qator: 12 → 1:30 → 3. Bo'sh belgili strelka esa 45° soat strelkasiga teskari buriladi. 1-qator: 3 → 1:30 → 12. 2-qator: 10:30 → 9 → 7:30. 3-qator: to'ldirilgan 4:30 → 6 → 7:30, bo'sh 6 → 4:30 → 3. Javob: D variant — to'ldirilgan belgi 7:30 da, bo'sh belgi 3 da.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 3,
+          "reason_uz": "Bu 4-katakning nusxasi.",
+          "image": "assets/q44/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 6,
+          "reason_uz": "To'ldirilgan belgi to'g'ri (7:30 yo'nalishi), lekin bo'sh belgi joyidan siljimagan. U ham har qadamda 45° soat strelkasiga teskari yurishi kerak.",
+          "image": "assets/q44/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 5,
+          "reason_uz": "Bo'sh belgi to'g'ri (3 yo'nalishi), lekin to'ldirilgan belgi orqaga qaytgan. U har qadamda 45° soat strelkasi bo'ylab yurishi kerak.",
+          "image": "assets/q44/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 7,
+          "reason_uz": "To'ldirilgan belgi 6 dan 7:30 ga (+45°), bo'sh belgi 4:30 dan 3 ga (−45°) o'tgan.",
+          "image": "assets/q44/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 3,
+          "reason_uz": "Ikkala belgi ham noto'g'ri yo'nalishda.",
+          "image": "assets/q44/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 4,
+          "reason_uz": "Yo'nalishlar to'g'ri (3 va 7:30), lekin belgilar almashib qolgan: bu 6-katakning nusxasi.",
+          "image": "assets/q44/option_F.svg"
+        }
+      ],
+      "difficulty": 3
+    },
+    {
+      "number": 45,
+      "type": "image",
+      "category": "pattern",
+      "prompt": {
+        "uz": "To‘g‘ri javobni tanlang.",
+        "ru": "Выберите правильный ответ.",
+        "en": "Choose the correct answer."
+      },
+      "figure": "assets/q45/figure.svg",
+      "correct": "B",
+      "logic_uz": "Har bir katak chiziq bilan chap va o'ng ustunga bo'lingan. Har qatorda 3-katak 1- va 2-kataklardan hosil bo'ladi. Chap ustun — qo'shish: 1-katak belgilari ostiga 2-katak belgilari qo'shiladi. 1-qator: (* •) + (•) = (* • •). 2-qator: (•) + (* •) = (• * •). O'ng ustun — ayirish: 1-katakdan 2-katakdagi belgilar olib tashlanadi. 1-qator: (* * •) − (* •) = (*). 2-qator: (• *) − (*) = (•). 3-qator: chap (*) + (*) = (* *). O'ng (• *) − (*) = (•). Javob: B variant.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 5,
+          "reason_uz": "Chap tomon to'g'ri (* + * = * *), lekin o'ng tomonda ayirish noto'g'ri bajarilgan.",
+          "image": "assets/q45/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 7,
+          "reason_uz": "Chap: * va * qo'shiladi → * *. O'ng: (• *) dan (*) ayiriladi → •.",
+          "image": "assets/q45/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 3,
+          "reason_uz": "Belgilar turi ikkala tomonda ham almashib ketgan.",
+          "image": "assets/q45/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "O'ng tomonda ham qo'shish bajarilgan, lekin o'ng ustunda ayirish kerak edi.",
+          "image": "assets/q45/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 6,
+          "reason_uz": "Chap tomon to'g'ri. O'ng tomonda esa 1-katak o'zgarishsiz ko'chirilgan, 2-katakdagi * ayirilmagan.",
+          "image": "assets/q45/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 3,
+          "reason_uz": "Hech bir tomon qoidaga mos emas.",
+          "image": "assets/q45/option_F.svg"
+        }
+      ],
+      "difficulty": 3
+    },
+    {
+      "number": 46,
+      "type": "image",
+      "category": "pattern",
+      "prompt": {
+        "uz": "To‘g‘ri javobni tanlang.",
+        "ru": "Выберите правильный ответ.",
+        "en": "Choose the correct answer."
+      },
+      "figure": "assets/q46/figure.svg",
+      "correct": "E",
+      "logic_uz": "Kataklarni o'qish tartibida (chapdan o'ngga, yuqoridan pastga) kuzating. Nuqta 5 ta holat bo'yicha aylanadi: 1) pastki chapga yaqin, 2) o'ng tomonda yuqoriroq, 3) yuqori o'ng, 4) yuqori chapga yaqin (ichkarida), 5) chap tomonda pastroq. 1–5-kataklar: 1, 2, 3, 4, 5-holatlar. 6-katak yana 1-holat, 7-katak 2-holat, 8-katak 3-holat. Demak 9-katak 4-holat bo'ladi. Tekshiruv ustunlar bo'yicha: 2-ustundagi har bir katak 1-ustundagidan bitta keyingi holatda, 3-ustun 2-ustundan yana bitta keyin (5 dan keyin 1 keladi). 8-katak 3-holat, demak 9-katak 4-holat. Javob: E variant.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 6,
+          "reason_uz": "Nuqta takrorlanadigan holatlardan birida turibdi (1-holat), lekin davr uzunligi noto'g'ri hisoblangan: davr 5 ta holatdan iborat.",
+          "image": "assets/q46/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 3,
+          "reason_uz": "Bu holat matritsada umuman uchramaydi.",
+          "image": "assets/q46/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 3,
+          "reason_uz": "Pastki o'ng burchak matritsada hech qachon uchramaydi.",
+          "image": "assets/q46/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "Bu 7-katakning nusxasi (2-holat).",
+          "image": "assets/q46/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 7,
+          "reason_uz": "Bu 4-holat (yuqori chapga yaqin, ichkarida) — 5 holatli davrning navbatdagisi.",
+          "image": "assets/q46/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 5,
+          "reason_uz": "Bu 3-katakning nusxasi. Ustun bo'yicha takror bor deb o'ylangan, lekin ustunlarda nuqta har qatorda o'zgaradi.",
+          "image": "assets/q46/option_F.svg"
+        }
+      ],
+      "difficulty": 3
+    },
+    {
+      "number": 47,
+      "type": "image",
+      "category": "pattern",
+      "prompt": {
+        "uz": "To‘g‘ri javobni tanlang.",
+        "ru": "Выберите правильный ответ.",
+        "en": "Choose the correct answer."
+      },
+      "figure": "assets/q47/figure.svg",
+      "correct": "E",
+      "logic_uz": "Har bir figura tana (yon tomonlar) va qopqoqlardan (tepa va past) iborat. Tana qatorga bog'liq: 1-qator uchburchak (qiya yonlar), 2-qator uy (tik yonlar), 3-qator ellips (egri yonlar). Qopqoqlar 3 xil: A — pog'ona + tekis + qiya burchak; B — pog'ona + uzun qiya; C — yelkali yoy. B va C ikki martadan bor, A esa bir marta. Demak, javobda A qopqoq bo'ladi. 2-ustundagi figuralarda pog'ona tepada chapda, pastda o'ngda — figura 180° aylantirilsa, qopqoqlar o'rin almashadi. E variant shunday, B variant esa ko'zgudek teskari. Javob: E variant.",
+      "options": [
+        {
+          "letter": "A",
+          "points": 3,
+          "reason_uz": "Bu 6-katakning nusxasi: uy tanasi va yoy qopqoqlar. 3-qatorda tana egri yonli bo'lishi kerak.",
+          "image": "assets/q47/option_A.svg"
+        },
+        {
+          "letter": "B",
+          "points": 6,
+          "reason_uz": "Tana (egri yonlar) va qopqoq turi to'g'ri, lekin tepa qopqoq ko'zgudek teskari: tepada ham, pastda ham pog'ona o'ngda. Matritsada pog'ona doim tepada chapda, pastda o'ngda turadi.",
+          "image": "assets/q47/option_B.svg"
+        },
+        {
+          "letter": "C",
+          "points": 3,
+          "reason_uz": "Bu ham 6-katakning deyarli aynan nusxasi.",
+          "image": "assets/q47/option_C.svg"
+        },
+        {
+          "letter": "D",
+          "points": 4,
+          "reason_uz": "Qopqoq turi to'g'ri, lekin tana uchburchakniki — bu 1-qatorga tegishli.",
+          "image": "assets/q47/option_D.svg"
+        },
+        {
+          "letter": "E",
+          "points": 7,
+          "reason_uz": "Ellips tanasi (egri yonlar) va 3-qatorda hali ishlatilmagan pog'onali qopqoqlar, namunadagi yo'nalishda.",
+          "image": "assets/q47/option_E.svg"
+        },
+        {
+          "letter": "F",
+          "points": 5,
+          "reason_uz": "Tana to'g'ri, lekin bu chapdagi katakning nusxasi: qiya qopqoq 3-qatorda allaqachon bor.",
+          "image": "assets/q47/option_F.svg"
+        }
+      ],
+      "difficulty": 3
     }
   ],
   "categories": {

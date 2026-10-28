@@ -37,7 +37,7 @@ class QuestionPublicSerializer(serializers.ModelSerializer):
         return obj.figure.url if obj.figure else None
 
     def get_prompt(self, obj):
-        return {"uz": obj.prompt_uz, "ru": obj.prompt_ru}
+        return {"uz": obj.prompt_uz, "ru": obj.prompt_ru, "en": obj.prompt_en or obj.prompt_uz}
 
 
 class AttemptCreateSerializer(serializers.Serializer):
@@ -45,6 +45,7 @@ class AttemptCreateSerializer(serializers.Serializer):
     phone = serializers.CharField(max_length=32, required=False, allow_blank=True, default="")
     language = serializers.ChoiceField(choices=Language.choices, default=Language.UZ)
     telegram_init_data = serializers.CharField(required=False, allow_blank=True, default="", max_length=4096)
+    stage = serializers.IntegerField(min_value=1, default=1)
 
     def validate_full_name(self, value):
         value = re.sub(r"\s+", " ", value).strip()
@@ -67,3 +68,17 @@ class AnswerSerializer(serializers.Serializer):
 
 class TelegramAuthSerializer(serializers.Serializer):
     init_data = serializers.CharField(max_length=4096)
+
+
+class BotRegisterSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    first_name = serializers.CharField(required=False, allow_blank=True, default="", max_length=256)
+    last_name = serializers.CharField(required=False, allow_blank=True, default="", max_length=256)
+    username = serializers.CharField(required=False, allow_blank=True, default="", max_length=64)
+    language_code = serializers.CharField(required=False, allow_blank=True, default="", max_length=12)
+    start_param = serializers.CharField(required=False, allow_blank=True, default="", max_length=64)
+
+
+class BotLanguageSerializer(serializers.Serializer):
+    telegram_id = serializers.IntegerField()
+    language = serializers.ChoiceField(choices=Language.choices)

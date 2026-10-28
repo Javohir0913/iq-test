@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
-from django.db.models import OuterRef, Subquery
+from django.db.models import OuterRef, Q, Subquery
 from django.forms.models import BaseInlineFormSet
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
@@ -20,7 +20,9 @@ from .models import (
     Option,
     Participant,
     Question,
+    RequiredChannel,
     ScoreLevel,
+    Stage,
     TelegramAccount,
     TestSettings,
 )
@@ -73,17 +75,17 @@ class OptionInline(TabularInline):
 
 @admin.register(Question)
 class QuestionAdmin(ModelAdmin):
-    list_display = ["number", "thumb", "prompt_uz", "type", "category", "order", "is_active", "correct_letter"]
+    list_display = ["number", "thumb", "prompt_uz", "type", "category", "difficulty", "order", "is_active", "correct_letter"]
     list_display_links = ["number", "thumb"]
-    list_editable = ["order", "is_active"]
-    list_filter = ["category", "type", "is_active"]
+    list_editable = ["difficulty", "order", "is_active"]
+    list_filter = ["difficulty", "category", "type", "is_active"]
     search_fields = ["prompt_uz", "prompt_ru", "logic_uz"]
     ordering = ["order", "number"]
     inlines = [OptionInline]
     readonly_fields = ["figure_preview"]
     fieldsets = [
-        (None, {"fields": ["number", "order", "is_active", "type", "category"]}),
-        ("Savol matni", {"fields": ["prompt_uz", "prompt_ru"]}),
+        (None, {"fields": ["number", "order", "is_active", "type", "category", "difficulty"]}),
+        ("Savol matni", {"fields": ["prompt_uz", "prompt_ru", "prompt_en"]}),
         ("Rasm", {"fields": ["figure", "figure_preview"]}),
         ("Mantiq izohi", {"fields": ["logic_uz", "logic_ru"]}),
     ]
@@ -132,18 +134,60 @@ class QuestionAdmin(ModelAdmin):
 
 @admin.register(ScoreLevel)
 class ScoreLevelAdmin(ModelAdmin):
-    list_display = ["name_uz", "name_ru", "min_score", "max_score", "attempts_count"]
-    list_editable = ["min_score", "max_score"]
-    ordering = ["min_score"]
+    list_display = ["name_uz", "name_ru", "name_en", "min_percent", "max_percent", "attempts_count"]
+    list_editable = ["min_percent", "max_percent"]
+    ordering = ["min_percent"]
 
     @display(description="Urinishlar")
     def attempts_count(self, obj):
         return obj.attempts.count()
 
 
+@admin.register(Stage)
+class StageAdmin(ModelAdmin):
+    list_display = [
+        "number", "question_count", "duration_minutes", "max_difficulty", "friends_required", "certificate",
+        "is_active", "attempts_count",
+    ]
+    list_editable = ["question_count", "duration_minutes", "max_difficulty", "friends_required", "certificate", "is_active"]
+    ordering = ["number"]
+
+    def has_delete_permission(self, request, obj=None):
+        # Urinishlari bor bosqich o‘chirilmaydi (faqat nofaol qilinadi)
+        return obj is None or not obj.attempts.exists()
+
+    @display(description="Urinishlar")
+    def attempts_count(self, obj):
+        return obj.attempts.count()
+
+
+@admin.register(RequiredChannel)
+class RequiredChannelAdmin(ModelAdmin):
+    list_display = ["title", "chat", "link", "is_active", "order", "bot_check"]
+    list_editable = ["is_active", "order"]
+    fields = ["title", "chat", "invite_link", "is_active", "order"]
+
+    @display(description="Havola")
+    def link(self, obj):
+        return format_html('<a href="{0}" target="_blank" rel="noopener">{0}</a>', obj.url) if obj.url else "—"
+
+    @display(description="Bot holati")
+    def bot_check(self, obj):
+        from .telegram import bot_api
+
+        try:
+            me = bot_api("getMe", timeout=4)
+            member = bot_api("getChatMember", {"chat_id": obj.chat, "user_id": me["id"]}, timeout=4)
+        except Exception as exc:
+            return format_html('<span style="color:#E4572E">✗ {}</span>', str(exc)[:80])
+        if member.get("status") == "administrator":
+            return format_html('<span style="color:#2A7F8F">✓ bot admin</span>')
+        return format_html('<span style="color:#E4572E">✗ bot admin emas</span>')
+
+
 @admin.register(TestSettings)
 class TestSettingsAdmin(ModelAdmin):
-    list_display = ["__str__"]
+    list_display = ["__str__", "subscription_required"]
 
     def has_add_permission(self, request):
         return not TestSettings.objects.exists()
@@ -222,6 +266,7 @@ class AttemptAdmin(ModelAdmin):
         "participant_telegram",
         "participant_phone",
         "language",
+        "stage",
         "status_badge",
         "started_at",
         "finished_at",
@@ -231,6 +276,7 @@ class AttemptAdmin(ModelAdmin):
     ]
     list_filter = [
         ("status", ChoicesDropdownFilter),
+        ("stage", RelatedDropdownFilter),
         ("level", RelatedDropdownFilter),
         ("participant__language", ChoicesDropdownFilter),
         ("started_at", RangeDateFilter),
@@ -245,6 +291,7 @@ class AttemptAdmin(ModelAdmin):
         "id",
         "verify_code",
         "participant",
+        "stage",
         "status",
         "started_at",
         "expires_at",
@@ -255,14 +302,14 @@ class AttemptAdmin(ModelAdmin):
         "category_summary",
     ]
     fieldsets = [
-        (None, {"fields": ["id", "participant", "status", "verify_code"]}),
+        (None, {"fields": ["id", "participant", "stage", "status", "verify_code"]}),
         ("Vaqt", {"fields": ["started_at", "expires_at", "finished_at"]}),
         ("Natija", {"fields": ["total_score", "percent", "level", "category_summary"]}),
     ]
 
     def get_queryset(self, request):
         username = TelegramAccount.objects.filter(telegram_id=OuterRef("participant__telegram_id")).values("username")[:1]
-        return super().get_queryset(request).select_related("participant", "level").annotate(tg_username=Subquery(username))
+        return super().get_queryset(request).select_related("participant", "level", "stage").annotate(tg_username=Subquery(username))
 
     def has_add_permission(self, request):
         return False
@@ -370,13 +417,35 @@ class AttemptAdmin(ModelAdmin):
 
 @admin.register(TelegramAccount)
 class TelegramAccountAdmin(ModelAdmin):
-    list_display = ["telegram_id", "real_name", "telegram_name", "username_link", "language_code", "created_at", "last_login"]
+    list_display = [
+        "telegram_id", "real_name", "telegram_name", "username_link", "language_code", "referred_by",
+        "friends_count", "created_at", "last_login",
+    ]
     list_display_links = ["telegram_id", "real_name"]
     search_fields = ["telegram_id", "real_name", "first_name", "last_name", "username"]
-    fields = ["real_name", "telegram_id", "first_name", "last_name", "username", "photo_url", "language_code", "created_at", "last_login"]
+    fields = [
+        "real_name", "telegram_id", "first_name", "last_name", "username", "photo_url", "language_code", "bot_language",
+        "referred_by", "referral_confirmed_at", "created_at", "last_login",
+    ]
     list_filter = [("last_login", RangeDateFilter)]
     list_filter_submit = True
-    readonly_fields = ["telegram_id", "first_name", "last_name", "username", "photo_url", "language_code", "created_at", "last_login"]
+    readonly_fields = [
+        "telegram_id", "first_name", "last_name", "username", "photo_url", "language_code", "bot_language",
+        "referred_by", "referral_confirmed_at", "created_at", "last_login",
+    ]
+
+    def get_queryset(self, request):
+        from django.db.models import Count
+
+        return (
+            super().get_queryset(request)
+            .select_related("referred_by")
+            .annotate(friends=Count("referrals", filter=Q(referrals__referral_confirmed_at__isnull=False)))
+        )
+
+    @display(description="Taklif qilgan do‘stlar", ordering="friends")
+    def friends_count(self, obj):
+        return obj.friends
 
     def has_add_permission(self, request):
         return False

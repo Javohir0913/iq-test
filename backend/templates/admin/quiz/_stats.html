@@ -37,13 +37,13 @@
       <div class="iq-kpi-sub">yakunlangan {{ stats.finished }} · vaqti tugagan {{ stats.expired }} · jarayonda {{ stats.in_progress }}</div>
     </div>
     <div class="iq-card">
-      <div class="iq-kpi-label">O‘rtacha ball</div>
-      <div class="iq-kpi-value">{{ stats.avg_score }} <span style="font-size:16px;color:var(--muted)">/ {{ stats.max_score }}</span></div>
-      <div class="iq-kpi-sub">o‘rtacha foiz {{ stats.avg_percent }}%</div>
+      <div class="iq-kpi-label">O‘rtacha foiz</div>
+      <div class="iq-kpi-value">{{ stats.avg_percent }}%</div>
+      <div class="iq-kpi-sub">{% for s in stats.stages %}{{ s.number }}-bosqich: {{ s.count }} ta · {{ s.avg_percent }}%{% if not forloop.last %} · {% endif %}{% endfor %}</div>
     </div>
     <div class="iq-card">
-      <div class="iq-kpi-label">Eng yuqori ball</div>
-      <div class="iq-kpi-value">{{ stats.top_score|default:"—" }}</div>
+      <div class="iq-kpi-label">Eng yuqori foiz</div>
+      <div class="iq-kpi-value">{% if stats.top_percent is not None %}{{ stats.top_percent }}%{% else %}—{% endif %}</div>
       <div class="iq-kpi-sub">yakunlangan urinishlar orasida</div>
     </div>
     <div class="iq-card">

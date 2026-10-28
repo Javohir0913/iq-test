@@ -29,7 +29,10 @@
   "telegram": {
     "result": "🎉 <b>{name}</b>, test yakunlandi!\n\n📊 Ball: <b>{score} / {max}</b>\n📈 Foiz: <b>{percent}%</b>\n🏅 Daraja: <b>{level}</b>",
     "open_result": "📄 Natijani ochish",
-    "retake": "🔁 Qayta topshirish"
+    "retake": "🔁 Qayta topshirish",
+    "stage_line": "🎯 <b>{stage}-bosqich</b>",
+    "no_certificate": "ℹ️ Bu bosqichda sertifikat berilmaydi. Sertifikat oxirgi bosqichda beriladi — do‘stlaringizni taklif qiling va keyingi bosqichni oching!",
+    "friend_joined": "🎉 Do‘stingiz <b>{name}</b> taklifingiz bo‘yicha qo‘shildi! Jami taklif qilganlar: <b>{count}</b>."
   },
   "scan_to_verify": "Haqiqiyligini tekshirish uchun skanerlang",
   "verify_title": "Tekshirish"

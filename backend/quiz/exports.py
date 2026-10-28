@@ -17,6 +17,7 @@ HEADERS = [
     "Telefon",
     "Telegram ID",
     "Til",
+    "Bosqich",
     "Holat",
     "Boshlangan",
     "Tugagan",
@@ -33,7 +34,7 @@ def _fmt(dt):
 
 
 def attempt_rows(queryset):
-    qs = queryset.select_related("participant", "level").prefetch_related("answers")
+    qs = queryset.select_related("participant", "level", "stage").prefetch_related("answers")
     for a in qs:
         p = a.participant
         duration = round((a.finished_at - a.started_at).total_seconds() / 60, 1) if a.finished_at else ""
@@ -44,6 +45,7 @@ def attempt_rows(queryset):
             p.phone,
             p.telegram_id or "",
             p.language,
+            a.stage.number if a.stage else "",
             a.get_status_display(),
             _fmt(a.started_at),
             _fmt(a.finished_at),

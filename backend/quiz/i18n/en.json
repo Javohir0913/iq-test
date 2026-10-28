@@ -1,0 +1,39 @@
+{
+  "brand": "LOGIC TEST",
+  "title": "Certificate",
+  "subtitle": "Logical thinking test result",
+  "awarded_to": "This certificate is awarded to",
+  "score": "Score",
+  "percent": "Percent",
+  "level": "Level",
+  "date": "Date",
+  "categories": "By area",
+  "answered": "Questions answered",
+  "certificate_id": "Verification code",
+  "footer": "{count} logic questions · 6 options each · scored on the server",
+  "months": [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ],
+  "date_format": "{month} {day}, {year}",
+  "telegram": {
+    "result": "🎉 <b>{name}</b>, the test is complete!\n\n📊 Score: <b>{score} / {max}</b>\n📈 Percent: <b>{percent}%</b>\n🏅 Level: <b>{level}</b>",
+    "open_result": "📄 Open result",
+    "retake": "🔁 Take again",
+    "stage_line": "🎯 <b>Stage {stage}</b>",
+    "no_certificate": "ℹ️ No certificate is issued at this stage. The certificate is awarded at the final stage — invite friends and unlock the next stage!",
+    "friend_joined": "🎉 Your friend <b>{name}</b> joined via your invitation! Total invited: <b>{count}</b>."
+  },
+  "scan_to_verify": "Scan to verify authenticity",
+  "verify_title": "Verify"
+}

@@ -26,7 +26,7 @@ def collect_stats():
         levels.append(
             {
                 "name": level.name_uz,
-                "range": f"{level.min_score}–{level.max_score}",
+                "range": f"{level.min_percent}–{level.max_percent}%",
                 "count": n,
                 "share": round(n * 100 / total_closed, 1) if total_closed else 0,
             }
@@ -92,13 +92,19 @@ def collect_stats():
         "avg_score": round(agg["avg_score"] or 0, 1),
         "avg_percent": round(float(agg["avg_percent"] or 0), 1),
         "avg_minutes": round(sum(durations) / len(durations) / 60, 1) if durations else 0,
-        "max_score": Question.objects.filter(is_active=True).count() * MAX_POINTS,
+        "stages": [
+            {"number": row["stage__number"], "count": row["n"], "avg_percent": round(float(row["avg"] or 0), 1)}
+            for row in closed.filter(stage__isnull=False)
+            .values("stage__number")
+            .annotate(n=Count("id"), avg=Avg("percent"))
+            .order_by("stage__number")
+        ],
         "levels": levels,
         "questions": questions,
         "hardest": hardest,
         "daily": daily,
         "letters": LETTERS,
-        "top_score": closed.order_by(F("total_score").desc(nulls_last=True)).values_list("total_score", flat=True).first(),
+        "top_percent": closed.order_by(F("percent").desc(nulls_last=True)).values_list("percent", flat=True).first(),
         "telegram_share": round(
             attempts.filter(~Q(participant__telegram_id=None)).count() * 100 / attempts.count(), 1
         )

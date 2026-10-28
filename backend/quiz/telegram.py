@@ -130,14 +130,14 @@ def public_url():
     return url
 
 
-def _load_texts(lang):
-    path = BASE_DIR / "i18n" / f"{lang}.json"
+def load_texts(lang):
+    path = BASE_DIR / "i18n" / f"{lang if lang in ('uz', 'ru', 'en') else 'uz'}.json"
     with open(path, encoding="utf-8") as fh:
         return json.load(fh)["telegram"]
 
 
 def result_message(result, token, lang):
-    t = _load_texts(lang)
+    t = load_texts(lang)
     level = result.get("level") or {}
     text = t["result"].format(
         name=html.escape(result["full_name"]),
@@ -146,6 +146,11 @@ def result_message(result, token, lang):
         percent=round(result["percent"]),
         level=html.escape(level.get(f"name_{lang}", "—")),
     )
+    stage = result.get("stage")
+    if stage:
+        text = t["stage_line"].format(stage=stage["number"]) + "\n" + text
+        if not result.get("certificate_available"):
+            text += "\n\n" + t["no_certificate"]
     keyboard = []
     base = public_url()
     if base:
@@ -165,7 +170,7 @@ def notify_result(attempt):
         return
     from .services import result_payload
 
-    lang = participant.language if participant.language in ("uz", "ru") else "uz"
+    lang = participant.language if participant.language in ("uz", "ru", "en") else "uz"
     payload = {"chat_id": participant.telegram_id, **result_message(result_payload(attempt), attempt.token, lang)}
 
     def send():
