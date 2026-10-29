@@ -28,9 +28,12 @@ def test_verify_shows_server_data(client, make_attempt, answer):
         body = resp.json()
         assert body["valid"] is True
         assert body["full_name"] == "Ali Valiyev"
-        assert body["total_score"] == 7 and body["max_score"] == 245
+        assert body["total_score"] == 7 and body["max_score"] == Attempt.objects.get(pk=attempt_id).question_ids.__len__() * 7
     # Hech qanday maxfiy narsa yo‘q
-    assert set(body) == {"valid", "code", "full_name", "finished_at", "total_score", "max_score", "percent", "level", "telegram_verified"}
+    assert set(body) == {
+        "valid", "code", "full_name", "finished_at", "total_score", "max_score", "percent", "stage", "level",
+        "telegram_verified",
+    }
 
 
 def test_verify_reflects_admin_name_fix(client, make_attempt, answer):

@@ -74,11 +74,13 @@ def test_questions_endpoint_expires_attempt(client, make_attempt):
 
 
 def test_expiry_uses_test_duration(client, make_attempt, get_attempt):
-    from quiz.models import TestSettings
+    from quiz.models import Stage, TestSettings
 
+    # Vaqt endi bosqichdan olinadi (TestSettings.duration_minutes – faqat eski urinishlar uchun)
     s = TestSettings.load()
-    s.duration_minutes = 15
+    s.duration_minutes = 40
     s.save()
+    Stage.objects.filter(number=3).update(duration_minutes=15)
     attempt_id, _ = make_attempt()
     a = get_attempt(attempt_id)
     assert abs((a.expires_at - a.started_at).total_seconds() - 15 * 60) < 5
@@ -90,7 +92,7 @@ def test_expiry_uses_test_duration(client, make_attempt, get_attempt):
         ({"full_name": ""}, "full_name"),
         ({"full_name": "A"}, "full_name"),
         ({"full_name": "Ali Valiyev", "phone": "12345"}, "phone"),
-        ({"full_name": "Ali Valiyev", "language": "en"}, "language"),
+        ({"full_name": "Ali Valiyev", "language": "de"}, "language"),
     ],
 )
 def test_create_validation(client, imported, payload, field):
@@ -118,7 +120,7 @@ def test_certificate_pdf(client, make_attempt, answer):
     answer(attempt_id, token, 1, "C")
     assert client.get(f"/api/v1/attempts/{attempt_id}/certificate.pdf?token={token}").status_code == 409
     client.post(f"/api/v1/attempts/{attempt_id}/finish", HTTP_X_ATTEMPT_TOKEN=token)
-    for lang in ("uz", "ru"):
+    for lang in ("uz", "ru", "en"):
         resp = client.get(f"/api/v1/attempts/{attempt_id}/certificate.pdf?token={token}&lang={lang}")
         assert resp.status_code == 200
         assert resp["Content-Type"] == "application/pdf"

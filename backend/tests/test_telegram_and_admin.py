@@ -94,7 +94,7 @@ def test_admin_option_formset_rejects_two_sevens(admin_client, imported):
     q = Question.objects.get(number=1)
     data = {
         "number": q.number, "order": q.order, "is_active": "on", "type": q.type, "category": q.category,
-        "prompt_uz": q.prompt_uz, "prompt_ru": q.prompt_ru, "logic_uz": q.logic_uz, "logic_ru": "",
+        "difficulty": q.difficulty, "prompt_uz": q.prompt_uz, "prompt_ru": q.prompt_ru, "logic_uz": q.logic_uz, "logic_ru": "",
         "options-TOTAL_FORMS": "6", "options-INITIAL_FORMS": "6", "options-MIN_NUM_FORMS": "6",
         "options-MAX_NUM_FORMS": "6",
     }
@@ -142,14 +142,14 @@ def test_bot_results_requires_secret(client, imported):
     assert client.get("/api/v1/bot/results", HTTP_X_BOT_TOKEN=BOT).status_code == 400
 
 
-def test_bot_results_lists_user_attempts(client, imported):
+def test_bot_results_lists_user_attempts(client, imported, bank_size):
     data = _finish_tg_attempt(client, 555)
     _finish_tg_attempt(client, 999)
     resp = client.get("/api/v1/bot/results?telegram_id=555", HTTP_X_BOT_TOKEN=BOT)
     assert resp.status_code == 200
     body = resp.json()
-    assert body["max_score"] == 245
     assert [a["attempt_id"] for a in body["attempts"]] == [data["attempt_id"]]
+    assert body["attempts"][0]["max_score"] == bank_size * 7
     assert body["attempts"][0]["total_score"] == 7
     assert body["attempts"][0]["token"] == data["token"]
 
@@ -158,7 +158,9 @@ def test_meta_exposes_bot_username(client, imported):
     assert client.get("/api/v1/test/meta").json()["telegram_bot"] == "mantiqiy_test_bot"
 
 
-def test_finish_sends_telegram_message(client, imported, settings, monkeypatch, django_capture_on_commit_callbacks):
+def test_finish_sends_telegram_message(
+    client, imported, settings, monkeypatch, django_capture_on_commit_callbacks, bank_size
+):
     import threading
 
     from quiz import telegram
@@ -183,7 +185,7 @@ def test_finish_sends_telegram_message(client, imported, settings, monkeypatch, 
     method, payload = sent[0]
     assert method == "sendMessage"
     assert payload["chat_id"] == 4242
-    assert "7 / 245" in payload["text"]
+    assert f"7 / {bank_size * 7}" in payload["text"]
     assert "&lt;Valiyev&gt;" in payload["text"]  # HTML xavfsiz
     assert "тест завершён" in payload["text"]
     url = payload["reply_markup"]["inline_keyboard"][0][0]["web_app"]["url"]

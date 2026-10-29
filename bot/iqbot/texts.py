@@ -9,6 +9,7 @@ from zoneinfo import ZoneInfo
 
 I18N_DIR = Path(__file__).resolve().parent.parent / "i18n"
 TZ = ZoneInfo("Asia/Tashkent")
+LANGS = ("uz", "ru", "en")
 
 
 @lru_cache(maxsize=4)
@@ -17,8 +18,10 @@ def texts(lang: str) -> dict:
         return json.load(fh)
 
 
-def lang_of(language_code: str | None) -> str:
-    """Telegram tilidan bot tili: rus, belarus, ukrain, qozoq → ru; qolganlari → uz."""
+def lang_of(language_code: str | None, chosen: str | None = None) -> str:
+    """Bot tili: foydalanuvchi tanlagani, aks holda Telegram tilidan (rus, belarus, ukrain, qozoq → ru; qolganlari → uz)."""
+    if chosen in LANGS:
+        return chosen
     code = (language_code or "").lower()
     return "ru" if code[:2] in {"ru", "be", "uk", "kk"} else "uz"
 
@@ -44,14 +47,15 @@ def results_text(lang: str, data: dict) -> str:
         if a["status"] == "in_progress":
             lines.append(t(lang, "in_progress_line", date=date))
             continue
-        level = (a.get("level") or {}).get(f"name_{lang}", "—")
+        level = (a.get("level") or {}).get(f"name_{lang}") or "—"
         lines.append(
             t(
                 lang,
                 "result_line",
                 date=date,
+                stage=(a.get("stage") or {}).get("number", "—"),
                 score=a.get("total_score") or 0,
-                max=data["max_score"],
+                max=a.get("max_score") or data.get("max_score", 0),
                 percent=round(a.get("percent") or 0),
                 level=escape(level),
             )
@@ -62,3 +66,17 @@ def results_text(lang: str, data: dict) -> str:
 def display_name(user) -> str:
     name = " ".join(filter(None, [user.first_name, user.last_name])).strip() or user.username or ""
     return escape(name)
+
+
+def stages_text(lang: str, progress: dict) -> str:
+    lines = []
+    for s in progress.get("stages") or []:
+        extra = t(lang, "stage_cert") if s["certificate"] else ""
+        if not s["unlocked"] and s["missing_friends"]:
+            extra += t(lang, "stage_need_friends", n=s["missing_friends"])
+        icon = "✅" if s["unlocked"] else "🔒"
+        lines.append(
+            t(lang, "stage_line", icon=icon, n=s["number"], questions=s["question_count"],
+              minutes=s["duration_minutes"], extra=extra)
+        )
+    return "\n".join(lines)

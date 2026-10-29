@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Check, CloudOff, Send, X } from "@/components/icons";
 import { VerifyForm } from "@/components/VerifyForm";
-import { translate } from "@/i18n/core";
+import { LOCALES, localized, translate } from "@/i18n/core";
 import { serverLang, verifyCertificate } from "@/lib/serverApi";
 
 export const dynamic = "force-dynamic";
@@ -47,9 +47,9 @@ export default async function VerifyPage({ params }: { params: Promise<{ code: s
       </>
     );
   } else {
-    const level = data.level ? (lang === "ru" ? data.level.name_ru : data.level.name_uz) : "—";
+    const level = localized(data.level, "name", lang) || "—";
     const date = data.finished_at
-      ? new Intl.DateTimeFormat(lang === "ru" ? "ru-RU" : "uz-UZ", {
+      ? new Intl.DateTimeFormat(LOCALES[lang], {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",

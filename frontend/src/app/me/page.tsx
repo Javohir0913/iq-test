@@ -7,7 +7,7 @@ import { ArrowRight, CloudOff, Refresh } from "@/components/icons";
 import { Grid3 } from "@/components/shapes";
 import { LoginCard } from "@/components/TelegramLogin";
 import { Button, ButtonLink, Skeleton, StateView } from "@/components/ui";
-import { useI18n } from "@/i18n";
+import { LOCALES, localized, useI18n } from "@/i18n";
 import { authApi, type MyAttempt } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { storage } from "@/lib/storage";
@@ -20,7 +20,7 @@ export default function MyResultsPage() {
   const { status, user, logout } = useAuth();
   const { initData } = useTelegram();
   const [load, setLoad] = useState<Load>("loading");
-  const [data, setData] = useState<{ max_score: number; attempts: MyAttempt[] } | null>(null);
+  const [data, setData] = useState<{ attempts: MyAttempt[] } | null>(null);
 
   const fetchData = () => {
     setLoad("loading");
@@ -38,7 +38,7 @@ export default function MyResultsPage() {
     if (status === "authed") fetchData();
   }, [status]);
 
-  const dateFmt = new Intl.DateTimeFormat(lang === "ru" ? "ru-RU" : "uz-UZ", {
+  const dateFmt = new Intl.DateTimeFormat(LOCALES[lang], {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -79,7 +79,7 @@ export default function MyResultsPage() {
         {data.attempts.map((a, i) => {
           const inProgress = a.status === "in_progress";
           const href = inProgress ? `/test/${a.attempt_id}` : `/result/${a.attempt_id}`;
-          const level = a.level ? (lang === "ru" ? a.level.name_ru : a.level.name_uz) : "";
+          const level = localized(a.level, "name", lang);
           return (
             <li key={a.attempt_id} className="anim-fade-up" style={{ ["--delay" as string]: `${i * 0.04}s` }}>
               <NextLink
@@ -97,11 +97,14 @@ export default function MyResultsPage() {
                   <span className="block truncate font-semibold">
                     {inProgress
                       ? t("me.in_progress")
-                      : `${t("me.score", { score: a.total_score ?? 0, max: data.max_score })} · ${Math.round(a.percent ?? 0)}%`}
+                      : `${t("me.score", { score: a.total_score ?? 0, max: a.max_score })} · ${Math.round(a.percent ?? 0)}%`}
                     {level && <span className="ml-2 rounded-full bg-panel px-2 py-0.5 text-xs font-semibold text-ink">{level}</span>}
                     {a.status === "expired" && <span className="ml-2 text-xs font-medium text-muted">{t("me.expired")}</span>}
                   </span>
-                  <span className="tabular mt-0.5 block text-sm text-muted">{dateFmt.format(new Date(a.finished_at ?? a.started_at))}</span>
+                  <span className="tabular mt-0.5 block text-sm text-muted">
+                    {a.stage ? `${t("stages.stage", { n: a.stage.number })} · ` : ""}
+                    {dateFmt.format(new Date(a.finished_at ?? a.started_at))}
+                  </span>
                 </span>
                 <span className="hidden items-center gap-1 text-sm font-semibold text-ink sm:inline-flex">
                   {inProgress ? t("me.continue") : t("me.open")}

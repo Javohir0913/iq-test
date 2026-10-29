@@ -2,15 +2,14 @@ import type { Metadata, Viewport } from "next";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { I18nProvider } from "@/i18n";
-import { LANG_COOKIE, translate, type Lang } from "@/i18n/core";
+import { LANG_COOKIE, toLang, translate, type Lang } from "@/i18n/core";
 import { ThemeProvider } from "@/lib/theme";
 import { themeInitScript } from "@/lib/themeScript";
 import { AuthProvider } from "@/lib/auth";
 import { TelegramProvider } from "@/lib/telegram";
 
 async function getLang(): Promise<Lang> {
-  const value = (await cookies()).get(LANG_COOKIE)?.value;
-  return value === "ru" ? "ru" : "uz";
+  return toLang((await cookies()).get(LANG_COOKIE)?.value);
 }
 
 export async function generateMetadata(): Promise<Metadata> {

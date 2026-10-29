@@ -30,9 +30,10 @@ def assert_no_secrets(payload, questions_data):
                 assert o["reason_uz"] not in text
 
 
-def test_meta_has_no_secrets(client, imported, questions_data):
+def test_meta_has_no_secrets(client, imported, questions_data, bank_size):
     data = client.get("/api/v1/test/meta").json()
-    assert data["question_count"] == 35
+    assert data["question_count"] == bank_size
+    assert data["languages"] == ["uz", "ru", "en"]
     assert_no_secrets(data, questions_data)
 
 
@@ -41,13 +42,13 @@ def test_create_attempt_has_no_secrets(client, imported, questions_data):
     assert_no_secrets(resp.json(), questions_data)
 
 
-def test_questions_have_no_points_or_correct(client, make_attempt, answer, questions_data):
+def test_questions_have_no_points_or_correct(client, make_attempt, answer, questions_data, bank_size):
     attempt_id, token = make_attempt()
     answer(attempt_id, token, 1, "C")
     resp = client.get(f"/api/v1/attempts/{attempt_id}/questions", HTTP_X_ATTEMPT_TOKEN=token)
     data = resp.json()
     assert resp.status_code == 200
-    assert len(data["questions"]) == 35
+    assert len(data["questions"]) == bank_size
     assert data["answers"] == {"1": "C"}
     for q in data["questions"]:
         assert set(q.keys()) == {"number", "type", "prompt", "figure", "options"}
@@ -71,8 +72,13 @@ def test_result_does_not_reveal_correct_answers(client, make_attempt, answer, qu
     data = client.get(f"/api/v1/attempts/{attempt_id}/result", HTTP_X_ATTEMPT_TOKEN=token).json()
     keys = set(walk_keys(data))
     assert not keys & {"points", "correct", "is_correct", "answers", "options"}
+    # Izoh maydonlari (reason_*, logic_*) ham, ularning matni ham yo‘q.
+    # Matnda "logic" so‘zining o‘zi bo‘lishi mumkin: inglizcha "Numerical logic" – kategoriya nomi.
+    assert not any("reason" in k or "logic" in k for k in keys)
     text = json.dumps(data, ensure_ascii=False)
-    assert "reason" not in text and "logic" not in text
+    for q in questions_data["questions"]:
+        assert q["logic_uz"] not in text
+        assert not any(o.get("reason_uz") and o["reason_uz"] in text for o in q["options"])
 
 
 def test_option_values_match_json(client, make_attempt, questions_data):

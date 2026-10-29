@@ -23,9 +23,10 @@ logger = logging.getLogger("iqbot")
 async def setup_profile(bot: Bot, backend: Backend):
     """Buyruqlar va tavsiflar – uz standart, ru alohida."""
     meta = await backend.meta()
-    fmt = {"count": meta["question_count"], "minutes": meta["duration_minutes"]}
-    for lang, code in (("uz", None), ("ru", "ru")):
-        names = ("start", "test", "natija", "yordam")
+    counts = [str(s["question_count"]) for s in meta.get("stages") or []] or [str(meta["question_count"])]
+    fmt = {"stages": "/".join(counts)}
+    for lang, code in (("uz", None), ("ru", "ru"), ("en", "en")):
+        names = ("start", "test", "natija", "til", "yordam")
         commands = [BotCommand(command=name, description=t(lang, f"commands.{name}")) for name in names]
         await bot.set_my_commands(commands, language_code=code)
         await bot.set_my_short_description(t(lang, "short_description", **fmt), language_code=code)

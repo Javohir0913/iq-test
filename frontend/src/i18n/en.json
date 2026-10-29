@@ -1,0 +1,272 @@
+{
+  "meta": {
+    "title": "Logic test — challenge your thinking",
+    "description": "Logic questions on numbers, patterns and spatial thinking. Get your result as a score, a percentage and a level."
+  },
+  "common": {
+    "brand": "Logic test",
+    "start": "Start the test",
+    "back": "Back",
+    "home": "Home",
+    "next": "Next",
+    "prev": "Previous",
+    "retry": "Try again",
+    "loading": "Loading…",
+    "close": "Close",
+    "skip": "Skip to main content",
+    "minutes": "minutes",
+    "language": "Language",
+    "theme": {
+      "label": "Theme",
+      "light": "Light mode",
+      "dark": "Dark mode",
+      "system": "System setting"
+    }
+  },
+  "home": {
+    "badge": "{count} questions · {minutes} minutes",
+    "title_1": "Challenge",
+    "title_accent": "your logical",
+    "title_2": "thinking",
+    "subtitle": "Find the rules hidden in numbers, patterns and shapes. Every question is a small puzzle, and the result gives you a clear picture of how you think.",
+    "cta": "Start the test",
+    "secondary": "How does it work?",
+    "stats": {
+      "questions": "questions",
+      "minutes": "minutes",
+      "options": "options per question",
+      "categories": "areas"
+    },
+    "how_title": "How it works",
+    "how_subtitle": "Three simple steps — no sign-up forms and no waiting.",
+    "steps": [
+      {
+        "title": "{count} questions",
+        "text": "Each question has a picture or a number sequence and 6 options. You pick one."
+      },
+      {
+        "title": "{minutes} minutes",
+        "text": "The timer runs on the server. If the page reloads, the test continues where you left off."
+      },
+      {
+        "title": "Detailed result",
+        "text": "Score, percentage, level and a breakdown across three areas. A certificate and a share card."
+      }
+    ],
+    "categories_title": "What it measures",
+    "categories": {
+      "numeric": {
+        "title": "Numerical logic",
+        "text": "Finding the relationship between numbers and the rule of a sequence."
+      },
+      "pattern": {
+        "title": "Patterns and sequences",
+        "text": "Seeing how shapes change from one step to the next."
+      },
+      "spatial": {
+        "title": "Spatial thinking",
+        "text": "Mentally rotating, flipping and assembling shapes."
+      }
+    },
+    "final_title": "Ready?",
+    "final_text": "Find a quiet place, set aside {minutes} minutes and begin.",
+    "disclaimer": "The result is given as a score, a percentage and a level. The test is not normed, so it does not produce an IQ number.",
+    "footer": "© {year} Logic test"
+  },
+  "start": {
+    "title": "Before you start",
+    "subtitle": "Enter your name — it will appear on your result and certificate.",
+    "name_label": "Full name",
+    "name_placeholder": "For example, Aziza Karimova",
+    "phone_label": "Phone",
+    "optional": "optional",
+    "phone_placeholder": "+998 (90) 123-45-67",
+    "rules_title": "Rules",
+    "rules": [
+      "{count} questions, each with 6 options (A–F)",
+      "Only one answer can be chosen per question",
+      "Time limit — {minutes} minutes; when time runs out the test finishes automatically",
+      "You can change answers and move between questions at any time",
+      "Scores and correct answers are not shown during the test"
+    ],
+    "keyboard": "Keyboard: 1–6 or A–F — choose an option, ← → — questions",
+    "submit": "Start the test",
+    "submitting": "Preparing…",
+    "telegram_filled": "Name taken from your Telegram profile",
+    "resume_title": "You have an unfinished test",
+    "resume_text": "You can continue your previous attempt from where you left off.",
+    "resume_button": "Continue",
+    "errors": {
+      "name_required": "Enter your full name",
+      "name_short": "The name is too short",
+      "phone_invalid": "Incomplete phone number: +998 and 9 digits",
+      "rate_limited": "Too many attempts. Please try again later.",
+      "generic": "Could not start the test. Check your internet connection and try again."
+    },
+    "name_locked": "Your name is saved to your Telegram account. If it is wrong, contact the administrator.",
+    "name_first_time": "Enter your real full name — it will appear on the certificate and cannot be changed later."
+  },
+  "test": {
+    "progress": "{current} / {total}",
+    "question": "Question {n}",
+    "map": "Question map",
+    "map_open": "Open the map",
+    "answered": "Answered",
+    "unanswered": "Unanswered",
+    "current": "Current",
+    "answered_count": "{n} / {total} answered",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "offline": "No connection — answers will be resent",
+    "finish": "Finish the test",
+    "finish_title": "Finish the test?",
+    "finish_all": "You have answered every question. Once you finish, answers cannot be changed.",
+    "finish_unanswered": {
+      "one": "{n} question is unanswered. An unanswered question scores 0.",
+      "other": "{n} questions are unanswered. An unanswered question scores 0."
+    },
+    "finish_unanswered_list": "Unanswered questions:",
+    "finish_confirm": "Yes, finish",
+    "finish_cancel": "Keep going",
+    "finishing": "Calculating your result…",
+    "timeup_title": "Time is up",
+    "timeup_text": "The test finished automatically. Your result is being calculated.",
+    "time_left": "Time left",
+    "option": "Option {letter}",
+    "selected": "selected",
+    "keyboard_hint": "1–6 / A–F — choose · ← → — move",
+    "not_found_title": "Attempt not found",
+    "not_found_text": "This test was started on another device or the link is wrong. Start a new test.",
+    "load_error_title": "Could not load the questions",
+    "load_error_text": "Check your internet connection and try again.",
+    "figure_alt": "Picture for question {n}",
+    "option_alt": "Picture for option {letter}"
+  },
+  "result": {
+    "title": "Your result",
+    "greeting": "{name}, the test is complete!",
+    "expired_note": "The test finished automatically because time ran out.",
+    "score": "Score",
+    "of": "of",
+    "percent": "Percent",
+    "level": "Level",
+    "categories_title": "Breakdown by area",
+    "categories_hint": "Relative to the maximum score in each area",
+    "time_spent": "Time spent",
+    "answered": "Answered",
+    "duration": "{m} min {s} s",
+    "certificate": "Certificate (PDF)",
+    "share": "Share the result",
+    "share_title": "Result card",
+    "share_text": "I scored {score} / {max} on the Logic test — {level}! Try it yourself:",
+    "share_download": "Download PNG",
+    "share_telegram": "Share on Telegram",
+    "share_native": "Share…",
+    "share_copy": "Copy link",
+    "share_copied": "Copied!",
+    "share_generating": "Preparing the card…",
+    "retake": "Take it again",
+    "disclaimer": "This result is not an IQ number: the test is not normed. The result is given only as a score, a percentage and a level.",
+    "not_found_title": "Result not found",
+    "not_found_text": "The result is only visible on the device where the test was taken.",
+    "card": {
+      "brand": "LOGIC TEST",
+      "headline": "My result",
+      "score": "points",
+      "cta": "Try it yourself"
+    },
+    "verify_code": "Certificate verification code",
+    "stage": "Stage {n}",
+    "no_certificate": "No certificate is issued at this stage. Invite friends and unlock the certificate stage!",
+    "next_stage": "Next stage"
+  },
+  "errors": {
+    "not_found_title": "Page not found",
+    "not_found_text": "The page you are looking for does not exist or has moved.",
+    "generic_title": "Something went wrong",
+    "generic_text": "Try reloading the page."
+  },
+  "auth": {
+    "login": "Sign in",
+    "logout": "Sign out",
+    "title": "Sign in with Telegram",
+    "text": "Your results are saved to your Telegram account and visible from any device. No password needed.",
+    "widget_hint": "Press the button and confirm in Telegram",
+    "loading": "Checking…",
+    "error": "Could not sign in. Please try again.",
+    "unavailable": "Signing in with Telegram is not set up yet.",
+    "open_bot": "Open in the bot",
+    "or_bot": "or open the test directly in the Telegram bot",
+    "my_results": "My results",
+    "signed_in_as": "Signed in as {name}"
+  },
+  "me": {
+    "title": "My results",
+    "subtitle": "All attempts linked to your Telegram account",
+    "empty_title": "No results yet",
+    "empty_text": "Take your first test — the result will appear here.",
+    "in_progress": "In progress",
+    "expired": "Time ran out",
+    "continue": "Continue",
+    "open": "Open",
+    "score": "{score} / {max}"
+  },
+  "verify": {
+    "title": "Verify a certificate",
+    "valid": "The certificate is valid",
+    "valid_text": "The data below comes straight from the server. If the name, score or level on the certificate in your hands differs from this, the certificate has been altered (forged).",
+    "invalid": "Certificate not found",
+    "invalid_text": "This verification code does not exist or the test is not finished yet. Check that you copied the code correctly from the certificate.",
+    "name": "Full name",
+    "score": "Score",
+    "percent": "Percent",
+    "level": "Level",
+    "date": "Date",
+    "code": "Verification code",
+    "telegram": "Participant verified via Telegram",
+    "enter_title": "Enter the verification code",
+    "enter_text": "The code is printed at the bottom of the certificate, next to the QR code.",
+    "placeholder": "K7M2-QX9P-4T",
+    "submit": "Verify",
+    "another": "Verify another certificate"
+  },
+  "stages": {
+    "title": "Choose a stage",
+    "subtitle": "Questions are picked at random in every stage. The certificate is awarded at the final stage.",
+    "stage": "Stage {n}",
+    "questions": "{count} questions",
+    "minutes": "{minutes} minutes",
+    "certificate": "Certificate awarded",
+    "no_certificate": "Result only, no certificate",
+    "locked": "Locked",
+    "open": "Open",
+    "choose": "Choose",
+    "chosen": "Selected",
+    "best": "Best result: {percent}%",
+    "need_friends": {
+      "one": "Invite {n} more friend to unlock",
+      "other": "Invite {n} more friends to unlock"
+    },
+    "need_channels": "Join the channels first",
+    "channels_title": "Join the channels",
+    "channels_text": "To start the test, join the channels below and then press “Check”.",
+    "subscribe": "Join",
+    "subscribed": "Joined",
+    "check": "Check",
+    "checking": "Checking…",
+    "not_subscribed": "You have not joined all the channels yet.",
+    "friends_title": "Invite friends",
+    "friends_text": "Send the link to your friends. A friend counts once they open the bot and join the channels.",
+    "friends_count": "Invited: {n}",
+    "friends_pending": "pending: {n}",
+    "invite_share": "Send on Telegram",
+    "invite_copy": "Copy link",
+    "copied": "Copied!",
+    "invite_text": "Test your logical thinking! Take the test with me:",
+    "errors": {
+      "subscription_required": "Join the channels to start the test.",
+      "friends_required": "Invite friends to unlock this stage.",
+      "stage_not_found": "This stage is not available right now."
+    }
+  }
+}

@@ -4,10 +4,11 @@ import json
 import time
 
 import aiohttp
+from aiogram.types import User
 
 from .config import Config
 
-DEFAULT_META = {"question_count": 35, "duration_minutes": 40}
+DEFAULT_META = {"question_count": 20, "duration_minutes": 25, "stages": []}
 
 
 class Backend:
@@ -24,6 +25,9 @@ class Backend:
         if self._session and not self._session.closed:
             await self._session.close()
 
+    def _headers(self) -> dict:
+        return {"X-Bot-Token": self.config.token, "Host": "localhost"}
+
     async def meta(self) -> dict:
         try:
             s = await self.session()
@@ -39,10 +43,36 @@ class Backend:
         async with s.get(
             f"{self.config.backend_url}/api/v1/bot/results",
             params={"telegram_id": str(telegram_id)},
-            headers={"X-Bot-Token": self.config.token, "Host": "localhost"},
+            headers=self._headers(),
         ) as resp:
             resp.raise_for_status()
             return await resp.json()
+
+    async def register(self, user: User, start_param: str = "") -> dict:
+        """Foydalanuvchini yozadi (birinchi kirishda referal bilan) va bosqichlar holatini qaytaradi."""
+        s = await self.session()
+        payload = {
+            "id": user.id,
+            "first_name": user.first_name or "",
+            "last_name": user.last_name or "",
+            "username": user.username or "",
+            "language_code": user.language_code or "",
+            "start_param": start_param[:64],
+        }
+        async with s.post(
+            f"{self.config.backend_url}/api/v1/bot/register", json=payload, headers=self._headers()
+        ) as resp:
+            resp.raise_for_status()
+            return await resp.json()
+
+    async def set_language(self, telegram_id: int, language: str) -> None:
+        s = await self.session()
+        async with s.post(
+            f"{self.config.backend_url}/api/v1/bot/language",
+            json={"telegram_id": telegram_id, "language": language},
+            headers=self._headers(),
+        ) as resp:
+            resp.raise_for_status()
 
 
 class UrlResolver:

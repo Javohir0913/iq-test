@@ -91,7 +91,10 @@ export function TelegramProvider({ children }: { children: React.ReactNode }) {
     const hasLangCookie = document.cookie.split("; ").some((c) => c.startsWith(`${LANG_COOKIE}=`));
     const hasLangParam = new URLSearchParams(window.location.search).has("lang");
     const code = (wa.initDataUnsafe.user?.language_code || "").slice(0, 2);
-    if (!hasLangCookie && !hasLangParam && ["ru", "be", "uk", "kk"].includes(code)) setLang("ru");
+    if (!hasLangCookie && !hasLangParam) {
+      if (["ru", "be", "uk", "kk"].includes(code)) setLang("ru");
+      else if (code && code !== "uz") setLang("en");
+    }
     setWebApp(wa);
     const applyTheme = () => setExternalScheme(wa.colorScheme === "dark" ? "dark" : "light");
     applyTheme();

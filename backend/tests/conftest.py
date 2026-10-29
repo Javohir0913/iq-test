@@ -5,7 +5,7 @@ import pytest
 from django.core.management import call_command
 from rest_framework.test import APIClient
 
-from quiz.models import Attempt
+from quiz.models import Attempt, Stage
 
 QUESTIONS_JSON = Path(__file__).resolve().parents[2] / "namunalar" / "questions.json"
 if not QUESTIONS_JSON.exists():
@@ -33,6 +33,9 @@ def questions_data():
 @pytest.fixture
 def imported(db):
     call_command("import_questions", str(QUESTIONS_JSON), verbosity=0)
+    # Testlar uchun: har bir bosqich butun savollar bankini oladi, sertifikatli, do‘st sharti o‘chiq.
+    # Haqiqiy bosqich sozlamalari test_stages.py da alohida tekshiriladi.
+    Stage.objects.update(friends_required=0, question_count=200, max_difficulty=3, certificate=True)
 
 
 @pytest.fixture
@@ -42,9 +45,11 @@ def client():
 
 @pytest.fixture
 def make_attempt(client, imported):
-    def _make(full_name="Ali Valiyev", phone="", language="uz"):
+    def _make(full_name="Ali Valiyev", phone="", language="uz", stage=3):
         resp = client.post(
-            "/api/v1/attempts", {"full_name": full_name, "phone": phone, "language": language}, format="json"
+            "/api/v1/attempts",
+            {"full_name": full_name, "phone": phone, "language": language, "stage": stage},
+            format="json",
         )
         assert resp.status_code == 201, resp.content
         data = resp.json()
@@ -69,3 +74,8 @@ def answer(client):
 @pytest.fixture
 def get_attempt():
     return lambda attempt_id: Attempt.objects.get(pk=attempt_id)
+
+
+@pytest.fixture
+def bank_size(questions_data):
+    return len(questions_data["questions"])

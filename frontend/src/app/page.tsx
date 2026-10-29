@@ -7,7 +7,7 @@ import { RevealScope } from "@/components/RevealScope";
 import { ArrowRight, Clock, Flag, Grid } from "@/components/icons";
 import { CurvedArrow, Grid3, Star } from "@/components/shapes";
 import { ButtonLink } from "@/components/button";
-import { LANG_COOKIE, translate, translateList, type Lang } from "@/i18n/core";
+import { LANG_COOKIE, toLang, translate, translateList, type Lang } from "@/i18n/core";
 import { getServerMeta } from "@/lib/serverMeta";
 
 export const dynamic = "force-dynamic";
@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 const d = (s: number) => ({ ["--delay" as string]: `${s}s` });
 
 export default async function HomePage() {
-  const lang: Lang = (await cookies()).get(LANG_COOKIE)?.value === "ru" ? "ru" : "uz";
+  const lang: Lang = toLang((await cookies()).get(LANG_COOKIE)?.value);
   const meta = await getServerMeta();
   const t = (key: string, vars?: Record<string, string | number>) => translate(lang, key, vars);
   const vars = { count: meta.question_count, minutes: meta.duration_minutes };

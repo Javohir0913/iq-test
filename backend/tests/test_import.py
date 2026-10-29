@@ -11,15 +11,17 @@ from quiz.models import Option, Question
 pytestmark = pytest.mark.django_db
 
 
-def test_import_creates_35_questions_with_matching_points(imported, questions_data):
-    assert Question.objects.count() == 35
-    assert Option.objects.count() == 35 * 6
+def test_import_creates_all_questions_with_matching_points(imported, questions_data, bank_size):
+    assert Question.objects.count() == bank_size
+    assert Option.objects.count() == bank_size * 6
     for q in questions_data["questions"]:
         db_q = Question.objects.get(number=q["number"])
         assert db_q.type == q["type"]
         assert db_q.category == q["category"]
         assert db_q.prompt_uz == q["prompt"]["uz"]
         assert db_q.prompt_ru == q["prompt"]["ru"]
+        assert db_q.prompt_en == q["prompt"]["en"]
+        assert db_q.difficulty == q["difficulty"]
         assert db_q.figure.storage.exists(db_q.figure.name)
         db_points = {o.letter: o.points for o in db_q.options.all()}
         assert db_points == {o["letter"]: o["points"] for o in q["options"]}
@@ -32,13 +34,13 @@ def test_import_creates_35_questions_with_matching_points(imported, questions_da
                 assert o.value is not None
 
 
-def test_import_is_idempotent(imported, questions_data):
+def test_import_is_idempotent(imported, questions_data, bank_size):
     from tests.conftest import QUESTIONS_JSON
 
     names_before = sorted(Question.objects.values_list("figure", flat=True))
     call_command("import_questions", str(QUESTIONS_JSON), verbosity=0)
-    assert Question.objects.count() == 35
-    assert Option.objects.count() == 210
+    assert Question.objects.count() == bank_size
+    assert Option.objects.count() == bank_size * 6
     assert sorted(Question.objects.values_list("figure", flat=True)) == names_before
 
 
@@ -72,6 +74,7 @@ def _write_variant(tmp_path, questions_data, mutate):
         lambda q: q["options"].__setitem__(1, {**q["options"][1], "points": 2}),  # 3 dan kam
         lambda q: q["options"].pop(),  # 5 ta variant
         lambda q: q.update(correct="A"),  # to‘g‘ri javob 7 bilan mos emas
+        lambda q: q.update(difficulty=4),  # qiyinlik 1–3 emas
     ],
 )
 def test_import_rejects_invalid(db, tmp_path, questions_data, mutate):

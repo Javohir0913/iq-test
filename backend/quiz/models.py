@@ -21,7 +21,7 @@ class Category(models.TextChoices):
 CATEGORY_NAMES = {
     "numeric": {"uz": "Sonli mantiq", "ru": "Числовая логика", "en": "Numerical logic"},
     "pattern": {"uz": "Naqsh va ketma-ketlik", "ru": "Закономерности", "en": "Patterns and sequences"},
-    "spatial": {"uz": "Fazoviy tasavvur", "ru": "Пространственное мышление", "en": "Spatial reasoning"},
+    "spatial": {"uz": "Fazoviy tasavvur", "ru": "Пространственное мышление", "en": "Spatial thinking"},
 }
 
 

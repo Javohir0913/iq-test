@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Mantiqiy test — fikrlashingizni sinab ko‘ring",
-    "description": "35 ta mantiqiy savol: sonlar, naqshlar va fazoviy tasavvur. Natijangizni ball, foiz va daraja ko‘rinishida oling."
+    "description": "Mantiqiy savollar: sonlar, naqshlar va fazoviy tasavvur. Natijangizni ball, foiz va daraja ko‘rinishida oling."
   },
   "common": {
     "brand": "Mantiqiy test",
@@ -172,7 +172,10 @@
       "score": "ball",
       "cta": "Siz ham sinab ko‘ring"
     },
-    "verify_code": "Sertifikat tekshiruv kodi"
+    "verify_code": "Sertifikat tekshiruv kodi",
+    "stage": "{n}-bosqich",
+    "no_certificate": "Bu bosqichda sertifikat berilmaydi. Do‘stlaringizni taklif qilib, sertifikatli bosqichni oching!",
+    "next_stage": "Keyingi bosqich"
   },
   "errors": {
     "not_found_title": "Sahifa topilmadi",
@@ -223,5 +226,44 @@
     "placeholder": "K7M2-QX9P-4T",
     "submit": "Tekshirish",
     "another": "Boshqa sertifikatni tekshirish"
+  },
+  "stages": {
+    "title": "Bosqichni tanlang",
+    "subtitle": "Har bosqichda savollar tasodifiy tushadi. Sertifikat oxirgi bosqichda beriladi.",
+    "stage": "{n}-bosqich",
+    "questions": "{count} savol",
+    "minutes": "{minutes} daqiqa",
+    "certificate": "Sertifikat beriladi",
+    "no_certificate": "Natija ko‘rsatiladi, sertifikatsiz",
+    "locked": "Yopiq",
+    "open": "Ochiq",
+    "choose": "Tanlash",
+    "chosen": "Tanlandi",
+    "best": "Eng yaxshi natija: {percent}%",
+    "need_friends": {
+      "one": "Ochish uchun yana {n} ta do‘stni taklif qiling",
+      "other": "Ochish uchun yana {n} ta do‘stni taklif qiling"
+    },
+    "need_channels": "Avval kanallarga a’zo bo‘ling",
+    "channels_title": "Kanallarga a’zo bo‘ling",
+    "channels_text": "Testni boshlash uchun quyidagi kanallarga a’zo bo‘ling, so‘ng «Tekshirish» tugmasini bosing.",
+    "subscribe": "A’zo bo‘lish",
+    "subscribed": "A’zo bo‘lgansiz",
+    "check": "Tekshirish",
+    "checking": "Tekshirilmoqda…",
+    "not_subscribed": "Hali barcha kanallarga a’zo bo‘lmadingiz.",
+    "friends_title": "Do‘stlarni taklif qiling",
+    "friends_text": "Havolani do‘stlaringizga yuboring. Do‘stingiz botni ochib, kanallarga a’zo bo‘lgach u hisoblanadi.",
+    "friends_count": "Taklif qilingan: {n}",
+    "friends_pending": "kutilmoqda: {n}",
+    "invite_share": "Telegramda yuborish",
+    "invite_copy": "Havolani nusxalash",
+    "copied": "Nusxalandi!",
+    "invite_text": "Mantiqiy fikrlashingizni sinab ko‘ring! Men bilan birga testni topshiring:",
+    "errors": {
+      "subscription_required": "Testni boshlash uchun kanallarga a’zo bo‘ling.",
+      "friends_required": "Bu bosqichni ochish uchun do‘stlaringizni taklif qiling.",
+      "stage_not_found": "Bu bosqich hozir mavjud emas."
+    }
   }
 }

@@ -2,11 +2,50 @@
 
 const API = "/api/v1";
 
+export interface StageMeta {
+  number: number;
+  question_count: number;
+  duration_minutes: number;
+  friends_required: number;
+  certificate: boolean;
+}
+
+export interface StageInfo {
+  number: number;
+  certificate: boolean;
+}
+
+/** Bazadan: name_uz, name_ru, name_en (en bo‘sh bo‘lsa uz qaytadi) */
+export interface LocalizedLevel {
+  name_uz: string;
+  name_ru: string;
+  name_en: string;
+}
+
+export interface StageProgress extends StageMeta {
+  unlocked: boolean;
+  missing_friends: number;
+  finished_count: number;
+  best_percent: number | null;
+}
+
+export interface Progress {
+  subscription_required: boolean;
+  subscribed: boolean;
+  channels: { title: string; url: string; subscribed: boolean }[];
+  friends: number;
+  pending_friends: number;
+  referral_link: string;
+  stages: StageProgress[];
+}
+
 export interface TestMeta {
   question_count: number;
   duration_minutes: number;
   options_per_question: number;
   max_score: number;
+  stages?: StageMeta[];
+  bank_size?: number;
   languages: string[];
   telegram_bot?: string;
   auth_required?: boolean;
@@ -30,11 +69,13 @@ export interface MyAttempt {
   token: string;
   status: AttemptStatus;
   full_name: string;
+  stage: StageInfo | null;
   started_at: string;
   finished_at: string | null;
   total_score: number | null;
+  max_score: number;
   percent: number | null;
-  level: { name_uz: string; name_ru: string } | null;
+  level: LocalizedLevel | null;
 }
 
 // Telegram sessiya tokeni (lib/auth.tsx o‘rnatadi) – har bir so‘rovga qo‘shiladi
@@ -52,7 +93,7 @@ export interface PublicOption {
 export interface PublicQuestion {
   number: number;
   type: "number" | "image";
-  prompt: { uz: string; ru: string };
+  prompt: { uz: string; ru: string; en: string };
   figure: string;
   options: PublicOption[];
 }
@@ -62,6 +103,7 @@ export type AttemptStatus = "in_progress" | "finished" | "expired";
 export interface AttemptQuestions {
   attempt_id: string;
   status: AttemptStatus;
+  stage: StageInfo | null;
   full_name: string;
   language: string;
   started_at: string;
@@ -75,6 +117,7 @@ export interface CategoryResult {
   key: "numeric" | "pattern" | "spatial";
   name_uz: string;
   name_ru: string;
+  name_en: string;
   score: number;
   max: number;
   percent: number;
@@ -91,17 +134,18 @@ export interface AttemptResult {
   total_score: number;
   max_score: number;
   percent: number;
-  level: {
-    name_uz: string;
-    name_ru: string;
+  level: (LocalizedLevel & {
     description_uz: string;
     description_ru: string;
-    min_score: number;
-    max_score: number;
-  } | null;
+    description_en: string;
+    min_percent: number;
+    max_percent: number;
+  }) | null;
   categories: CategoryResult[];
   answered_count: number;
   total_questions: number;
+  stage: StageInfo | null;
+  certificate_available: boolean;
   verify_code?: string;
 }
 
@@ -151,12 +195,13 @@ export const authApi = {
       body: JSON.stringify({ init_data: initData }),
     }),
   me: () => request<{ user: AuthUser }>("/auth/me"),
-  myAttempts: () => request<{ max_score: number; attempts: MyAttempt[] }>("/me/attempts"),
+  myAttempts: () => request<{ attempts: MyAttempt[] }>("/me/attempts"),
+  progress: () => request<Progress>("/me/progress"),
 };
 
 export const api = {
   meta: () => request<TestMeta>("/test/meta"),
-  createAttempt: (body: { full_name: string; phone: string; language: string; telegram_init_data?: string }) =>
+  createAttempt: (body: { full_name: string; phone: string; language: string; stage: number; telegram_init_data?: string }) =>
     request<{ attempt_id: string; token: string; expires_at: string; server_time: string }>("/attempts", {
       method: "POST",
       body: JSON.stringify(body),

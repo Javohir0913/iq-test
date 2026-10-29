@@ -8,7 +8,7 @@ import { Check, Clock, CloudOff, Download, Link, Refresh, Send, Share, Spinner }
 import { CategoryBar, CountUp, ScoreRing } from "@/components/result";
 import { Grid3, Star, Triangle } from "@/components/shapes";
 import { Button, ButtonLink, Card, Modal, Skeleton, StateView } from "@/components/ui";
-import { useI18n } from "@/i18n";
+import { localized, useI18n } from "@/i18n";
 import { ApiError, api, type AttemptResult } from "@/lib/api";
 import { renderShareCard } from "@/lib/shareCard";
 import { resolveAttemptToken } from "@/lib/attemptToken";
@@ -80,8 +80,8 @@ export default function ResultPage() {
       </>
     );
 
-  const levelName = result.level ? (lang === "ru" ? result.level.name_ru : result.level.name_uz) : "—";
-  const levelDesc = result.level ? (lang === "ru" ? result.level.description_ru : result.level.description_uz) : "";
+  const levelName = localized(result.level, "name", lang) || "—";
+  const levelDesc = localized(result.level, "description", lang);
   const minutes = Math.floor(result.duration_seconds / 60);
   const seconds = result.duration_seconds % 60;
 
@@ -92,7 +92,10 @@ export default function ResultPage() {
         <div className="dot-grid absolute inset-x-0 top-0 -z-10 h-[520px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
         <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 md:py-12">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted">{t("result.title")}</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted">
+              {t("result.title")}
+              {result.stage && ` · ${t("result.stage", { n: result.stage.number })}`}
+            </p>
             <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-4xl">{t("result.greeting", { name: result.full_name })}</h1>
             {result.status === "expired" && (
               <p className="mx-auto mt-3 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1.5 text-sm font-medium text-accent">
@@ -150,7 +153,7 @@ export default function ResultPage() {
                 {result.categories.map((c, i) => (
                   <CategoryBar
                     key={c.key}
-                    name={lang === "ru" ? c.name_ru : c.name_uz}
+                    name={localized(c, "name", lang)}
                     percent={c.percent}
                     score={c.score}
                     max={c.max}
@@ -162,7 +165,7 @@ export default function ResultPage() {
             </Card>
             <Card className="grid place-items-center p-6">
               <Radar
-                values={result.categories.map((c) => ({ key: c.key, label: lang === "ru" ? c.name_ru : c.name_uz, value: c.percent }))}
+                values={result.categories.map((c) => ({ key: c.key, label: localized(c, "name", lang), value: c.percent }))}
               />
             </Card>
           </div>
@@ -172,6 +175,7 @@ export default function ResultPage() {
             <Button size="lg" onClick={() => setShareOpen(true)}>
               <Share size={18} /> {t("result.share")}
             </Button>
+            {result.certificate_available && (
             <a
               href={api.certificateUrl(id, token, lang)}
               onClick={(e) => {
@@ -188,10 +192,20 @@ export default function ResultPage() {
               className="focus-ring inline-flex h-14 items-center justify-center gap-2.5 rounded-btn bg-ink px-7 font-semibold text-page transition hover:bg-ink/90 active:scale-[0.98]" download>
               <Download size={18} /> {t("result.certificate")}
             </a>
+            )}
             <ButtonLink href="/start" size="lg" variant="secondary">
               <Refresh size={18} /> {t("result.retake")}
             </ButtonLink>
           </div>
+
+          {!result.certificate_available && result.stage && (
+            <div className="mx-auto mt-6 flex max-w-2xl flex-col items-center gap-3 rounded-card border border-teal/30 bg-teal/[0.07] p-4 text-center sm:flex-row sm:text-left">
+              <p className="flex-1 text-sm leading-relaxed">{t("result.no_certificate")}</p>
+              <ButtonLink href={`/start?stage=${result.stage.number + 1}`} variant="dark" size="sm" className="shrink-0">
+                {t("result.next_stage")}
+              </ButtonLink>
+            </div>
+          )}
 
           {result.verify_code && (
             <p className="mt-6 text-center text-sm text-muted">
@@ -320,7 +334,7 @@ function ShareModal({ open, onClose, result, levelName }: { open: boolean; onClo
       level: levelName,
       cta: t("result.card.cta"),
       url: siteUrl,
-      categories: result.categories.map((c) => ({ name: lang === "ru" ? c.name_ru : c.name_uz, percent: c.percent })),
+      categories: result.categories.map((c) => ({ name: localized(c, "name", lang), percent: c.percent })),
     })
       .then((b) => {
         if (cancelled) return;

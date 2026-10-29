@@ -1,11 +1,11 @@
 // Server komponentlari uchun backend so‘rovlari (ichki tarmoq orqali)
 import { cookies } from "next/headers";
-import { LANG_COOKIE, type Lang } from "@/i18n/core";
+import { LANG_COOKIE, toLang, type Lang } from "@/i18n/core";
 
 const BASE = process.env.BACKEND_INTERNAL_URL || "http://backend:8000";
 
 export async function serverLang(): Promise<Lang> {
-  return (await cookies()).get(LANG_COOKIE)?.value === "ru" ? "ru" : "uz";
+  return toLang((await cookies()).get(LANG_COOKIE)?.value);
 }
 
 export interface VerifyResult {
@@ -16,7 +16,7 @@ export interface VerifyResult {
   total_score: number;
   max_score: number;
   percent: number;
-  level: { name_uz: string; name_ru: string } | null;
+  level: { name_uz: string; name_ru: string; name_en: string } | null;
   telegram_verified: boolean;
 }
 

@@ -1,12 +1,27 @@
 // Server va klient uchun umumiy (React'siz) tarjima funksiyalari
 import uz from "./uz.json";
 import ru from "./ru.json";
+import en from "./en.json";
 
-export type Lang = "uz" | "ru";
-export const LANGS: Lang[] = ["uz", "ru"];
+export type Lang = "uz" | "ru" | "en";
+export const LANGS: Lang[] = ["uz", "ru", "en"];
 export const LANG_COOKIE = "lang";
 
-const DICTS: Record<Lang, unknown> = { uz, ru };
+const DICTS: Record<Lang, unknown> = { uz, ru, en };
+
+export const LOCALES: Record<Lang, string> = { uz: "uz-UZ", ru: "ru-RU", en: "en-GB" };
+
+export function toLang(value: string | null | undefined): Lang {
+  return value === "ru" || value === "en" ? value : "uz";
+}
+
+/** Bazadan kelgan ko‘p tilli maydon: name_uz / name_ru / name_en (bo‘sh bo‘lsa – uz) */
+export function localized(obj: object | null | undefined, field: string, lang: Lang): string {
+  if (!obj) return "";
+  const rec = obj as Record<string, unknown>;
+  const value = rec[`${field}_${lang}`] || rec[`${field}_uz`];
+  return typeof value === "string" ? value : "";
+}
 
 export type Vars = Record<string, string | number>;
 

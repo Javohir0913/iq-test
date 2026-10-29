@@ -27,34 +27,36 @@ def test_bounds_and_percent():
 
 
 @pytest.mark.parametrize(
-    "score,expected",
-    [(0, "Boshlang‘ich"), (139, "Boshlang‘ich"), (140, "O‘rta"), (174, "O‘rta"), (175, "Yuqori"),
-     (209, "Yuqori"), (210, "Juda yuqori"), (234, "Juda yuqori"), (235, "A’lo"), (245, "A’lo")],
+    "percent,expected",
+    [(0, "Boshlang‘ich"), (24.9, "Boshlang‘ich"), (25, "O‘rta"), (49.9, "O‘rta"), (50, "Yuqori"),
+     (74.9, "Yuqori"), (75, "Juda yuqori"), (92.9, "Juda yuqori"), (93, "A’lo"), (100, "A’lo")],
 )
-def test_default_levels(score, expected):
-    assert ScoreLevel.for_score(score).name_uz == expected
+def test_default_levels(percent, expected):
+    # Eski 35 savollik chegaralar (140/175/210/235 ball) foizga o‘tkazilgan
+    assert ScoreLevel.for_percent(percent).name_uz == expected
+    assert ScoreLevel.for_percent(percent).name_en
 
 
-def test_all_correct_gives_245(client, make_attempt, answer, questions_data):
+def test_all_correct_gives_max(client, make_attempt, answer, questions_data, bank_size):
     attempt_id, token = make_attempt()
     for number, letter in best_letters(questions_data).items():
         assert answer(attempt_id, token, number, letter).status_code == 200
     resp = client.post(f"/api/v1/attempts/{attempt_id}/finish", HTTP_X_ATTEMPT_TOKEN=token)
     data = resp.json()
     assert resp.status_code == 200
-    assert data["total_score"] == 245
-    assert data["max_score"] == 245
+    assert data["total_score"] == bank_size * 7
+    assert data["max_score"] == bank_size * 7
     assert data["percent"] == 100.0
     assert data["level"]["name_uz"] == "A’lo"
-    assert data["answered_count"] == 35
+    assert data["answered_count"] == bank_size
     cats = {c["key"]: c for c in data["categories"]}
-    assert cats["numeric"]["max"] == 7 * 7
-    assert cats["pattern"]["max"] == 17 * 7
-    assert cats["spatial"]["max"] == 11 * 7
+    for key in ("numeric", "pattern", "spatial"):
+        count = sum(1 for q in questions_data["questions"] if q["category"] == key)
+        assert cats[key]["max"] == count * 7
     assert all(c["percent"] == 100.0 for c in cats.values())
 
 
-def test_all_lowest(client, make_attempt, answer, questions_data):
+def test_all_lowest(client, make_attempt, answer, questions_data, bank_size):
     # questions.json da 7-savolning eng past bali 4, shuning uchun eng kichik to‘liq ball 106.
     expected = sum(min(o["points"] for o in q["options"]) for q in questions_data["questions"])
     attempt_id, token = make_attempt()
@@ -62,7 +64,7 @@ def test_all_lowest(client, make_attempt, answer, questions_data):
         answer(attempt_id, token, number, letter)
     data = client.post(f"/api/v1/attempts/{attempt_id}/finish", HTTP_X_ATTEMPT_TOKEN=token).json()
     assert data["total_score"] == expected
-    assert data["percent"] == float(compute_percent(expected, 35))
+    assert data["percent"] == float(compute_percent(expected, bank_size))
     assert data["level"]["name_uz"] == "Boshlang‘ich"
 
 
@@ -74,7 +76,7 @@ def test_unanswered_is_zero(client, make_attempt):
     assert data["answered_count"] == 0
 
 
-def test_score_matches_json_for_each_option(client, make_attempt, answer, questions_data):
+def test_score_matches_json_for_each_option(client, make_attempt, answer, questions_data, bank_size):
     """Har bir savol uchun aralash javoblar: yig‘indi questions.json ballari bilan bir xil."""
     attempt_id, token = make_attempt()
     expected = 0
@@ -86,7 +88,7 @@ def test_score_matches_json_for_each_option(client, make_attempt, answer, questi
         answer(attempt_id, token, q["number"], option["letter"])
     data = client.post(f"/api/v1/attempts/{attempt_id}/finish", HTTP_X_ATTEMPT_TOKEN=token).json()
     assert data["total_score"] == expected
-    assert data["answered_count"] == 28
+    assert data["answered_count"] == sum(1 for i in range(bank_size) if i % 5 != 4)
 
 
 def test_changing_answer_replaces_previous(client, make_attempt, answer, questions_data):
@@ -118,13 +120,13 @@ def test_finish_is_idempotent(client, make_attempt, answer):
     assert first["finished_at"] == second["finished_at"]
 
 
-def test_inactive_question_not_counted(client, make_attempt, answer):
+def test_inactive_question_not_counted(client, make_attempt, answer, bank_size):
     from quiz.models import Question
 
     Question.objects.filter(number=35).update(is_active=False)
     attempt_id, token = make_attempt()
     resp = client.get(f"/api/v1/attempts/{attempt_id}/questions", HTTP_X_ATTEMPT_TOKEN=token)
-    assert len(resp.json()["questions"]) == 34
+    assert len(resp.json()["questions"]) == bank_size - 1
     assert answer(attempt_id, token, 35, "A").status_code == 404
     data = client.post(f"/api/v1/attempts/{attempt_id}/finish", HTTP_X_ATTEMPT_TOKEN=token).json()
-    assert data["max_score"] == 34 * 7
+    assert data["max_score"] == (bank_size - 1) * 7

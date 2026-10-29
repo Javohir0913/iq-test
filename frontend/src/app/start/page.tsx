@@ -2,13 +2,14 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Header } from "@/components/Header";
 import { ArrowRight, Check, Keyboard, Lock, Refresh, Send, Spinner } from "@/components/icons";
 import { Grid3, Star, Triangle } from "@/components/shapes";
 import { Button, ButtonLink, Card, Skeleton } from "@/components/ui";
 import { useI18n } from "@/i18n";
-import { ApiError, api } from "@/lib/api";
+import { ApiError, api, authApi, type Progress, type StageProgress } from "@/lib/api";
+import { ChannelsCard, FriendsCard, StageCards } from "@/components/StagePicker";
 import { formatPhone, isPhoneComplete, normalizePhone, phoneDigits } from "@/lib/phone";
 import { storage, type StoredAttempt } from "@/lib/storage";
 import { useAuth } from "@/lib/auth";
@@ -30,6 +31,46 @@ export default function StartPage() {
   const [submitting, setSubmitting] = useState(false);
   const [fromTelegram, setFromTelegram] = useState(false);
   const [resume, setResume] = useState<StoredAttempt | null>(null);
+  const [progress, setProgress] = useState<Progress | null>(null);
+  const [stageNo, setStageNo] = useState<number | null>(null);
+
+  // Bosqichlar holati: kirgan foydalanuvchi – serverdan (kanallar, do‘stlar), aks holda meta’dan
+  const loadProgress = useCallback(async () => {
+    if (status !== "authed") return;
+    try {
+      setProgress(await authApi.progress());
+    } catch {
+      /* xato bo‘lsa meta’dagi bosqichlar ko‘rsatiladi */
+    }
+  }, [status]);
+
+  useEffect(() => {
+    void loadProgress();
+  }, [loadProgress]);
+
+  const stages: StageProgress[] =
+    progress?.stages ??
+    (meta.stages ?? []).map((s) => ({
+      ...s,
+      unlocked: s.friends_required === 0,
+      missing_friends: s.friends_required,
+      finished_count: 0,
+      best_percent: null,
+    }));
+
+  // Boshlang‘ich tanlov: ?stage=N, aks holda ochiq bosqichlarning eng yuqorisi
+  useEffect(() => {
+    if (stageNo !== null || stages.length === 0) return;
+    const param = Number(new URLSearchParams(window.location.search).get("stage"));
+    const fromParam = stages.find((s) => s.number === param);
+    const open = stages.filter((s) => s.unlocked);
+    setStageNo(fromParam?.number ?? open[open.length - 1]?.number ?? stages[0].number);
+  }, [stages, stageNo]);
+
+  const stage = stages.find((s) => s.number === stageNo) ?? null;
+  const needChannels = Boolean(progress?.subscription_required && !progress.subscribed);
+  const missingFriends = stage?.missing_friends ?? 0;
+  const canStart = Boolean(stage) && !needChannels && missingFriends === 0;
 
   // Tugallanmagan urinish bo‘lsa – davom ettirish taklifi
   useEffect(() => {
@@ -70,13 +111,14 @@ export default function StartPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (submitting || !validate()) return;
+    if (submitting || !canStart || !stage || !validate()) return;
     setSubmitting(true);
     try {
       const res = await api.createAttempt({
         full_name: name.trim().replace(/\s+/g, " "),
         phone: normalizePhone(phone),
         language: lang,
+        stage: stage.number,
         telegram_init_data: initData || undefined,
       });
       storage.saveAttempt(res.attempt_id, res.token);
@@ -85,6 +127,10 @@ export default function StartPage() {
     } catch (err) {
       const apiErr = err instanceof ApiError ? err : null;
       if (apiErr?.status === 429) setErrors({ form: t("start.errors.rate_limited") });
+      else if (apiErr && ["subscription_required", "friends_required", "stage_not_found"].includes(apiErr.code)) {
+        setErrors({ form: t(`stages.errors.${apiErr.code}`) });
+        void loadProgress();
+      }
       else if (apiErr?.status === 400 && apiErr.data.phone) setErrors({ phone: t("start.errors.phone_invalid") });
       else if (apiErr?.status === 400 && apiErr.data.full_name) setErrors({ name: t("start.errors.name_short") });
       else setErrors({ form: t("start.errors.generic") });
@@ -93,7 +139,10 @@ export default function StartPage() {
   };
 
   const rules = list("start.rules");
-  const vars = { count: meta.question_count, minutes: meta.duration_minutes };
+  const vars = {
+    count: stage?.question_count ?? meta.question_count,
+    minutes: stage?.duration_minutes ?? meta.duration_minutes,
+  };
 
   return (
     <>
@@ -132,6 +181,18 @@ export default function StartPage() {
             <Card className="p-6 sm:p-8">
               <h1 className="text-3xl font-bold tracking-tight">{t("start.title")}</h1>
               <p className="mt-2 text-muted">{t("start.subtitle")}</p>
+
+              {stages.length > 0 && (
+                <section className="mt-7 space-y-4" aria-labelledby="stages-title">
+                  <div>
+                    <h2 id="stages-title" className="text-sm font-semibold">{t("stages.title")}</h2>
+                    <p className="mt-1 text-sm text-muted">{t("stages.subtitle")}</p>
+                  </div>
+                  <StageCards stages={stages} selected={stageNo} onSelect={setStageNo} />
+                  {progress && needChannels && <ChannelsCard progress={progress} onCheck={loadProgress} />}
+                  {progress && !needChannels && missingFriends > 0 && <FriendsCard progress={progress} missing={missingFriends} />}
+                </section>
+              )}
 
               <form onSubmit={submit} noValidate className="mt-8 space-y-5">
                 <div>
@@ -223,14 +284,14 @@ export default function StartPage() {
                   </p>
                 )}
 
-                <Button type="submit" size="lg" className="group w-full" disabled={submitting}>
+                <Button type="submit" size="lg" className="group w-full" disabled={submitting || !canStart}>
                   {submitting ? (
                     <>
                       <Spinner /> {t("start.submitting")}
                     </>
                   ) : (
                     <>
-                      {t("start.submit")}
+                      {stage ? `${t("start.submit")} · ${t("stages.stage", { n: stage.number })}` : t("start.submit")}
                       <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
                     </>
                   )}

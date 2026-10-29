@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { translate, translateList, LANG_COOKIE, type Lang, type Vars } from "./core";
 
-export { LANGS, LANG_COOKIE, translate, translateList, type Lang } from "./core";
+export { LANGS, LANG_COOKIE, LOCALES, localized, translate, translateList, type Lang } from "./core";
 
 interface I18nValue {
   lang: Lang;
@@ -35,7 +35,7 @@ export function I18nProvider({ initialLang, children }: { initialLang: Lang; chi
   useEffect(() => {
     try {
       const param = new URLSearchParams(window.location.search).get("lang");
-      if ((param === "uz" || param === "ru") && param !== initialLang) setLang(param);
+      if ((param === "uz" || param === "ru" || param === "en") && param !== initialLang) setLang(param);
     } catch {
       /* e’tiborsiz */
     }
