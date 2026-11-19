@@ -5,7 +5,7 @@ from django.forms.models import BaseInlineFormSet
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
-from django.utils.html import format_html
+from django.utils.html import format_html, format_html_join
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.contrib.filters.admin import ChoicesDropdownFilter, RangeDateFilter, RelatedDropdownFilter
 from unfold.decorators import action, display
@@ -161,11 +161,32 @@ class StageAdmin(ModelAdmin):
         return obj.attempts.count()
 
 
+def bot_admin_status(chat):
+    """(ok, matn): bot kanalda administratormi. Telegram xatosi bo‘lsa – ok=False va xato matni."""
+    from .telegram import bot_api
+
+    try:
+        me = bot_api("getMe", timeout=4)
+        member = bot_api("getChatMember", {"chat_id": chat, "user_id": me["id"]}, timeout=4)
+    except Exception as exc:
+        return False, f"tekshirib bo‘lmadi: {str(exc)[:120]}"
+    if member.get("status") == "administrator":
+        return True, "bot admin"
+    return False, "bot kanalda administrator emas"
+
+
+def bot_admin_badge(chat):
+    ok, text = bot_admin_status(chat)
+    color = "#2A7F8F" if ok else "#E4572E"
+    return format_html('<span style="color:{}">{} {}</span>', color, "✓" if ok else "✗", text)
+
+
 @admin.register(RequiredChannel)
 class RequiredChannelAdmin(ModelAdmin):
     list_display = ["title", "chat", "link", "is_active", "order", "bot_check"]
     list_editable = ["is_active", "order"]
-    fields = ["title", "chat", "invite_link", "is_active", "order"]
+    fields = ["title", "chat", "invite_link", "is_active", "order", "bot_check"]
+    readonly_fields = ["bot_check"]
 
     @display(description="Havola")
     def link(self, obj):
@@ -173,21 +194,48 @@ class RequiredChannelAdmin(ModelAdmin):
 
     @display(description="Bot holati")
     def bot_check(self, obj):
-        from .telegram import bot_api
+        if not obj or not obj.pk:
+            return "Saqlangandan keyin tekshiriladi"
+        return bot_admin_badge(obj.chat)
 
-        try:
-            me = bot_api("getMe", timeout=4)
-            member = bot_api("getChatMember", {"chat_id": obj.chat, "user_id": me["id"]}, timeout=4)
-        except Exception as exc:
-            return format_html('<span style="color:#E4572E">✗ {}</span>', str(exc)[:80])
-        if member.get("status") == "administrator":
-            return format_html('<span style="color:#2A7F8F">✓ bot admin</span>')
-        return format_html('<span style="color:#E4572E">✗ bot admin emas</span>')
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        ok, text = bot_admin_status(obj.chat)
+        if not ok:
+            messages.warning(
+                request,
+                f"{obj.chat}: {text}. Botni kanalga administrator qilib qo‘shing, aks holda a’zolik tekshirilmaydi.",
+            )
 
 
 @admin.register(TestSettings)
 class TestSettingsAdmin(ModelAdmin):
     list_display = ["__str__", "subscription_required"]
+    readonly_fields = ["channels_overview"]
+
+    @display(description="Majburiy kanallar")
+    def channels_overview(self, obj):
+        channels = list(RequiredChannel.objects.filter(is_active=True))
+        if not channels:
+            return format_html(
+                'Faol kanal yo‘q. <a href="{}" style="text-decoration:underline">Kanal qo‘shish →</a>',
+                reverse("admin:quiz_requiredchannel_add"),
+            )
+        rows = format_html_join(
+            "", "<li>{} ({}) – {}</li>", ((ch.title, ch.chat, bot_admin_badge(ch.chat)) for ch in channels)
+        )
+        return format_html(
+            '<ul style="margin:0 0 .5rem">{}</ul><a href="{}" style="text-decoration:underline">Kanallarni boshqarish →</a>',
+            rows,
+            reverse("admin:quiz_requiredchannel_changelist"),
+        )
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        if obj.subscription_required and not RequiredChannel.objects.filter(is_active=True).exists():
+            messages.warning(
+                request, "Obuna majburiy yoqilgan, lekin faol kanal yo‘q – «Majburiy kanallar» bo‘limida kanal qo‘shing."
+            )
 
     def has_add_permission(self, request):
         return not TestSettings.objects.exists()

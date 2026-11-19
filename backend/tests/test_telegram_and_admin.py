@@ -72,6 +72,9 @@ def test_admin_pages(admin_client, make_attempt, answer):
         "/admin/quiz/participant/",
         "/admin/quiz/scorelevel/",
         "/admin/quiz/attempt/stats/",
+        "/admin/quiz/stage/",
+        "/admin/quiz/requiredchannel/",
+        "/admin/quiz/requiredchannel/add/",
     ]:
         resp = admin_client.get(url)
         assert resp.status_code == 200, url
@@ -201,3 +204,38 @@ def test_no_message_without_telegram(client, make_attempt, answer, settings, mon
     attempt_id, token = make_attempt()
     client.post(f"/api/v1/attempts/{attempt_id}/finish", HTTP_X_ATTEMPT_TOKEN=token)
     assert sent == []
+
+
+def test_admin_sidebar_links_channels_and_stages(admin_client):
+    html = admin_client.get("/admin/").content.decode()
+    assert "/admin/quiz/requiredchannel/" in html
+    assert "/admin/quiz/stage/" in html
+
+
+def test_admin_channel_bot_status(admin_client, monkeypatch):
+    from quiz import telegram
+    from quiz.models import RequiredChannel, TestSettings
+
+    status = {"value": "administrator"}
+
+    def fake_bot_api(method, payload=None, timeout=8):
+        if method == "getMe":
+            return {"id": 42}
+        return {"status": status["value"]}
+
+    monkeypatch.setattr(telegram, "bot_api", fake_bot_api)
+    ch = RequiredChannel.objects.create(chat="@kanal", title="Kanal")
+    settings_url = f"/admin/quiz/testsettings/{TestSettings.load().pk}/change/"
+
+    assert "✓ bot admin" in admin_client.get("/admin/quiz/requiredchannel/").content.decode()
+    assert "✓ bot admin" in admin_client.get(f"/admin/quiz/requiredchannel/{ch.pk}/change/").content.decode()
+    assert "✓ bot admin" in admin_client.get(settings_url).content.decode()
+
+    status["value"] = "member"
+    assert "administrator emas" in admin_client.get(settings_url).content.decode()
+    resp = admin_client.post(
+        f"/admin/quiz/requiredchannel/{ch.pk}/change/",
+        {"title": "Kanal", "chat": "@kanal", "invite_link": "", "is_active": "on", "order": "0"},
+        follow=True,
+    )
+    assert "administrator emas" in resp.content.decode()

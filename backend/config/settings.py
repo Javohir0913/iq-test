@@ -211,6 +211,8 @@ UNFOLD = {
                 "items": [
                     {"title": "Savollar", "icon": "quiz", "link": reverse_lazy("admin:quiz_question_changelist")},
                     {"title": "Darajalar", "icon": "military_tech", "link": reverse_lazy("admin:quiz_scorelevel_changelist")},
+                    {"title": "Bosqichlar", "icon": "stairs", "link": reverse_lazy("admin:quiz_stage_changelist")},
+                    {"title": "Majburiy kanallar", "icon": "campaign", "link": reverse_lazy("admin:quiz_requiredchannel_changelist")},
                     {"title": "Sozlamalar", "icon": "settings", "link": reverse_lazy("admin:quiz_testsettings_changelist")},
                 ],
             },
