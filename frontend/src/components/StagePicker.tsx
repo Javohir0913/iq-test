@@ -1,6 +1,7 @@
 "use client";
 
 // Bosqich tanlash: bosqich kartochkalari, majburiy kanallar va do‘st taklif qilish
+import { Collapse } from "./motion";
 import { useState } from "react";
 import { useI18n } from "@/i18n";
 import type { Progress, StageProgress } from "@/lib/api";
@@ -39,7 +40,7 @@ export function StageCards({
               <span className="text-sm font-bold tracking-tight">{t("stages.stage", { n: s.number })}</span>
               {s.unlocked ? (
                 active ? (
-                  <span className="grid h-5 w-5 place-items-center rounded-full bg-accent text-white">
+                  <span className="anim-pop grid h-5 w-5 place-items-center rounded-full bg-accent text-white">
                     <Check size={12} strokeWidth={3} />
                   </span>
                 ) : null
@@ -59,7 +60,7 @@ export function StageCards({
               {s.certificate ? t("stages.certificate") : t("stages.no_certificate")}
             </span>
             {s.best_percent !== null && s.finished_count > 0 && (
-              <span className="mt-2 text-xs text-muted">{t("stages.best", { percent: Math.round(s.best_percent) })}</span>
+              <span className="anim-fade-in mt-2 text-xs text-muted">{t("stages.best", { percent: Math.round(s.best_percent) })}</span>
             )}
           </button>
         );
@@ -94,7 +95,7 @@ export function ChannelsCard({ progress, onCheck }: { progress: Progress; onChec
           <li key={ch.title + ch.url} className="flex items-center justify-between gap-3 rounded-btn border border-line bg-surface px-3 py-2.5">
             <span className="min-w-0 truncate text-sm font-semibold">{ch.title}</span>
             {ch.subscribed ? (
-              <span className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-teal">
+              <span className="anim-pop inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-teal">
                 <Check size={14} strokeWidth={3} /> {t("stages.subscribed")}
               </span>
             ) : ch.url ? (
@@ -116,11 +117,11 @@ export function ChannelsCard({ progress, onCheck }: { progress: Progress; onChec
           </li>
         ))}
       </ul>
-      {failed && !checking && !progress.subscribed && (
-        <p role="alert" className="mt-3 text-sm font-medium text-accent">
+      <Collapse show={failed && !checking && !progress.subscribed}>
+        <p role="alert" className="pt-3 text-sm font-medium text-accent">
           {t("stages.not_subscribed")}
         </p>
-      )}
+      </Collapse>
       <Button type="button" variant="dark" size="sm" className="mt-4 w-full" onClick={check} disabled={checking}>
         {checking ? <Spinner size={15} /> : <Refresh size={15} />} {checking ? t("stages.checking") : t("stages.check")}
       </Button>
@@ -174,7 +175,9 @@ export function FriendsCard({ progress, missing }: { progress: Progress; missing
               <Send size={14} /> {t("stages.invite_share")}
             </a>
             <Button type="button" variant="secondary" size="sm" onClick={copy}>
-              {copied ? <Check size={14} /> : <Link size={14} />} {copied ? t("stages.copied") : t("stages.invite_copy")}
+              <span key={copied ? "copied" : "copy"} className="anim-fade-in inline-flex items-center gap-1.5">
+                {copied ? <Check size={14} /> : <Link size={14} />} {copied ? t("stages.copied") : t("stages.invite_copy")}
+              </span>
             </Button>
           </div>
         </>

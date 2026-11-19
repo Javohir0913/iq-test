@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 
+from django.templatetags.static import static
 from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -177,6 +178,7 @@ UNFOLD = {
     "SITE_HEADER": "Mantiqiy test",
     "SITE_SYMBOL": "psychology",
     "SHOW_HISTORY": True,
+    "STYLES": [lambda request: static("quiz/admin-motion.css")],
     "DASHBOARD_CALLBACK": "quiz.stats.dashboard_callback",
     "COLORS": {
         "primary": {

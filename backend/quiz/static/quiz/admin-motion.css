@@ -1,0 +1,59 @@
+/* Admin panel: silliq animatsiyalar (Unfold ustiga). Harakatni kamaytirish yoqilgan bo‘lsa – o‘chadi. */
+
+@keyframes iq-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes iq-pop-in {
+    from { opacity: 0; transform: translateY(-4px) scale(.98); }
+    to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    /* Sahifa ochilganda kontent silliq chiqadi (faqat opacity – fixed elementlar siljimasin) */
+    #main {
+        animation: iq-fade-in .35s cubic-bezier(.22, 1, .36, 1) both;
+    }
+
+    /* Tugma, havola, maydonlar: hover/fokus ranglari silliq */
+    a, button, input, select, textarea, label, summary, [role="button"], tbody tr, td {
+        transition:
+            color .18s ease,
+            background-color .18s ease,
+            border-color .18s ease,
+            box-shadow .18s ease,
+            opacity .18s ease;
+    }
+
+    /* Alpine (x-show) bilan ochiladigan narsalar: dropdown, tablar, filtrlar, qidiruv */
+    [x-show]:not(#iq-menu-backdrop) {
+        animation: iq-pop-in .2s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    /* Inline’da «yana qo‘shish» bosilganda yangi qator */
+    tr.dynamic-options, tr[class*="dynamic-"], div[class*="dynamic-"] {
+        animation: iq-pop-in .25s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    /* Xabarlar (saqlandi, ogohlantirish) */
+    #main ul.mb-8 > li > * {
+        animation: iq-pop-in .3s cubic-bezier(.22, 1, .36, 1) both;
+    }
+
+    /* Telefonda chap menyu chapdan suzib chiqadi */
+    @media (max-width: 1279px) {
+        #iq-sidebar {
+            transition: transform .3s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .3s;
+        }
+        #iq-sidebar.is-open {
+            transition: transform .3s cubic-bezier(.22, 1, .36, 1), visibility 0s;
+        }
+        #iq-menu-btn .material-symbols-outlined {
+            transition: transform .25s ease;
+        }
+        #iq-menu-btn.is-open .material-symbols-outlined {
+            transform: rotate(90deg);
+        }
+    }
+}

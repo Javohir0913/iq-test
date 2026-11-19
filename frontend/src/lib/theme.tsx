@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 export type ThemeChoice = "light" | "dark" | "system";
 const KEY = "theme";
@@ -41,8 +41,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const resolved: "light" | "dark" =
     choice === "system" ? (external ?? (sysDark ? "dark" : "light")) : choice;
 
+  const mounted = useRef(false);
   useEffect(() => {
     const root = document.documentElement;
+    // Birinchi yuklanishda emas, faqat almashtirilganda silliq o‘tish
+    const animate = mounted.current && root.classList.contains("dark") !== (resolved === "dark");
+    mounted.current = true;
+    if (animate && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      root.classList.add("theme-transition");
+      window.setTimeout(() => root.classList.remove("theme-transition"), 400);
+    }
     root.classList.toggle("dark", resolved === "dark");
     root.style.colorScheme = resolved;
   }, [resolved]);

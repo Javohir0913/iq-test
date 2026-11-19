@@ -424,7 +424,9 @@ function ShareModal({ open, onClose, result, levelName }: { open: boolean; onClo
         </a>
         )}
         <Button variant="secondary" onClick={copy} className={`whitespace-nowrap !px-3 !text-sm ${webApp ? "col-span-2" : ""}`}>
-          {copied ? <Check size={16} /> : <Link size={16} />} {copied ? t("result.share_copied") : t("result.share_copy")}
+          <span key={copied ? "copied" : "copy"} className="anim-fade-in inline-flex items-center gap-2">
+            {copied ? <Check size={16} /> : <Link size={16} />} {copied ? t("result.share_copied") : t("result.share_copy")}
+          </span>
         </Button>
       </div>
     </Modal>

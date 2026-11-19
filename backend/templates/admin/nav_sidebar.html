@@ -19,15 +19,25 @@
     /* Menyu ochiq: orqa fon xiralashadi, bosilsa menyu yopiladi */
     #iq-menu-backdrop { position: fixed; inset: 0; z-index: 20; background: rgba(17, 24, 39, .45); }
     @media (min-width: 1280px) { #iq-menu-backdrop { display: none !important; } }
+    .iq-fade { transition: opacity .25s ease; }
+    .iq-transparent { opacity: 0; }
     .dark #iq-menu-btn { background: #1f2937; border-color: #374151; color: #e5e7eb; }
     @media (max-width: 1279px) {
         #iq-menu-btn { display: flex; }
         #header-inner { padding-left: 52px; }
+        /* Menyu doim joyida, yopiq paytda chapga yashiringan – ochilganda suzib chiqadi (animatsiya admin-motion.css da) */
+        #iq-sidebar { position: fixed; top: 0; bottom: 0; left: 0; z-index: 30; transform: translateX(-100%); visibility: hidden; }
+        #iq-sidebar.is-open { transform: none; visibility: visible; }
+    }
+    @media (min-width: 1280px) {
+        #iq-sidebar.is-desktop-closed { display: none; }
     }
 </style>
 
 <div class="relative z-50" @keydown.escape.window="sidebarMobileOpen = false">
     <div id="iq-menu-backdrop" x-show="sidebarMobileOpen" x-cloak style="display: none"
+         x-transition:enter="iq-fade" x-transition:enter-start="iq-transparent"
+         x-transition:leave="iq-fade" x-transition:leave-end="iq-transparent"
          @click="sidebarMobileOpen = false" aria-hidden="true"></div>
 
     <button type="button" id="iq-menu-btn"
@@ -39,7 +49,7 @@
         <span class="material-symbols-outlined" x-text="sidebarMobileOpen ? 'close' : 'menu'">menu</span>
     </button>
 
-    <div id="iq-sidebar" style="z-index: 30" :class="{'xl:block': sidebarDesktopOpen, 'xl:hidden': !sidebarDesktopOpen, 'max-xl:fixed': sidebarMobileOpen, 'hidden': !sidebarMobileOpen }">
+    <div id="iq-sidebar" :class="{'is-open': sidebarMobileOpen, 'is-desktop-closed': !sidebarDesktopOpen}">
         {% include "unfold/helpers/navigation.html" %}
     </div>
 </div>

@@ -74,7 +74,7 @@ export function UserButton() {
     return (
       <NextLink
         href="/start"
-        className="focus-ring inline-flex h-9 items-center rounded-full border border-line bg-surface px-3.5 text-sm font-semibold transition-colors hover:bg-surface-2"
+        className="anim-fade-in focus-ring inline-flex h-9 items-center rounded-full border border-line bg-surface px-3.5 text-sm font-semibold transition-colors hover:bg-surface-2"
       >
         {t("auth.login")}
       </NextLink>
@@ -83,7 +83,7 @@ export function UserButton() {
   return (
     <NextLink
       href="/me"
-      className="focus-ring grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-teal text-sm font-bold text-white ring-2 ring-surface"
+      className="anim-fade-in focus-ring grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-teal text-sm font-bold text-white ring-2 ring-surface"
       aria-label={t("auth.my_results")}
       title={t("auth.signed_in_as", { name: user.full_name || user.username })}
     >

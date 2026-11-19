@@ -1,5 +1,6 @@
 "use client";
 
+import { Collapse } from "./motion";
 import { useEffect, useRef, useState } from "react";
 import { useI18n } from "@/i18n";
 import { useAuth } from "@/lib/auth";
@@ -88,11 +89,11 @@ export function LoginCard() {
           ) : (
             <p className="text-sm text-muted">{t("auth.unavailable")}</p>
           )}
-          {error && (
-            <p role="alert" className="mt-3 text-sm font-medium text-accent">
+          <Collapse show={Boolean(error)}>
+            <p role="alert" className="pt-3 text-sm font-medium text-accent">
               {error}
             </p>
-          )}
+          </Collapse>
         </div>
         {bot && (
           <p className="mt-6 text-sm text-muted">

@@ -195,6 +195,37 @@ body {
   animation: draw 0.9s ease-in-out 0.4s both;
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.anim-fade-in {
+  animation: fade-in 0.3s ease var(--delay, 0s) both;
+}
+
+/* Sahifa almashganda va yuklanish tugaganda kontent silliq chiqadi.
+   Faqat opacity: transform ichidagi fixed elementlarni (pastki panel, oynalar) siljitib yuborardi. */
+main#main {
+  animation: fade-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Mavzu (yorug‘/qorong‘i) almashganda ranglar birdan emas, silliq o‘zgaradi */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease,
+    fill 0.35s ease,
+    stroke 0.35s ease !important;
+}
+
 /* Scroll bilan paydo bo‘lish (RevealScope qo‘shadi) */
 .reveal {
   opacity: 0;

@@ -1,5 +1,6 @@
 "use client";
 
+import { FadeSwap } from "@/components/motion";
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
 import { Header } from "@/components/Header";
@@ -46,6 +47,18 @@ export default function MyResultsPage() {
     minute: "2-digit",
   });
 
+  const bodyKey =
+    status === "loading" || (status === "guest" && initData)
+      ? "auth"
+      : status === "guest"
+        ? "login"
+        : load === "loading"
+          ? "loading"
+          : load === "error" || !data
+            ? "error"
+            : data.attempts.length === 0
+              ? "empty"
+              : "list";
   let body: React.ReactNode;
   if (status === "loading" || (status === "guest" && initData)) {
     body = <Skeleton className="h-64 !rounded-panel" />;
@@ -123,7 +136,7 @@ export default function MyResultsPage() {
       <Header />
       <main id="main" className="mx-auto max-w-3xl px-4 py-8 sm:px-6 md:py-12">
         {status === "authed" && (
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+          <div className="anim-fade-in mb-6 flex flex-wrap items-end justify-between gap-3">
             <div>
               <h1 className="text-3xl font-bold tracking-tight">{t("me.title")}</h1>
               <p className="mt-1 text-muted">{t("me.subtitle")}</p>
@@ -140,7 +153,7 @@ export default function MyResultsPage() {
             </div>
           </div>
         )}
-        {body}
+        <FadeSwap id={bodyKey}>{body}</FadeSwap>
       </main>
     </>
   );

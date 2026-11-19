@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { Collapse, FadeSwap } from "@/components/motion";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { Header } from "@/components/Header";
@@ -173,6 +174,7 @@ export default function StartPage() {
               )}
             </AnimatePresence>
 
+            <FadeSwap id={authPending ? "wait" : needsLogin ? "login" : "form"}>
             {authPending ? (
               <Skeleton className="h-[420px] !rounded-panel" />
             ) : needsLogin ? (
@@ -189,8 +191,12 @@ export default function StartPage() {
                     <p className="mt-1 text-sm text-muted">{t("stages.subtitle")}</p>
                   </div>
                   <StageCards stages={stages} selected={stageNo} onSelect={setStageNo} />
-                  {progress && needChannels && <ChannelsCard progress={progress} onCheck={loadProgress} />}
-                  {progress && !needChannels && missingFriends > 0 && <FriendsCard progress={progress} missing={missingFriends} />}
+                  <Collapse show={Boolean(progress && needChannels)}>
+                    {progress && <ChannelsCard progress={progress} onCheck={loadProgress} />}
+                  </Collapse>
+                  <Collapse show={Boolean(progress && !needChannels && missingFriends > 0)}>
+                    {progress && <FriendsCard progress={progress} missing={missingFriends} />}
+                  </Collapse>
                 </section>
               )}
 
@@ -221,11 +227,11 @@ export default function StartPage() {
                         : `bg-surface focus:border-accent focus:ring-4 focus:ring-accent/15 ${errors.name ? "border-accent" : "border-line"}`
                     }`}
                   />
-                  {errors.name && (
-                    <p id="name-error" role="alert" className="mt-1.5 text-sm font-medium text-accent">
+                  <Collapse show={Boolean(errors.name)}>
+                    <p id="name-error" role="alert" className="pt-1.5 text-sm font-medium text-accent">
                       {errors.name}
                     </p>
-                  )}
+                  </Collapse>
                   {!errors.name && nameLocked && (
                     <p id="name-hint" className="mt-1.5 flex items-start gap-1.5 text-sm text-muted">
                       <Lock size={14} className="mt-0.5 shrink-0" /> <span>{t("start.name_locked")}</span>
@@ -271,18 +277,18 @@ export default function StartPage() {
                     aria-describedby={errors.phone ? "phone-error" : undefined}
                     className={`tabular h-12 w-full rounded-btn border bg-surface px-4 text-base outline-none transition-[border,box-shadow] placeholder:text-muted/70 focus:border-accent focus:ring-4 focus:ring-accent/15 ${errors.phone ? "border-accent" : "border-line"}`}
                   />
-                  {errors.phone && (
-                    <p id="phone-error" role="alert" className="mt-1.5 text-sm font-medium text-accent">
+                  <Collapse show={Boolean(errors.phone)}>
+                    <p id="phone-error" role="alert" className="pt-1.5 text-sm font-medium text-accent">
                       {errors.phone}
                     </p>
-                  )}
+                  </Collapse>
                 </div>
 
-                {errors.form && (
+                <Collapse show={Boolean(errors.form)}>
                   <p role="alert" className="rounded-btn border border-accent/30 bg-accent/10 px-4 py-3 text-sm font-medium text-accent">
                     {errors.form}
                   </p>
-                )}
+                </Collapse>
 
                 <Button type="submit" size="lg" className="group w-full" disabled={submitting || !canStart}>
                   {submitting ? (
@@ -307,6 +313,7 @@ export default function StartPage() {
               )}
             </Card>
             )}
+            </FadeSwap>
           </motion.div>
 
           <motion.aside
