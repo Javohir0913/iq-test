@@ -1,0 +1,33 @@
+{% load i18n %}
+{# Unfold standart shabloni: "Menu" tugmasi pastda edi – telefonda payqash qiyin. Bu yerda ☰ tepa chap burchakda. #}
+
+<style>
+    #iq-menu-btn {
+        position: fixed; top: 12px; left: 12px; z-index: 60;
+        display: none; align-items: center; justify-content: center;
+        width: 40px; height: 40px; padding: 0; cursor: pointer;
+        border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; color: #374151;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
+    }
+    #iq-menu-btn.is-open { left: auto; right: 12px; }
+    .dark #iq-menu-btn { background: #1f2937; border-color: #374151; color: #e5e7eb; }
+    @media (max-width: 1279px) {
+        #iq-menu-btn { display: flex; }
+        #header-inner { padding-left: 52px; }
+    }
+</style>
+
+<div class="relative z-50">
+    <button type="button" id="iq-menu-btn"
+            @click="sidebarMobileOpen = !sidebarMobileOpen"
+            :class="{'is-open': sidebarMobileOpen}"
+            :aria-expanded="sidebarMobileOpen.toString()"
+            aria-label="{% trans "Menu" %}"
+            title="{% trans "Menu" %}">
+        <span class="material-symbols-outlined" x-text="sidebarMobileOpen ? 'close' : 'menu'">menu</span>
+    </button>
+
+    <div :class="{'xl:block': sidebarDesktopOpen, 'xl:hidden': !sidebarDesktopOpen, 'max-xl:fixed': sidebarMobileOpen, 'hidden': !sidebarMobileOpen }">
+        {% include "unfold/helpers/navigation.html" %}
+    </div>
+</div>
