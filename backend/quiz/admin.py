@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
-from django.db.models import OuterRef, Q, Subquery
+from django.db.models import Count, OuterRef, Q, Subquery
 from django.forms.models import BaseInlineFormSet
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
@@ -12,11 +12,9 @@ from unfold.decorators import action, display
 
 from . import exports
 from .models import (
-    LETTERS,
-    MAX_POINTS,
-    MIN_POINTS,
     Answer,
     Attempt,
+    Difficulty,
     Option,
     Participant,
     Question,
@@ -25,6 +23,7 @@ from .models import (
     Stage,
     TelegramAccount,
     TestSettings,
+    validate_options,
 )
 from .stats import collect_stats
 
@@ -38,20 +37,13 @@ class OptionInlineFormSet(BaseInlineFormSet):
         if any(self.errors):
             return
         rows = [f.cleaned_data for f in self.forms if f.cleaned_data and not f.cleaned_data.get("DELETE")]
-        letters = sorted(r["letter"] for r in rows)
-        if letters != LETTERS:
-            raise ValidationError("Savolda aniq 6 ta variant (A–F) bo‘lishi kerak.")
-        for r in rows:
-            if not MIN_POINTS <= r["points"] <= MAX_POINTS:
-                raise ValidationError("Variant bali 3–7 oralig‘ida bo‘lishi kerak.")
-        if sum(1 for r in rows if r["points"] == MAX_POINTS) != 1:
-            raise ValidationError("Savolda aniq bitta 7 ballik variant bo‘lishi kerak.")
+        validate_options([(r["letter"], r["points"], bool(r.get("is_correct"))) for r in rows])
 
 
 class OptionInline(TabularInline):
     model = Option
     formset = OptionInlineFormSet
-    fields = ["letter", "value", "image", "preview", "points", "reason_uz"]
+    fields = ["letter", "value", "image", "preview", "is_correct", "points", "reason_uz"]
     readonly_fields = ["preview"]
     max_num = 6
     min_num = 6
@@ -105,7 +97,7 @@ class QuestionAdmin(ModelAdmin):
     @display(description="To‘g‘ri")
     def correct_letter(self, obj):
         for o in obj.options.all():
-            if o.points == MAX_POINTS:
+            if o.is_correct:
                 return o.letter
         return "—"
 
@@ -122,8 +114,8 @@ class QuestionAdmin(ModelAdmin):
         if formset.model is not Option:
             return super().save_formset(request, form, formset, change)
         instances = formset.save(commit=False)
-        # Avval 7 ballik bo‘lmaganlar saqlanadi – "bitta 7" cheklovi vaqtincha buzilmasligi uchun
-        instances.sort(key=lambda o: o.points == MAX_POINTS)
+        # Avval to‘g‘ri bo‘lmaganlar saqlanadi – "bitta to‘g‘ri javob" cheklovi vaqtincha buzilmasligi uchun
+        instances.sort(key=lambda o: o.is_correct)
         for obj in instances:
             obj.save()
         formset.save_m2m()
@@ -146,11 +138,21 @@ class ScoreLevelAdmin(ModelAdmin):
 @admin.register(Stage)
 class StageAdmin(ModelAdmin):
     list_display = [
-        "number", "question_count", "duration_minutes", "max_difficulty", "friends_required", "certificate",
-        "is_active", "attempts_count",
+        "number", "easy_count", "medium_count", "hard_count", "question_count", "duration_minutes",
+        "friends_required", "certificate", "is_active", "attempts_count",
     ]
-    list_editable = ["question_count", "duration_minutes", "max_difficulty", "friends_required", "certificate", "is_active"]
+    list_editable = [
+        "easy_count", "medium_count", "hard_count", "duration_minutes", "friends_required", "certificate", "is_active",
+    ]
+    fields = [
+        "number", "easy_count", "medium_count", "hard_count", "duration_minutes", "friends_required", "certificate",
+        "is_active",
+    ]
     ordering = ["number"]
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        warn_question_shortage(request, [obj])
 
     def has_delete_permission(self, request, obj=None):
         # Urinishlari bor bosqich o‘chirilmaydi (faqat nofaol qilinadi)
@@ -208,10 +210,76 @@ class RequiredChannelAdmin(ModelAdmin):
             )
 
 
+def warn_question_shortage(request, stages):
+    """Bosqich so‘ragan savollar bazadagi faol savollardan ko‘p bo‘lsa – ogohlantirish."""
+    available = dict(
+        Question.objects.filter(is_active=True).values("difficulty").annotate(n=Count("id")).values_list("difficulty", "n")
+    )
+    names = dict(Difficulty.choices)
+    for stage in stages:
+        for diff, wanted in stage.difficulty_counts().items():
+            if wanted > available.get(diff, 0):
+                messages.warning(
+                    request,
+                    f"{stage.number}-bosqich: {names[diff].lower()} savol {wanted} ta so‘ralgan, bazada "
+                    f"{available.get(diff, 0)} ta – yetmagani boshqa qiyinlikdagi savollardan olinadi.",
+                )
+
+
+class StageInline(TabularInline):
+    model = Stage
+    fk_name = "settings"
+    fields = [
+        "number", "easy_count", "medium_count", "hard_count", "total", "duration_minutes", "friends_required",
+        "certificate", "is_active",
+    ]
+    readonly_fields = ["total"]
+    extra = 0
+    can_delete = False
+    ordering = ["number"]
+    verbose_name = "bosqich"
+    verbose_name_plural = "Bosqichlar: savollar soni (qiyinlik bo‘yicha), vaqt va ochish sharti"
+
+    @display(description="Jami")
+    def total(self, obj):
+        return obj.question_count if obj and obj.pk else "—"
+
+
 @admin.register(TestSettings)
 class TestSettingsAdmin(ModelAdmin):
     list_display = ["__str__", "subscription_required"]
-    readonly_fields = ["channels_overview"]
+    readonly_fields = ["channels_overview", "bank_overview"]
+    inlines = [StageInline]
+    fieldsets = [
+        (None, {"fields": ["duration_minutes"]}),
+        (
+            "Ball koeffitsientlari (oson / o‘rta / qiyin)",
+            {
+                "fields": ["weight_easy", "weight_medium", "weight_hard", "bank_overview"],
+                "description": "Variant balli (0–7) savol qiyinligi koeffitsientiga ko‘paytiriladi. "
+                "Natija foizi va darajalar shunga qarab avtomatik hisoblanadi.",
+            },
+        ),
+        ("Majburiy obuna", {"fields": ["subscription_required", "channels_overview"]}),
+    ]
+
+    @display(description="Bazadagi faol savollar")
+    def bank_overview(self, obj):
+        counts = dict(
+            Question.objects.filter(is_active=True).values("difficulty").annotate(n=Count("id")).values_list("difficulty", "n")
+        )
+        return " · ".join(f"{name}: {counts.get(value, 0)}" for value, name in Difficulty.choices)
+
+    def get_object(self, request, object_id, from_field=None):
+        obj = super().get_object(request, object_id, from_field)
+        if obj is not None:
+            # Eski bosqichlar shu sozlamaga bog‘lanadi (inline da ko‘rinishi uchun)
+            Stage.objects.filter(settings__isnull=True).update(settings=obj)
+        return obj
+
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+        warn_question_shortage(request, list(Stage.objects.filter(is_active=True)))
 
     @display(description="Majburiy kanallar")
     def channels_overview(self, obj):

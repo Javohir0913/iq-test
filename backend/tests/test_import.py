@@ -25,8 +25,8 @@ def test_import_creates_all_questions_with_matching_points(imported, questions_d
         assert db_q.figure.storage.exists(db_q.figure.name)
         db_points = {o.letter: o.points for o in db_q.options.all()}
         assert db_points == {o["letter"]: o["points"] for o in q["options"]}
-        seven = [o.letter for o in db_q.options.all() if o.points == 7]
-        assert seven == [q["correct"]]
+        correct = [o.letter for o in db_q.options.all() if o.is_correct]
+        assert correct == [q["correct"]]
         for o in db_q.options.all():
             if q["type"] == "image":
                 assert o.image and o.image.storage.exists(o.image.name)
@@ -71,7 +71,7 @@ def _write_variant(tmp_path, questions_data, mutate):
     [
         lambda q: q["options"].__setitem__(0, {**q["options"][0], "points": 7}),  # ikkita 7
         lambda q: [o.update(points=6) for o in q["options"] if o["points"] == 7],  # 7 yo‘q
-        lambda q: q["options"].__setitem__(1, {**q["options"][1], "points": 2}),  # 3 dan kam
+        lambda q: q["options"].__setitem__(1, {**q["options"][1], "points": 8}),  # 7 dan ko‘p
         lambda q: q["options"].pop(),  # 5 ta variant
         lambda q: q.update(correct="A"),  # to‘g‘ri javob 7 bilan mos emas
         lambda q: q.update(difficulty=4),  # qiyinlik 1–3 emas
@@ -89,14 +89,22 @@ def test_db_constraints(imported):
     with pytest.raises(IntegrityError), transaction.atomic():
         Option.objects.filter(question=q, letter="A").update(points=8)
     with pytest.raises(IntegrityError), transaction.atomic():
-        Option.objects.filter(question=q, letter="A").update(points=7)  # ikkinchi 7
+        Option.objects.filter(question=q, is_correct=False).update(is_correct=True)  # ikkinchi to‘g‘ri javob
     with pytest.raises(IntegrityError), transaction.atomic():
         Option.objects.create(question=q, letter="A", points=5)
 
 
-def test_model_clean_requires_single_seven(imported):
+def test_model_clean_requires_single_correct_with_top_points(imported):
     q = Question.objects.get(number=1)
     q.full_clean()
-    Option.objects.filter(question=q, points=7).update(points=6)
+    # To‘g‘ri javob bali boshqasidan past – xato
+    Option.objects.filter(question=q, is_correct=True).update(points=1)
+    with pytest.raises(ValidationError):
+        q.full_clean()
+    # Ballar pasaytirilgan, lekin to‘g‘ri javob eng yuqori – to‘g‘ri
+    Option.objects.filter(question=q, is_correct=False).update(points=0)
+    q.full_clean()
+    # To‘g‘ri javob belgilanmagan – xato
+    Option.objects.filter(question=q).update(is_correct=False)
     with pytest.raises(ValidationError):
         q.full_clean()

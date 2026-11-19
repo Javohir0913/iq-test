@@ -10,10 +10,11 @@ from pathlib import Path
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
-from quiz.models import LETTERS, MAX_POINTS, MIN_POINTS, Category, Option, Question
+from quiz.models import LETTERS, MAX_POINTS, MIN_POINTS, validate_options, Category, Option, Question
 
 
 def validate_question(q):
@@ -37,18 +38,26 @@ def validate_question(q):
     for o in options:
         pts = o.get("points")
         if not isinstance(pts, int) or not MIN_POINTS <= pts <= MAX_POINTS:
-            raise CommandError(f"{where}: {o['letter']} variant bali 3–7 oralig‘ida emas ({pts!r})")
+            raise CommandError(f"{where}: {o['letter']} variant bali {MIN_POINTS}–{MAX_POINTS} oralig‘ida emas ({pts!r})")
         if q["type"] == "number" and not isinstance(o.get("value"), int):
             raise CommandError(f"{where}: {o['letter']} variantda son (value) yo‘q")
         if q["type"] == "image" and not o.get("image"):
             raise CommandError(f"{where}: {o['letter']} variantda rasm yo‘q")
-    sevens = [o["letter"] for o in options if o["points"] == MAX_POINTS]
-    if len(sevens) != 1:
-        raise CommandError(f"{where}: aniq bitta 7 ballik variant bo‘lishi kerak, topildi: {sevens}")
+    try:
+        validate_options([(o["letter"], o["points"], o["letter"] == correct_letter(q)) for o in options])
+    except ValidationError as exc:
+        raise CommandError(f"{where}: {' '.join(exc.messages)}")
     if q.get("difficulty") is not None and q["difficulty"] not in (1, 2, 3):
         raise CommandError(f"{where}: qiyinlik 1, 2 yoki 3 bo‘lishi kerak ({q['difficulty']!r})")
-    if q.get("correct") and q["correct"] != sevens[0]:
-        raise CommandError(f"{where}: to‘g‘ri javob ({q['correct']}) 7 ballik variant ({sevens[0]}) bilan mos emas")
+
+
+
+def correct_letter(q):
+    """JSON dagi "correct" maydoni; bo‘lmasa – eng yuqori balli variant."""
+    if q.get("correct"):
+        return q["correct"]
+    options = q.get("options") or []
+    return max(options, key=lambda o: o.get("points") or 0)["letter"] if options else None
 
 
 class Command(BaseCommand):
@@ -132,14 +141,16 @@ class Command(BaseCommand):
         question.figure.name = self._store_file(base_dir, q["figure"], number)
         question.save(update_fields=["figure"])
 
-        # 7 ballik variant harfi o‘zgarsa, qisman unique cheklov to‘qnashmasligi uchun avval pasaytiramiz
-        Option.objects.filter(question=question).update(points=MIN_POINTS)
+        # To‘g‘ri javob harfi o‘zgarsa, qisman unique cheklov to‘qnashmasligi uchun avval belgini olib tashlaymiz
+        Option.objects.filter(question=question).update(is_correct=False)
+        right = correct_letter(q)
         for o in q["options"]:
             option, _ = Option.objects.update_or_create(
                 question=question,
                 letter=o["letter"],
                 defaults={
                     "points": o["points"],
+                    "is_correct": o["letter"] == right,
                     "value": o.get("value"),
                     "reason_uz": o.get("reason_uz", ""),
                 },

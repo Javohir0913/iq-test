@@ -35,7 +35,9 @@ def imported(db):
     call_command("import_questions", str(QUESTIONS_JSON), verbosity=0)
     # Testlar uchun: har bir bosqich butun savollar bankini oladi, sertifikatli, do‘st sharti o‘chiq.
     # Haqiqiy bosqich sozlamalari test_stages.py da alohida tekshiriladi.
-    Stage.objects.update(friends_required=0, question_count=200, max_difficulty=3, certificate=True)
+    Stage.objects.update(
+        friends_required=0, easy_count=200, medium_count=200, hard_count=200, question_count=600, certificate=True
+    )
 
 
 @pytest.fixture

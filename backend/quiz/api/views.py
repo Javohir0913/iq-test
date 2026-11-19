@@ -93,7 +93,7 @@ class TestMetaView(APIView):
                 "question_count": count,
                 "duration_minutes": top.duration_minutes if top else 0,
                 "options_per_question": 6,
-                "max_score": services.score_bounds(count)[1],
+                "max_score": services.stage_max_score(top, bank) if top else services.score_bounds(count)[1],
                 "bank_size": bank,
                 "stages": [
                     {

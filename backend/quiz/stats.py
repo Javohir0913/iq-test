@@ -6,7 +6,7 @@ from django.db.models import Avg, Count, F, Q
 from django.db.models.functions import TruncDate
 from django.utils import timezone
 
-from .models import LETTERS, MAX_POINTS, Answer, Attempt, Option, Question, ScoreLevel
+from .models import LETTERS, Answer, Attempt, Option, Question, ScoreLevel
 
 
 def collect_stats():
@@ -40,11 +40,12 @@ def collect_stats():
         .annotate(n=Count("id"))
     }
     points = {(o.question_id, o.letter): o.points for o in Option.objects.all()}
+    correct_letters = {(o.question_id, o.letter) for o in Option.objects.filter(is_correct=True)}
     questions = []
     for q in Question.objects.order_by("order", "number"):
         per_letter = [counts.get((q.id, letter), 0) for letter in LETTERS]
         answered = sum(per_letter)
-        correct = next((c for letter, c in zip(LETTERS, per_letter) if points.get((q.id, letter)) == MAX_POINTS), 0)
+        correct = next((c for letter, c in zip(LETTERS, per_letter) if (q.id, letter) in correct_letters), 0)
         options = []
         for letter, n in zip(LETTERS, per_letter):
             options.append(
@@ -52,7 +53,7 @@ def collect_stats():
                     "letter": letter,
                     "count": n,
                     "points": points.get((q.id, letter)),
-                    "is_correct": points.get((q.id, letter)) == MAX_POINTS,
+                    "is_correct": (q.id, letter) in correct_letters,
                     "share": round(n * 100 / answered, 1) if answered else 0,
                 }
             )

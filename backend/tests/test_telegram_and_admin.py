@@ -91,7 +91,7 @@ def test_admin_exports(admin_client, make_attempt):
     assert xlsx.content[:2] == b"PK"
 
 
-def test_admin_option_formset_rejects_two_sevens(admin_client, imported):
+def test_admin_option_formset_rejects_two_correct(admin_client, imported):
     from quiz.models import Question
 
     q = Question.objects.get(number=1)
@@ -104,23 +104,33 @@ def test_admin_option_formset_rejects_two_sevens(admin_client, imported):
     for i, o in enumerate(q.options.order_by("letter")):
         data.update({
             f"options-{i}-id": o.id, f"options-{i}-question": q.id, f"options-{i}-letter": o.letter,
-            f"options-{i}-value": o.value, f"options-{i}-points": 7 if i < 2 else o.points,
+            f"options-{i}-value": o.value, f"options-{i}-points": o.points,
             f"options-{i}-reason_uz": o.reason_uz,
         })
+        if o.is_correct or i == 0:
+            data[f"options-{i}-is_correct"] = "on"
     resp = admin_client.post(f"/admin/quiz/question/{q.id}/change/", data)
     assert resp.status_code == 200  # forma xato bilan qaytdi
-    assert "aniq bitta 7" in resp.content.decode()
+    assert "aniq bitta «to‘g‘ri javob»" in resp.content.decode()
 
-    # 7 ni boshqa variantga ko‘chirish (F → A) muvaffaqiyatli saqlanadi
-    points = {o.letter: o.points for o in q.options.all()}
-    seven = next(k for k, v in points.items() if v == 7)
-    new_seven = "A" if seven != "A" else "B"
+    # To‘g‘ri javobni boshqa variantga ko‘chirish – bali eng yuqori bo‘lishi shart
+    old = q.correct_option.letter
+    new = "A" if old != "A" else "B"
     for i, o in enumerate(q.options.order_by("letter")):
-        p = 7 if o.letter == new_seven else (5 if o.letter == seven else o.points)
-        data[f"options-{i}-points"] = p
+        data.pop(f"options-{i}-is_correct", None)
+        if o.letter == new:
+            data[f"options-{i}-is_correct"] = "on"
+    resp = admin_client.post(f"/admin/quiz/question/{q.id}/change/", data)
+    assert resp.status_code == 200
+    assert "bali boshqa variantlardan yuqori" in resp.content.decode()
+
+    # Ballarni pasaytirib (to‘g‘ri javob 5, eski 7 → 2, ba’zilari 0) saqlash mumkin
+    for i, o in enumerate(q.options.order_by("letter")):
+        data[f"options-{i}-points"] = 5 if o.letter == new else (2 if o.letter == old else 0)
     resp = admin_client.post(f"/admin/quiz/question/{q.id}/change/", data)
     assert resp.status_code == 302, resp.content.decode()[:2000]
-    assert q.options.get(points=7).letter == new_seven
+    assert q.correct_option.letter == new
+    assert q.options.get(letter=new).points == 5
 
 
 # --- Bot integratsiyasi ---------------------------------------------------------

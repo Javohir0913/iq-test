@@ -11,16 +11,21 @@ pytestmark = pytest.mark.django_db
 
 BOT = "123456:TEST-TOKEN"
 
-# Migratsiyadagi standart bosqichlar: (savollar, maks. qiyinlik, do‘stlar, sertifikat)
-DEFAULTS = {1: (10, 1, 0, False), 2: (15, 2, 1, False), 3: (20, 3, 2, True)}
+# Migratsiyadagi standart bosqichlar: (oson, o‘rta, qiyin, do‘stlar, sertifikat)
+DEFAULTS = {1: (10, 0, 0, 0, False), 2: (8, 7, 0, 1, False), 3: (7, 7, 6, 2, True)}
 
 
 @pytest.fixture
 def real_stages(imported):
     """conftest soddalashtirgan bosqichlarni haqiqiy (standart) holatiga qaytaradi."""
-    for number, (count, difficulty, friends, certificate) in DEFAULTS.items():
+    for number, (easy, medium, hard, friends, certificate) in DEFAULTS.items():
         Stage.objects.filter(number=number).update(
-            question_count=count, max_difficulty=difficulty, friends_required=friends, certificate=certificate
+            easy_count=easy,
+            medium_count=medium,
+            hard_count=hard,
+            question_count=easy + medium + hard,
+            friends_required=friends,
+            certificate=certificate,
         )
 
 
@@ -40,14 +45,17 @@ def start(client, stage, acc=None):
 def test_default_stages_created_by_migration(db):
     stages = {s.number: s for s in Stage.objects.all()}
     assert set(stages) == {1, 2, 3}
-    for number, (count, difficulty, friends, certificate) in DEFAULTS.items():
+    for number, (easy, medium, hard, friends, certificate) in DEFAULTS.items():
         s = stages[number]
-        assert (s.question_count, s.max_difficulty, s.friends_required, s.certificate) == (
-            count,
-            difficulty,
+        assert (s.easy_count, s.medium_count, s.hard_count, s.friends_required, s.certificate) == (
+            easy,
+            medium,
+            hard,
             friends,
             certificate,
         )
+        assert s.question_count == easy + medium + hard
+        assert s.settings_id == TestSettings.load().pk
 
 
 def test_pick_questions_respects_difficulty_and_is_random(real_stages):
@@ -247,3 +255,25 @@ def test_admin_pages_for_new_models(client, imported, django_user_model, monkeyp
     RequiredChannel.objects.create(chat="@kanal", title="Kanal")
     for url in ("/admin/quiz/stage/", "/admin/quiz/requiredchannel/", "/admin/quiz/scorelevel/", "/admin/quiz/attempt/stats/"):
         assert client.get(url).status_code == 200, url
+
+
+def test_pick_questions_uses_difficulty_counts(real_stages):
+    stage = Stage.objects.get(number=3)
+    stage.easy_count, stage.medium_count, stage.hard_count = 2, 3, 4
+    stage.save()
+    assert stage.question_count == 9
+    ids = pick_questions(stage)
+    diffs = list(Question.objects.filter(id__in=ids).values_list("difficulty", flat=True))
+    assert len(ids) == 9 and len(set(ids)) == 9
+    assert (diffs.count(1), diffs.count(2), diffs.count(3)) == (2, 3, 4)
+
+
+def test_pick_questions_fills_shortage_from_nearest_difficulty(real_stages):
+    stage = Stage.objects.get(number=3)
+    hard_total = Question.objects.filter(is_active=True, difficulty=3).count()
+    stage.easy_count, stage.medium_count, stage.hard_count = 0, 0, hard_total + 2
+    stage.save()
+    ids = pick_questions(stage)
+    diffs = list(Question.objects.filter(id__in=ids).values_list("difficulty", flat=True))
+    assert len(ids) == hard_total + 2
+    assert diffs.count(3) == hard_total and diffs.count(2) == 2

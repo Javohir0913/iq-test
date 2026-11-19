@@ -1,5 +1,6 @@
 import secrets
 import uuid
+from decimal import Decimal
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -8,7 +9,7 @@ from django.db import models
 from django.db.models import Q
 
 LETTERS = ["A", "B", "C", "D", "E", "F"]
-MIN_POINTS = 3
+MIN_POINTS = 0
 MAX_POINTS = 7
 
 
@@ -64,7 +65,7 @@ class Question(models.Model):
     logic_ru = models.TextField("mantiq (ru)", blank=True)
     difficulty = models.PositiveSmallIntegerField(
         "qiyinlik", choices=Difficulty.choices, default=Difficulty.MEDIUM,
-        help_text="Bosqich savollari shu bo‘yicha tanlanadi (bosqichdagi «maks. qiyinlik»).",
+        help_text="Bosqich savollari shu bo‘yicha tanlanadi (Sozlamalar → bosqichlar: oson/o‘rta/qiyin soni). Ball shu qiyinlik koeffitsientiga ko‘paytiriladi.",
     )
     order = models.PositiveSmallIntegerField("tartib", default=0)
     is_active = models.BooleanField("faol", default=True)
@@ -78,21 +79,38 @@ class Question(models.Model):
         return f"{self.number}-savol"
 
     def clean_options(self, options):
-        """Variantlar to‘plamini tekshiradi: 6 ta, A–F, ball 3–7, aniq bitta 7."""
-        letters = sorted(o.letter for o in options)
-        if letters != LETTERS:
-            raise ValidationError("Savolda aniq 6 ta variant (A–F) bo‘lishi kerak.")
-        for o in options:
-            if not MIN_POINTS <= o.points <= MAX_POINTS:
-                raise ValidationError(f"{o.letter} variant bali 3–7 oralig‘ida bo‘lishi kerak.")
-        if sum(1 for o in options if o.points == MAX_POINTS) != 1:
-            raise ValidationError("Savolda aniq bitta 7 ballik variant bo‘lishi kerak.")
+        """Variantlar to‘plamini tekshiradi: 6 ta, A–F, ball 0–7, aniq bitta to‘g‘ri javob, uning bali eng yuqori."""
+        validate_options([(o.letter, o.points, o.is_correct) for o in options])
+
+    @property
+    def correct_option(self):
+        return next((o for o in self.options.all() if o.is_correct), None)
 
     def clean(self):
         if self.pk:
             options = list(self.options.all())
             if options:
                 self.clean_options(options)
+
+
+def validate_options(rows):
+    """rows: [(harf, ball, to‘g‘rimi)]. Admin forma, model va import uchun yagona tekshiruv."""
+    letters = sorted(letter for letter, _, _ in rows)
+    if letters != LETTERS:
+        raise ValidationError("Savolda aniq 6 ta variant (A–F) bo‘lishi kerak.")
+    for letter, points, _ in rows:
+        if points is None or not MIN_POINTS <= points <= MAX_POINTS:
+            raise ValidationError(f"{letter} variant bali {MIN_POINTS}–{MAX_POINTS} oralig‘ida bo‘lishi kerak.")
+    correct = [(letter, points) for letter, points, is_correct in rows if is_correct]
+    if len(correct) != 1:
+        raise ValidationError("Savolda aniq bitta «to‘g‘ri javob» belgilangan bo‘lishi kerak.")
+    letter, points = correct[0]
+    higher = [x for x, p, ok in rows if not ok and p >= points]
+    if higher:
+        raise ValidationError(
+            f"To‘g‘ri javob ({letter}) bali boshqa variantlardan yuqori bo‘lishi kerak: "
+            f"{', '.join(sorted(higher))} varianti {points} yoki undan ko‘p ball olgan."
+        )
 
 
 class Option(models.Model):
@@ -103,6 +121,9 @@ class Option(models.Model):
     points = models.PositiveSmallIntegerField(
         "ball", validators=[MinValueValidator(MIN_POINTS), MaxValueValidator(MAX_POINTS)]
     )
+    is_correct = models.BooleanField(
+        "to‘g‘ri javob", default=False, help_text="Savolda aniq bitta. Uning bali boshqa variantlardan yuqori bo‘lishi kerak."
+    )
     reason_uz = models.CharField("izoh (uz)", max_length=255, blank=True)
 
     class Meta:
@@ -112,12 +133,10 @@ class Option(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["question", "letter"], name="option_unique_letter"),
             models.CheckConstraint(
-                condition=Q(points__gte=MIN_POINTS) & Q(points__lte=MAX_POINTS), name="option_points_3_7"
+                condition=Q(points__gte=MIN_POINTS) & Q(points__lte=MAX_POINTS), name="option_points_0_7"
             ),
-            # Bitta savolda 7 ballik variant ko‘pi bilan bitta; "kamida bitta" clean() va importda tekshiriladi.
-            models.UniqueConstraint(
-                fields=["question"], condition=Q(points=MAX_POINTS), name="option_single_max_points"
-            ),
+            # Bitta savolda to‘g‘ri javob ko‘pi bilan bitta; "kamida bitta" clean() va importda tekshiriladi.
+            models.UniqueConstraint(fields=["question"], condition=Q(is_correct=True), name="option_single_correct"),
             models.CheckConstraint(condition=Q(letter__in=LETTERS), name="option_letter_a_f"),
         ]
 
@@ -201,6 +220,21 @@ class TestSettings(models.Model):
         help_text="Yoqilsa, test boshlash uchun barcha faol majburiy kanallarga a’zo bo‘lish kerak. "
         "Bot har bir kanalda administrator bo‘lishi shart.",
     )
+    weight_easy = models.DecimalField(
+        "oson savol koeffitsienti", max_digits=4, decimal_places=2, default=Decimal("1"),
+        validators=[MinValueValidator(Decimal("0.1")), MaxValueValidator(Decimal("10"))],
+        help_text="Variant balli (0–7) shu songa ko‘paytiriladi. Masalan 1 → to‘g‘ri javob 7 ball.",
+    )
+    weight_medium = models.DecimalField(
+        "o‘rta savol koeffitsienti", max_digits=4, decimal_places=2, default=Decimal("1"),
+        validators=[MinValueValidator(Decimal("0.1")), MaxValueValidator(Decimal("10"))],
+        help_text="Masalan 1.5 → to‘g‘ri javob 10.5 ball.",
+    )
+    weight_hard = models.DecimalField(
+        "qiyin savol koeffitsienti", max_digits=4, decimal_places=2, default=Decimal("1"),
+        validators=[MinValueValidator(Decimal("0.1")), MaxValueValidator(Decimal("10"))],
+        help_text="Masalan 2 → to‘g‘ri javob 14 ball.",
+    )
 
     class Meta:
         verbose_name = "test sozlamalari"
@@ -218,23 +252,34 @@ class TestSettings(models.Model):
         obj, _ = cls.objects.get_or_create(pk=1, defaults={"duration_minutes": settings.TEST_DURATION_MINUTES})
         return obj
 
+    def weights(self):
+        """Qiyinlik → ball koeffitsienti."""
+        return {
+            Difficulty.EASY: self.weight_easy,
+            Difficulty.MEDIUM: self.weight_medium,
+            Difficulty.HARD: self.weight_hard,
+        }
+
 
 class Stage(models.Model):
     """Test bosqichi: savollar soni, vaqt, ochilish sharti (taklif qilingan do‘stlar) va sertifikat."""
 
     number = models.PositiveSmallIntegerField("bosqich", unique=True)
-    question_count = models.PositiveSmallIntegerField(
-        "savollar soni", validators=[MinValueValidator(1), MaxValueValidator(200)]
+    settings = models.ForeignKey(
+        TestSettings, on_delete=models.CASCADE, null=True, blank=True, related_name="stages", editable=False
     )
+    easy_count = models.PositiveSmallIntegerField("oson savollar", default=0, validators=[MaxValueValidator(200)])
+    medium_count = models.PositiveSmallIntegerField("o‘rta savollar", default=0, validators=[MaxValueValidator(200)])
+    hard_count = models.PositiveSmallIntegerField("qiyin savollar", default=0, validators=[MaxValueValidator(200)])
+    # oson + o‘rta + qiyin (saqlashda avtomatik hisoblanadi)
+    question_count = models.PositiveSmallIntegerField("savollar soni", default=0, editable=False)
     duration_minutes = models.PositiveSmallIntegerField(
         "vaqt (daqiqa)", validators=[MinValueValidator(1), MaxValueValidator(300)]
     )
-    max_difficulty = models.PositiveSmallIntegerField(
-        "maks. qiyinlik",
-        choices=Difficulty.choices,
-        help_text="Savollar shu qiyinlikkacha bo‘lganlar orasidan tasodifiy tanlanadi.",
+    friends_required = models.PositiveSmallIntegerField(
+        "ochish uchun taklif qilinadigan do‘stlar", default=0,
+        help_text="Bosqichni ochish uchun nechta do‘st bot orqali qo‘shilishi kerak (0 – shartsiz).",
     )
-    friends_required = models.PositiveSmallIntegerField("taklif qilinishi kerak bo‘lgan do‘stlar", default=0)
     certificate = models.BooleanField("sertifikat beriladi", default=False)
     is_active = models.BooleanField("faol", default=True)
 
@@ -245,6 +290,25 @@ class Stage(models.Model):
 
     def __str__(self):
         return f"{self.number}-bosqich ({self.question_count} savol)"
+
+    def difficulty_counts(self):
+        return {Difficulty.EASY: self.easy_count, Difficulty.MEDIUM: self.medium_count, Difficulty.HARD: self.hard_count}
+
+    def clean(self):
+        total = (self.easy_count or 0) + (self.medium_count or 0) + (self.hard_count or 0)
+        if total < 1:
+            raise ValidationError("Bosqichda kamida bitta savol bo‘lishi kerak (oson/o‘rta/qiyin).")
+        if total > 200:
+            raise ValidationError("Bosqichda ko‘pi bilan 200 ta savol bo‘lishi mumkin.")
+
+    def save(self, *args, **kwargs):
+        self.question_count = (self.easy_count or 0) + (self.medium_count or 0) + (self.hard_count or 0)
+        if self.settings_id is None:
+            self.settings = TestSettings.load()
+        update_fields = kwargs.get("update_fields")
+        if update_fields is not None and {"easy_count", "medium_count", "hard_count"} & set(update_fields):
+            kwargs["update_fields"] = set(update_fields) | {"question_count"}
+        super().save(*args, **kwargs)
 
 
 def normalize_chat(raw):
@@ -348,6 +412,8 @@ class Attempt(models.Model):
     expires_at = models.DateTimeField("muddati")
     finished_at = models.DateTimeField("tugagan", null=True, blank=True)
     total_score = models.PositiveSmallIntegerField("ball", null=True, blank=True)
+    # Yakunlashdagi maksimal ball (koeffitsientlar keyin o‘zgarsa ham eski natija o‘zgarmaydi)
+    max_score = models.PositiveIntegerField("maks. ball", null=True, blank=True)
     percent = models.DecimalField("foiz", max_digits=5, decimal_places=1, null=True, blank=True)
     level = models.ForeignKey(
         ScoreLevel, on_delete=models.SET_NULL, null=True, blank=True, related_name="attempts", verbose_name="daraja"
