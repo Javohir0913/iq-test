@@ -16,6 +16,9 @@
         max-height: 100vh; max-height: 100dvh;
     }
     #nav-sidebar > div { min-height: 100%; padding-bottom: 24px; }
+    /* Menyu ochiq: orqa fon xiralashadi, bosilsa menyu yopiladi */
+    #iq-menu-backdrop { position: fixed; inset: 0; z-index: 20; background: rgba(17, 24, 39, .45); }
+    @media (min-width: 1280px) { #iq-menu-backdrop { display: none !important; } }
     .dark #iq-menu-btn { background: #1f2937; border-color: #374151; color: #e5e7eb; }
     @media (max-width: 1279px) {
         #iq-menu-btn { display: flex; }
@@ -23,7 +26,10 @@
     }
 </style>
 
-<div class="relative z-50">
+<div class="relative z-50" @keydown.escape.window="sidebarMobileOpen = false">
+    <div id="iq-menu-backdrop" x-show="sidebarMobileOpen" x-cloak style="display: none"
+         @click="sidebarMobileOpen = false" aria-hidden="true"></div>
+
     <button type="button" id="iq-menu-btn"
             @click="sidebarMobileOpen = !sidebarMobileOpen"
             :class="{'is-open': sidebarMobileOpen}"
@@ -33,7 +39,7 @@
         <span class="material-symbols-outlined" x-text="sidebarMobileOpen ? 'close' : 'menu'">menu</span>
     </button>
 
-    <div :class="{'xl:block': sidebarDesktopOpen, 'xl:hidden': !sidebarDesktopOpen, 'max-xl:fixed': sidebarMobileOpen, 'hidden': !sidebarMobileOpen }">
+    <div id="iq-sidebar" style="z-index: 30" :class="{'xl:block': sidebarDesktopOpen, 'xl:hidden': !sidebarDesktopOpen, 'max-xl:fixed': sidebarMobileOpen, 'hidden': !sidebarMobileOpen }">
         {% include "unfold/helpers/navigation.html" %}
     </div>
 </div>

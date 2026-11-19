@@ -255,3 +255,4 @@ def test_admin_mobile_menu_button_on_top(admin_client):
     html = admin_client.get("/admin/").content.decode()
     assert "iq-menu-btn" in html and "top: 12px" in html
     assert "overflow-y: auto" in html  # uzun menyu telefonda aylanadi
+    assert "iq-menu-backdrop" in html and "sidebarMobileOpen = false" in html  # tashqarini bosish yopadi
